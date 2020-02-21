@@ -14,8 +14,7 @@ const server = app.listen(PORT, () => {
     console.log('Server is running on port : ' + PORT)
 })
 
-//Require routes
-
+//Require Routers
 var indexRouter = require('./routes/index')
 var campeurRouter = require('./routes/campeur')
 
@@ -35,7 +34,6 @@ app.set('view engine', 'ejs')
 
 // Errors => page not found 404
 app.use((req, res, next) =>  {
-    var err = new Error('Page not found')
     err.status = 404
     next(err)
 })
@@ -43,7 +41,7 @@ app.use((req, res, next) =>  {
 // Handling errors (send them to the client)
 app.use((err, req, res, next) => {
     res.status(err.status || 500)
-    res.send(err.message)
+    res.render('includes/error404.ejs')
 })
 
 module.exports = router
