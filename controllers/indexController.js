@@ -2,12 +2,32 @@ var Index = require('../models/index');
 
 // Display list of all campeur.
 exports.index = function(req, res) {
-    res.send('NOT IMPLEMENTED: main page');
+    res.render('index.ejs',{title : "Camping des sources"})
 };
 
-// Display detail page for a specific campeur.
-exports.campeur_detail = function(req, res) {
-    res.send('NOT IMPLEMENTED: campeur detail: ' + req.params.id);
+// Display list of all campeur.
+exports.index_a_propos = function(req, res) {
+    res.send('NOT IMPLEMENTED: a propos');
+};
+
+// Display list of all campeur.
+exports.index_reservation = function(req, res) {
+    res.send('NOT IMPLEMENTED: reservation');
+};
+
+// Display list of all campeur.
+exports.index_notre_equipe = function(req, res) {
+    res.send('NOT IMPLEMENTED: notre equipe');
+};
+
+// Display list of all campeur.
+exports.index_contact = function(req, res) {
+    res.send('NOT IMPLEMENTED: contact');
+};
+
+// Display list of all campeur.
+exports.index_mentions_legales = function(req, res) {
+    res.send('NOT IMPLEMENTED: mentions legales');
 };
 
 // Display campeur create form on GET.

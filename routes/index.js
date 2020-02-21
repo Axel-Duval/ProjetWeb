@@ -9,6 +9,21 @@ var index_controller = require('../controllers/indexController');
 // GET index home page.
 router.get('/', index_controller.index);
 
+// GET index home page.
+router.get('/a_propos', index_controller.index_a_propos);
+
+// GET index home page.
+router.get('/contact', index_controller.index_contact);
+
+// GET index home page.
+router.get('/notre_equipe', index_controller.index_notre_equipe);
+
+// GET index home page.
+router.get('/reservation', index_controller.index_reservation);
+
+// GET mentions legales
+router.get('/mentions_legales', index_controller.index_mentions_legales);
+
 // GET request for get connexion
 router.get('/connexion', index_controller.index_connexion_get);
 
