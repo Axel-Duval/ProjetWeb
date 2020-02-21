@@ -2,27 +2,29 @@ const express = require('express')
 const router = express.Router()
 const app = express()
 const PORT = process.env.PORT || 5000
-
-//Require controller modules
-
-
-/// INTERNAUTE ROUTES ///
-/// CAMPEUR ROUTES ///
-/// PERSONNEL ROUTES ///
-/// MANAGER ROUTES ///
+const bodyParser = require('body-parser')
+const jwt = require('jsonwebtoken')
+const path = require('path')
+const cookieParser = require('cookie-parser')
+const cookieFlashMessages = require('cookie-flash-messages')
 
 
+//Listen on PORT
 const server = app.listen(PORT, () => {
-    console.log('Server is running on port 3000...');
-});
-
-router.get('/',(req,res)=>{
-    res.send("J'ai réussi à héberger mon site avec Hiroku !")
+    console.log('Server is running on port : ' + PORT)
 })
+
+//Require routes
+
+var indexRouter = require('./routes/index')
+var campeurRouter = require('./routes/campeur')
+
+app.use('/', indexRouter)
+app.use('/campeur', campeurRouter)
 
 // Errors => page not found 404
 app.use((req, res, next) =>  {
-    var err = new Error('Page not found');
+    var err = new Error('Page not found')
     err.status = 404
     next(err)
 })

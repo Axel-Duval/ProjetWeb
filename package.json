@@ -20,9 +20,11 @@
   },
   "homepage": "https://github.com/Axel-Duval/ProjetWeb#readme",
   "dependencies": {
+    "cookie-flash-messages": "^0.2.1",
     "cookie-parser": "^1.4.4",
     "ejs": "^3.0.1",
     "express": "^4.17.1",
+    "jsdoc": "^3.6.3",
     "jsonwebtoken": "^8.5.1",
     "lodash": "^4.17.15"
   }
