@@ -46,7 +46,7 @@ exports.index_connexion_post = function(req, res) {
 
 // Display inscription GET
 exports.index_inscription_get = function(req, res) {
-    res.send('NOT IMPLEMENTED: get page inscription');
+    res.render('index/inscription',{title : "CDS | Inscription"})
 };
 
 // Handle inscription POST
