@@ -1,58 +1,71 @@
-.margin-top-1{
-    margin-top: 10vh;
-}
-
-.margin-top-2{
-    margin-top: 20vh;
-}
-
-.margin-top-3{
-    margin-top: 30vh;
-}
-
-@media screen and (min-width: 200px) and (max-width: 640px) {
-    .bloc {
-      display:block;
-      clear:both;
+@media screen and (min-width: 200px) and (max-width: 800px) {
+    #main-parallax {
+        /* The image used */
+        background-image: url("/img/camp3.jpg");
+      
+        /* Set a specific height */
+        height: 50vh;
+        width: auto;
+      
+        /* Create the parallax scrolling effect */
+        background-attachment: fixed;
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: center;
     }
-  }
-
-#main-parallax {
-    /* The image used */
-    background-image: url("/img/camp3.jpg");
-  
-    /* Set a specific height */
-    height: 80vh;
-  
-    /* Create the parallax scrolling effect */
-    background-attachment: fixed;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
+    
+    #title_box{
+        margin-top: 20vh;
+    }
+    
 }
 
-.mid_couv{
-    width: fit-content;
-    height: auto;
-    margin-left: inherit;
-    background-color: rgba(255, 255, 255, 1);
-    margin-left: 28.5vw;
+@media screen and (min-width: 801px) {
+    #main-parallax {
+        /* The image used */
+        background-image: url("/img/camp3.jpg");
+      
+        /* Set a specific height */
+        height: 80vh;
+        width: auto;
+      
+        /* Create the parallax scrolling effect */
+        background-attachment: fixed;
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: center;
+    }
+    
+    #title_box{
+        margin-top: 30vh;
+    }
 }
 
-.couv{
-	margin-top: 30vh;
-	font-size: 8vw;
-	color: black;
-	font-family: 'Roboto Mono', monospace;
-	font-weight: 700;
-    text-align: center;
+@media screen and (min-height: 200px) and (max-height: 800px) {
+    .margin-top-1{
+        margin-top: 5vh;
+    }
+    
+    .margin-top-2{
+        margin-top: 10vh;
+    }
+    
+    .margin-top-3{
+        margin-top: 15vh;
+    }
 }
 
-.sub_couv{
-	margin-top: -2vh;
-	font-size: 3vw;
-	color:black;
-	font-family: 'Roboto Mono', monospace;
-	font-weight: 500;
-	text-align: center;
+@media screen and (min-height: 801px){
+    .margin-top-1{
+        margin-top: 10vh;
+    }
+    
+    .margin-top-2{
+        margin-top: 20vh;
+    }
+    
+    .margin-top-3{
+        margin-top: 30vh;
+    }
 }
+

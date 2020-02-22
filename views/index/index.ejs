@@ -2,54 +2,65 @@
 
 <%- include('../includes/navbar'); -%>
 
-
+<!-- Parallax -->
 <div id="main-parallax">
   <div style="border-top: solid 1px #FFFFFF;"></div>
-    <div class="mid_couv">
-      <h1 class="couv">Bienvenue</h1>
-      <h2 class="sub_couv">dans le <span class="has-text-primary">lubéron</span></h2>
+    <div class="columns has-text-centered">
+      <div class="column is-half-touch is-offset-one-quarter-touch is-4-desktop is-offset-4-desktop is-2 is-offset-5">
+        <div class="box" id="title_box">
+          <div class="box-content">
+            <h1 class="title is-size-1">Bienvenue</h1>
+            <h2 class="subtitle is-size-3">dans le <span class="has-text-primary">lubéron</span></h2>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
 
-<section class="hero has-text-centered margin-top-1">
-  <div class="hero-body">
-    <div class="container">
-      <h1 class="title">
-        Le camping
-      </h1>
-      <h2 class="subtitle">
-        en quelques chiffres
-      </h2>
+
+<!-- Quelques chiffres -->
+<section>
+  <div class="hero has-text-centered margin-top-1">
+    <div class="hero-body">
+      <div class="container">
+        <h3 class="title is-2">Le camping</h3>
+        <h4 class="subtitle is-5">en quelques chiffres</h4>
+      </div>
+    </div>
+  </div>
+  <div class="container">
+    <div class="level">
+      <div class="level-item has-text-centered">
+        <div>
+          <p class="heading">Emplacements</p>
+          <p class="title has-text-primary is-2">36</p>
+        </div>
+      </div>
+      <div class="level-item has-text-centered">
+        <div>
+          <p class="heading">Chalêts</p>
+          <p class="title has-text-primary is-2">13</p>
+        </div>
+      </div>
+      <div class="level-item has-text-centered">
+        <div>
+          <p class="heading">Suites luxe</p>
+          <p class="title has-text-primary is-2">2</p>
+        </div>
+      </div>
+      <div class="level-item has-text-centered">
+        <div>
+          <p class="heading">Infrastructures</p>
+          <p class="title has-text-primary is-2">7</p>
+        </div>
+      </div>
     </div>
   </div>
 </section>
 
-<div class="level">
-  <div class="level-item has-text-centered">
-    <div>
-      <p class="heading">Emplacements</p>
-      <p class="title has-text-primary">36</p>
-    </div>
-  </div>
-  <div class="level-item has-text-centered">
-    <div>
-      <p class="heading">Chalêts</p>
-      <p class="title has-text-primary">13</p>
-    </div>
-  </div>
-  <div class="level-item has-text-centered">
-    <div>
-      <p class="heading">Suites luxe</p>
-      <p class="title has-text-primary">2</p>
-    </div>
-  </div>
-  <div class="level-item has-text-centered">
-    <div>
-      <p class="heading">Infrastructures</p>
-      <p class="title has-text-primary">7</p>
-    </div>
-  </div>
-</div>
+<section class="margin-top-1 has-text-centered">
+  <p>Others</p>
+</section>
 
 <%- include('../includes/footer'); -%>
