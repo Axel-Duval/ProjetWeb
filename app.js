@@ -39,7 +39,7 @@ app.use((req, res, next) =>  {
 // Handling errors (send them to the client)
 app.use((err, req, res, next) => {
     res.status(err.status || 500)
-    res.render('includes/error404.ejs')
+    res.render('includes/errors.ejs',{title : "CDS | Page not found", status : 404, text : 'Le site configuré à cette adresse ne contient pas la ressource demandée', sub_text : "Assurez-vous que le nom et la casse correspond bien à l'URI souhaité.", code : "Page non trouvée"})
 })
 
 module.exports = router

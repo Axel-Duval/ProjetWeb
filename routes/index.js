@@ -39,4 +39,7 @@ router.post('/inscription', index_controller.index_inscription_post);
 // GET request to get tarifs
 router.get('/tarifs', index_controller.index_tarifs_get);
 
+// GET request to deconnect
+router.get('/deconnexion', index_controller.index_deconnexion_get);
+
 module.exports = router;

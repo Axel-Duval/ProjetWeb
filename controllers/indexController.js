@@ -58,3 +58,8 @@ exports.index_inscription_post = function(req, res) {
 exports.index_tarifs_get = function(req, res) {
     res.render('index/tarifs',{title : "CDS | tarifs"})
 };
+
+// Disconnect user GET
+exports.index_deconnexion_get = function(req, res) {
+    res.redirect('/')
+};
