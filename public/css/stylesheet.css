@@ -1,10 +1,10 @@
-@media screen and (min-width: 200px) and (max-width: 800px) {
+@media screen and (min-width: 100px) and (max-width: 800px) {
     #main-parallax {
         /* The image used */
         background-image: url("/img/camp3.jpg");
       
         /* Set a specific height */
-        height: 50vh;
+        height: 100vh;
         width: auto;
       
         /* Create the parallax scrolling effect */
@@ -15,7 +15,7 @@
     }
     
     #title_box{
-        margin-top: 20vh;
+        margin-top: 40vh;
     }
     
 }
