@@ -6,19 +6,19 @@ var index_controller = require('../controllers/indexController');
 
 /// index ROUTES ///
 
-// GET index home page.
+// GET page principale
 router.get('/', index_controller.index);
 
-// GET index home page.
+// GET a propos
 router.get('/a_propos', index_controller.index_a_propos);
 
-// GET index home page.
+// GET contact
 router.get('/contact', index_controller.index_contact);
 
-// GET index home page.
+// GET notre equipe
 router.get('/notre_equipe', index_controller.index_notre_equipe);
 
-// GET index home page.
+// GET reservation
 router.get('/reservation', index_controller.index_reservation);
 
 // GET mentions legales
@@ -38,8 +38,5 @@ router.post('/inscription', index_controller.index_inscription_post);
 
 // GET request to get tarifs
 router.get('/tarifs', index_controller.index_tarifs_get);
-
-// POST request to ...
-router.post('/tarifs', index_controller.index_tarifs_post);
 
 module.exports = router;

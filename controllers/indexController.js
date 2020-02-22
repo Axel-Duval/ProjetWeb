@@ -1,61 +1,60 @@
 var Index = require('../models/index');
+var ft = require("../functions");
+var constants = require("../constants");
 
-// Display list of all campeur.
+// Display page principale
 exports.index = function(req, res) {
-    res.render('index.ejs',{title : "Camping des sources"})
+    res.render('index/index',{title : "Camping des sources"})
 };
 
-// Display list of all campeur.
+// Display a propos
 exports.index_a_propos = function(req, res) {
     res.send('NOT IMPLEMENTED: a propos');
 };
 
-// Display list of all campeur.
+// Display reservation
 exports.index_reservation = function(req, res) {
     res.send('NOT IMPLEMENTED: reservation');
 };
 
-// Display list of all campeur.
+// Display notre equipe
 exports.index_notre_equipe = function(req, res) {
     res.send('NOT IMPLEMENTED: notre equipe');
 };
 
-// Display list of all campeur.
+// Display contact
 exports.index_contact = function(req, res) {
     res.send('NOT IMPLEMENTED: contact');
 };
 
-// Display list of all campeur.
+// Display mentions legales
 exports.index_mentions_legales = function(req, res) {
     res.send('NOT IMPLEMENTED: mentions legales');
 };
 
-// Display campeur create form on GET.
+// Display connexion GET
 exports.index_connexion_get = function(req, res) {
-    res.send('NOT IMPLEMENTED: get page connexion');
+    var flash = ft.getFlash(req)
+    ft.setFlash(res,'success','bravo')
+    res.render('index/connexion',{title : "CDS | Connexion",flash})
 };
 
-// Handle campeur create on POST.
+// Handle connexion POST
 exports.index_connexion_post = function(req, res) {
     res.send('NOT IMPLEMENTED: post page connexion');
 };
 
-// Display campeur delete form on GET.
+// Display inscription GET
 exports.index_inscription_get = function(req, res) {
     res.send('NOT IMPLEMENTED: get page inscription');
 };
 
-// Handle campeur delete on POST.
+// Handle inscription POST
 exports.index_inscription_post = function(req, res) {
     res.send('NOT IMPLEMENTED: post page inscription');
 };
 
-// Display campeur update form on GET.
+// Display tarifs GET
 exports.index_tarifs_get = function(req, res) {
-    res.send('NOT IMPLEMENTED: get page tarifs');
-};
-
-// Handle campeur update on POST.
-exports.index_tarifs_post = function(req, res) {
-    res.send('NOT IMPLEMENTED:post page tarifs');
+    res.render('index/tarifs',{title : "CDS | tarifs"})
 };

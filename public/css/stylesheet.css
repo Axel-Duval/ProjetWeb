@@ -56,6 +56,16 @@
     .margin-top-3{
         margin-top: 15vh;
     }
+
+    .margin-form{
+        margin-top: 1vh;
+        margin-bottom: 1vh;
+    }
+
+    .margin-button{
+        margin-top: 3vh;
+        margin-bottom: 1vh;
+    }
 }
 
 @media screen and (min-height: 801px){
@@ -69,6 +79,16 @@
     
     .margin-top-3{
         margin-top: 30vh;
+    }
+
+    .margin-form{
+        margin-top: 2vh;
+        margin-bottom: 2vh;
+    }
+
+    .margin-button{
+        margin-top: 6vh;
+        margin-bottom: 1vh;
     }
 }
 
