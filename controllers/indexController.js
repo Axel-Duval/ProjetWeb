@@ -190,7 +190,7 @@ exports.index_deconnexion_get = function(req, res) {
 
 // Display a propos
 exports.index_a_propos = function(req, res) {
-    res.send('NOT IMPLEMENTED: a propos');
+    res.render('index/a_propos',{title : "CDS | A propos"})
 };
 
 // Display reservation
@@ -205,7 +205,7 @@ exports.index_notre_equipe = function(req, res) {
 
 // Display contact
 exports.index_contact = function(req, res) {
-    res.send('NOT IMPLEMENTED: contact');
+    res.render('index/contact',{title : "CDS | Contact"})
 };
 
 // Display mentions legales
