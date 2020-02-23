@@ -48,7 +48,7 @@ exports.isEmail = function(req,res){
         }
     }
     else{
-        setFlash(res,'danger',"Veuillez renseigner votre adresse mail")
+        exports.setFlash(res,'danger',"Veuillez renseigner votre adresse mail")
         return false
     }
 }
@@ -64,7 +64,71 @@ exports.isPswd = function(req,res){
         }
     }
     else{
-        setFlash(res,'danger',"Veuillez renseigner votre mot de passe")
+        exports.setFlash(res,'danger',"Veuillez renseigner votre mot de passe")
+        return false
+    }
+}
+
+exports.isNom = function(req,res){
+    if(req.body.nom){
+        if(req.body.nom.length > 1){
+            return true
+        }
+        else{
+            exports.setFlash(res,'danger',"Ce nom n'est pas assez long")
+            return false
+        }
+    }
+    else{
+        exports.setFlash(res,'danger',"Veuillez renseigner votre nom")
+        return false
+    }
+}
+
+exports.isPrenom = function(req,res){
+    if(req.body.nom){
+        if(req.body.prenom.length > 1){
+            return true
+        }
+        else{
+            exports.setFlash(res,'danger',"Ce prénom n'est pas assez long")
+            return false
+        }
+    }
+    else{
+        exports.setFlash(res,'danger',"Veuillez renseigner votre prénom")
+        return false
+    }
+}
+
+exports.isTelephone = function(req,res){
+    if(req.body.telephone){
+        if(req.body.telephone.length == 14){
+            return true
+        }
+        else{
+            exports.setFlash(res,'danger',"Ce numéro de téléphone n'est pas valide")
+            return false
+        }
+    }
+    else{
+        exports.setFlash(res,'danger',"Veuillez renseigner votre numéro de téléphone")
+        return false
+    }
+}
+
+exports.isConfirmPassword = function(req,res){
+    if(req.body.confirm_password && req.body.password){
+        if(req.body.confirm_password == req.body.password){
+            return true
+        }
+        else{
+            exports.setFlash(res,'danger',"Les mots de passe ne correspondent pas")
+            return false
+        }
+    }
+    else{
+        exports.setFlash(res,'danger',"Les mots de passe ne correspondent pas")
         return false
     }
 }

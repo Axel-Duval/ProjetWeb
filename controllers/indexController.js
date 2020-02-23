@@ -38,8 +38,8 @@ exports.index_connexion_get = function(req, res) {
 
 // Handle connexion POST
 exports.index_connexion_post = function(req, res) {
-    var isEmail = ft.isEmail(req,res)
-    var isPassword = ft.isPswd(req,res)
+    const isEmail = ft.isEmail(req,res)
+    const isPassword = ft.isPswd(req,res)
     if(isEmail && isPassword){
         const mailS = req.sanitize(req.body.email)
         const passwordS = req.sanitize(req.body.password)
@@ -114,18 +114,67 @@ exports.index_connexion_post = function(req, res) {
     else{
         res.redirect('/connexion')
     }    
-};
+}
 
 // Display inscription GET
 exports.index_inscription_get = function(req, res) {
     const flash = ft.getFlash(req)
     res.render('index/inscription',{title : "CDS | Inscription",flash})
-};
+}
 
 // Handle inscription POST
 exports.index_inscription_post = function(req, res) {
-    res.send('NOT IMPLEMENTED: post page inscription');
-};
+    const isEmail = ft.isEmail(req,res)
+    const isPassword = ft.isPswd(req,res)
+    const isNom = ft.isNom(req,res)
+    const isPrenom = ft.isPrenom(req,res)
+    const isTelephone = ft.isTelephone(req,res)
+    const isConfirmPassword = ft.isConfirmPassword(req,res)
+    console.log(isEmail)
+    console.log(isPrenom)
+    console.log(isPassword)
+    console.log(isNom)
+    console.log(isTelephone)
+    console.log(isConfirmPassword)
+    
+    if(isEmail && isPassword && isNom && isPrenom && isTelephone && isConfirmPassword){
+        const mailS = req.sanitize(req.body.email)
+        const passwordS = req.sanitize(req.body.password)
+        const nomS = req.sanitize(req.body.nom)
+        const prenomS = req.sanitize(req.body.prenom)
+        const telephoneS = req.sanitize(req.body.telephone)
+        db.query("SELECT id FROM campeurs WHERE mail=?",[mailS], (err,rows) =>{
+            if(err){
+                ft.setFlash(res,'warning',"Problème de connexion avec la base de donnée")
+                res.redirect('/inscription')
+            }
+            else{
+                if(rows[0]){
+                    ft.setFlash(res,'danger',"Désolé, cet email est déjà pris")
+                    res.redirect('/inscription')
+                }
+                else{
+                    const hashPassword = bcrypt.hashSync(passwordS,10)
+                    console.log(hashPassword)
+                    db.query("INSERT INTO campeurs(nom, prenom, mail, telephone, password) VALUES (?,?,?,?,?)",[nomS,prenomS,mailS,telephoneS,hashPassword],(err,rows) =>{
+                        if(err){
+                            ft.setFlash(res,'warning',"Problème de connexion avec la base de donnée")
+                            res.redirect('/inscription')
+                        }
+                        else{
+                            //Success creating campeur
+                            ft.setFlash(res,'success',"Votre compte viens d'être créer")
+                            res.redirect('/connexion')
+                        }
+                    })
+                }
+            }
+        })
+    }
+    else{
+        res.redirect('/inscription')
+    }
+}
 
 // Display tarifs GET
 exports.index_tarifs_get = function(req, res) {
