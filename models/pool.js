@@ -1,19 +1,18 @@
 const mysql = require('mysql')
-/**
- * Connection to the database.
- *  */
+const constants = require("../constants")
+
+
 const pool = mysql.createPool({
-    connectionLimit: 10,
-    host: 'localhost',
-    user: 'root',
-    password: '',
-    database: 'camping'
+    connectionLimit: constants.DB_LIMIT,
+    host: constants.DB_HOST,
+    user: constants.DB_USER,
+    password: constants.DB_PSWD,
+    database: constants.DB_NAME
 })
 
 pool.getConnection((err, connection) => {
     if(err) 
-        console.error("Something went wrong connecting to the database ...")
-    
+        console.error("Something went wrong connecting to the database ...")    
     if(connection)
         connection.release()
     return;

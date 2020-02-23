@@ -1,31 +1,29 @@
-var Campeur = require('../models/campeur');
-var ft = require("../functions");
-var constants = require("../constants");
+const Campeur = require('../models/campeur')
+const ft = require("../functions")
+const constants = require("../constants")
+const jwt = require('jsonwebtoken')
 
-// Check if it auth
-exports.isAuth = function(req, res, next) {
-    if(1 == 0){//Check if it auth
-        //OK
-        next()
-    }
-    else{
-        //401 - UNAUTHORIZED
-        res.statusCode = 401;
-        res.render('includes/errors.ejs',{title : "CDS | Unauthorized", status : 401, text : "Vous devez vous connecter pour accéder à cette ressource", code : "Non autorisé"})
-    }
-};
 
 // Check if it's a campeur
 exports.isCampeur = function(req, res, next) {
-    if(1 == 0){//Check if it's a campeur
-        //OK
-        next()
-    }
-    else{
-        //403 - FORBIDDEN
-        res.statusCode = 403
-        res.render('includes/errors.ejs',{title : "CDS | Forbidden", status : 403, text : "Vous n'avez pas les droits pour accéder à cette ressource", code : "Accès interdit"})
-    }
+    var token = ft.getToken(req)
+    jwt.verify(token,constants.SECRET_KEY,(err,auth)=>{
+        if(err){
+            //401 - UNAUTHORIZED
+            res.statusCode = 401;
+            res.render('includes/errors.ejs',{title : "CDS | Unauthorized", status : 401, text : "Vous devez vous connecter pour accéder à cette ressource", code : "Non autorisé"})
+        }
+        else{
+            if(auth.mail){
+                next()
+            }
+            else{
+                //403 - FORBIDDEN
+                res.statusCode = 403
+                res.render('includes/errors.ejs',{title : "CDS | Forbidden", status : 403, text : "Vous n'avez pas les droits pour accéder à cette ressource", code : "Accès interdit"})
+            }
+        }
+    })
 };
 
 // Display list of all campeur.
