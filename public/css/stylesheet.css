@@ -92,3 +92,10 @@
     }
 }
 
+.ovhi{
+    overflow: hidden;
+}
+
+.pad{
+    padding-bottom: 10px;
+}
