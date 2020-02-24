@@ -1,0 +1,36 @@
+<%- include('../includes/header'); -%>
+
+<%- include('../includes/navbar'); -%>
+
+<section>
+    <form method="get" class="field is-horizontal-desktop" action="/reservation">
+        <div class="columns is-desktop is-centered has-text-centered margin-top-1">    
+            <div class="column is-narrow is-4-touch is-offset-4-touch">
+                <h2 class="has-text-weight-semibold">Arrivée</h2>
+                <input class="input is-small is-rounded" type="date" name="arrivee" id="arrivee">
+            </div>
+            <div class="column is-narrow is-4-touch is-offset-4-touch">
+                <h2 class="has-text-weight-semibold">Départ</h2>
+                <input class="input is-small is-rounded" type="date" name="depart" id="depart">
+            </div>
+            <div class="column is-narrow">
+                <h2 class="has-text-weight-semibold">Hébergement</h2>        
+                <div class="select is-small is-rounded">
+                    <select name="type" id="type">
+                        <option value="">-</option>
+                        <option value="tente">Emplacement tente</option>
+                        <option value="caravane">Emplacement caravane</option>
+                        <option value="chalet">Châlet</option>
+                        <option value="suite">Suite de luxe</option>
+                    </select>
+                </div>
+            </div>
+            <div class="column is-narrow">
+                <h2 class="has-text-weight-semibold">Valider</h2>
+                <button type="submit" class="button is-primary is-small is-rounded">Rechercher</button>
+            </div>
+        </div>
+    </form>
+</section>
+
+<%- include('../includes/footer'); -%>

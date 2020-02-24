@@ -10,8 +10,8 @@ const Sanitizer = require('express-sanitizer')
 
 // Display page principale
 exports.index = function(req, res) {
-    res.render('index/index',{title : "Camping des sources"})
-};
+    res.render('index/index',{title : "CDS | Accueil"})
+}
 
 // Display connexion GET
 exports.index_connexion_get = function(req, res) {
@@ -34,7 +34,7 @@ exports.index_connexion_get = function(req, res) {
             }
         }
     })    
-};
+}
 
 // Handle connexion POST
 exports.index_connexion_post = function(req, res) {
@@ -179,36 +179,36 @@ exports.index_inscription_post = function(req, res) {
 // Display tarifs GET
 exports.index_tarifs_get = function(req, res) {
     res.render('index/tarifs',{title : "CDS | tarifs"})
-};
+}
 
 // Disconnect user GET
 exports.index_deconnexion_get = function(req, res) {
     ft.clearToken(res)
     ft.clearFlash(res)
     res.redirect('/')
-};
+}
 
 // Display a propos
 exports.index_a_propos = function(req, res) {
     res.render('index/a_propos',{title : "CDS | A propos"})
-};
-
-// Display reservation
-exports.index_reservation = function(req, res) {
-    res.send('NOT IMPLEMENTED: reservation');
-};
+}
 
 // Display notre equipe
 exports.index_notre_equipe = function(req, res) {
-    res.send('NOT IMPLEMENTED: notre equipe');
-};
+    res.render('index/notre_equipe',{title : "CDS | Notre équipe"})
+}
 
 // Display contact
 exports.index_contact = function(req, res) {
     res.render('index/contact',{title : "CDS | Contact"})
-};
+}
 
 // Display mentions legales
 exports.index_mentions_legales = function(req, res) {
-    res.send('NOT IMPLEMENTED: mentions legales');
-};
+    res.render('index/mentions_legales',{title : "CDS | Mentions légales"})
+}
+
+// Display reservation
+exports.index_reservation = function(req, res) {
+    res.render('index/reservation',{title : "CDS | Réservation"})
+}
