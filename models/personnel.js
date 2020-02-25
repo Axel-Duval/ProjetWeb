@@ -1,29 +1,73 @@
-function Personnel (params) {
-    this.id = params.id
-    this.identifiant = params.identifiant
-    this.estManager = params.estManager
-    this.dateCreation = params.dateCreation
-    this.password = params.password
-}
-  
-Personnel.prototype.getId = function() {
-    return this.id
+const db = require('./pool')
+const jwt = require('jsonwebtoken')
+const constants = require("../constants")
+
+const personnel = {
+
+    findPersonnelById : async (id)=>{
+        return new Promise((resolve, reject) => {
+            db.query("SELECT * FROM personnel WHERE id=?", [id], (err,rows)=>{
+                if (err) {
+                    reject(err)
+                }
+                else{
+                    resolve(rows)
+                }
+            })
+        })
+    },
+
+    deletePersonnelById : async (id)=>{
+        return new Promise((resolve, reject) => {
+            db.query("DELETE FROM personnel WHERE id=?", [id], (err,rows)=>{
+                if (err) {
+                    reject(err)
+                }
+                else{
+                    resolve(rows)
+                }
+            })
+        })
+    },
+
+    findPersonnelByIdentifiant : async (identifiant)=>{
+        return new Promise((resolve, reject) => {
+            db.query("SELECT * FROM personnel WHERE identifiant=?", [identifiant], (err,rows)=>{
+                if (err) {
+                    reject(err)
+                }
+                else{
+                    resolve(rows)
+                }
+            })
+        })
+    },
+
+    createPersonnel : async (identifiant,estManager,password)=>{
+        return new Promise((resolve, reject) => {
+            db.query("INSERT INTO personnel(identifiant, estManager, password) VALUES (?,?,?)", [identifiant,estManager,password], (err,rows)=>{
+                if (err) {
+                    reject(err)
+                }
+                else{
+                    resolve(rows)
+                }
+            })
+        })
+    },
+
+    findAllPersonnel : async ()=>{
+        return new Promise((resolve, reject) => {
+            db.query("SELECT * FROM personnel WHERE estManager=0", (err,rows)=>{
+                if (err) {
+                    reject(err)
+                }
+                else{
+                    resolve(rows)
+                }
+            })
+        })
+    }
 }
 
-Personnel.prototype.getIdentifiant = function() {
-    return this.identifiant
-}
-
-Personnel.prototype.getestManager = function() {
-    return this.estManager
-}
-
-Personnel.prototype.getDateCreation = function() {
-    return this.dateCreation
-}
-
-Personnel.prototype.getPassword = function() {
-    return this.password
-}
-  
-module.exports = Personnel
+module.exports = personnel;

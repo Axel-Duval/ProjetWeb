@@ -1,59 +1,47 @@
 const db = require('./pool')
+const jwt = require('jsonwebtoken')
+const constants = require("../constants")
 
-function Campeur (params) {
-    this.id = params.id
-    this.nom = params.nom
-    this.prenom = params.prenom
-    this.mail = params.mail
-    this.dateCreation = params.dateCreation
-    this.token = params.token
-    this.password = params.password
-    this.telephone = params.telephone
-}
-  
-Campeur.prototype.getId = function() {
-    return this.id
-}
+const campeur = {
 
-Campeur.prototype.getNom = function() {
-    return this.nom
-}
-
-Campeur.prototype.getPrenom = function() {
-    return this.prenom
-}
-
-Campeur.prototype.getMail = function() {
-    return this.mail
-}
-
-Campeur.prototype.getDateCreation = function() {
-    return this.dateCreation
-}
-
-Campeur.prototype.getToken = function() {
-    return this.token
-}
-
-Campeur.prototype.getPassword = function() {
-    return this.password
-}
-
-Campeur.prototype.getTelephone = function() {
-    return this.telephone
-}
-
-Campeur.prototype.getUserById = async (id)=>{
-    return new Promise((res, rej)=>{
-        db.query("SELECT * FROM campeurs WHERE id=?",[id],(err,rows)=>{
-            if(err){
-                rej(err)
-            }
-            else{
-                res(rows)
-            }
+    findCampeurById : async (id)=>{
+        return new Promise((resolve, reject) => {
+            db.query("SELECT * FROM campeurs WHERE id=?", [id], (err,rows)=>{
+                if (err) {
+                    reject(err)
+                }
+                else{
+                    resolve(rows)
+                }
+            })
         })
-    })
+    },
+
+    findCampeurByEmail : async (email)=>{
+        return new Promise((resolve, reject) => {
+            db.query("SELECT * FROM campeurs WHERE mail=?", [email], (err,rows)=>{
+                if (err) {
+                    reject(err)
+                }
+                else{
+                    resolve(rows)
+                }
+            })
+        })
+    },
+
+    createCampeur : async (nom,prenom,mail,telephone,password)=>{
+        return new Promise((resolve, reject) => {
+            db.query("INSERT INTO campeurs(nom, prenom, mail, telephone, password) VALUES (?,?,?,?,?)", [nom,prenom,mail,telephone,password], (err,rows)=>{
+                if (err) {
+                    reject(err)
+                }
+                else{
+                    resolve(rows)
+                }
+            })
+        })
+    },
 }
-  
-module.exports = Campeur
+
+module.exports = campeur;

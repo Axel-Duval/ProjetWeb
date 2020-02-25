@@ -4,20 +4,7 @@ const constants = require("../constants")
 
 const index = {
 
-    findCampeurById : async (id)=>{
-        return new Promise((resolve, reject) => {
-            db.query("SELECT * FROM campeurs WHERE id=?", [id], (err,rows)=>{
-                if (err) {
-                    reject(err)
-                }
-                else{
-                    resolve(rows)
-                }
-            })
-        })
-    },
-
-    verifyUser : async (token)=>{
+    verifyToken : async (token)=>{
         return new Promise((resolve, reject) => {
             jwt.verify(token,constants.SECRET_KEY,(err,auth)=>{
                 if(err){
@@ -25,19 +12,6 @@ const index = {
                 }
                 else{
                     resolve(auth)
-                }
-            })
-        })
-    },
-
-    findCampeurByEmail : async (email)=>{
-        return new Promise((resolve, reject) => {
-            db.query("SELECT * FROM campeurs WHERE mail=?", [email], (err,rows)=>{
-                if (err) {
-                    reject(err)
-                }
-                else{
-                    resolve(rows)
                 }
             })
         })
@@ -58,19 +32,6 @@ const index = {
 
     createToken : (params)=>{
         return jwt.sign(params,constants.SECRET_KEY,{expiresIn: '5h'})
-    },
-
-    createCampeur : async (nom,prenom,mail,telephone,password)=>{
-        return new Promise((resolve, reject) => {
-            db.query("INSERT INTO campeurs(nom, prenom, mail, telephone, password) VALUES (?,?,?,?,?)", [nom,prenom,mail,telephone,password], (err,rows)=>{
-                if (err) {
-                    reject(err)
-                }
-                else{
-                    resolve(rows)
-                }
-            })
-        })
     },
 
     findReservPossibleTent : async (arr,dep)=>{

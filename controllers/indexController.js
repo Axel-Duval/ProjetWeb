@@ -3,6 +3,7 @@ const constants = require("../constants");
 const bcrypt = require('bcryptjs')
 const Sanitizer = require('express-sanitizer')
 const index = require('../models/index')
+const campeur = require('../models/campeur')
 
 
 
@@ -18,7 +19,7 @@ exports.index_connexion_get = async (req, res)=>{
     const token = ft.getToken(req)
     if(token){
         try{
-            const verified = await index.verifyUser(token)
+            const verified = await index.verifyToken(token)
             if(verified.estManager){
                 verified.estManager == 0 ? res.redirect('/personnel') : res.redirect('/manager')
             }
@@ -50,7 +51,7 @@ exports.index_connexion_post = async (req, res)=>{
         const passwordS = req.sanitize(req.body.password)
         //Check in database if there is a campeur with this email
         try{
-            const rows = await index.findCampeurByEmail(mailS)
+            const rows = await campeur.findCampeurByEmail(mailS)
             //If it is a campeur
             if(rows[0]){
 
@@ -146,7 +147,7 @@ exports.index_inscription_post = async (req, res)=>{
         const prenomS = req.sanitize(req.body.prenom)
         const telephoneS = req.sanitize(req.body.telephone)
         try{
-            const rows = await index.findCampeurByEmail(mailS)
+            const rows = await campeur.findCampeurByEmail(mailS)
             if(rows[0]){
                 ft.setFlash(res,'danger',"Désolé, cet email est déjà pris")
                 res.redirect('/inscription')
@@ -154,7 +155,7 @@ exports.index_inscription_post = async (req, res)=>{
             else{
                 const hashPassword = bcrypt.hashSync(passwordS,10)
                 try{
-                    const created = await index.createCampeur(nomS,prenomS,mailS,telephoneS,hashPassword)
+                    const created = await campeur.createCampeur(nomS,prenomS,mailS,telephoneS,hashPassword)
                     ft.setFlash(res,'success',"Votre compte viens d'être créer")
                     res.redirect('/connexion')
                 }
