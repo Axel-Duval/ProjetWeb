@@ -66,6 +66,10 @@
         margin-top: 3vh;
         margin-bottom: 1vh;
     }
+
+    .margin-bottom-1{
+        margin-bottom: 5vh;
+    }
 }
 
 @media screen and (min-height: 801px){
@@ -89,6 +93,9 @@
     .margin-button{
         margin-top: 6vh;
         margin-bottom: 1vh;
+    }
+    .margin-bottom-1{
+        margin-bottom: 10vh;
     }
 }
 

@@ -1,115 +1,121 @@
-const db = require('../models/pool');
 const ft = require("../functions");
 const constants = require("../constants");
-const jwt = require('jsonwebtoken')
 const bcrypt = require('bcryptjs')
 const Sanitizer = require('express-sanitizer')
+const index = require('../models/index')
 
 
 
 
 // Display page principale
-exports.index = function(req, res) {
+exports.index = (req, res)=>{
     res.render('index/index',{title : "CDS | Accueil"})
 }
 
 // Display connexion GET
-exports.index_connexion_get = function(req, res) {
+exports.index_connexion_get = async (req, res)=>{
+    const flash = ft.getFlash(req)
     const token = ft.getToken(req)
-    jwt.verify(token,constants.SECRET_KEY,(err,auth)=>{
-        if(err){
-            const flash = ft.getFlash(req)
-            res.render('index/connexion',{title : "CDS | Connexion",flash})
-        }
-        else{
-            //What kind of user ?
-            if(auth.estManager){
-                res.redirect('/manager')
-            }
-            else if(auth.identifiant && !auth.estManager){
-                res.redirect('/personnel')
+    if(token){
+        try{
+            const verified = await index.verifyUser(token)
+            if(verified.estManager){
+                verified.estManager == 0 ? res.redirect('/personnel') : res.redirect('/manager')
             }
             else{
                 res.redirect('/campeur')
             }
         }
-    })    
+        catch{
+            res.render('index/connexion',{title : "CDS | Connexion",flash})
+        }
+        
+        
+    }
+    else{
+        res.render('index/connexion',{title : "CDS | Connexion",flash})
+    }    
 }
 
 // Handle connexion POST
-exports.index_connexion_post = function(req, res) {
+exports.index_connexion_post = async (req, res)=>{
+    //Get email and password from POST
     const isEmail = ft.isEmail(req,res)
     const isPassword = ft.isPswd(req,res)
+
+    //If there is an email & password
     if(isEmail && isPassword){
+        //Sanitize all the stuff
         const mailS = req.sanitize(req.body.email)
         const passwordS = req.sanitize(req.body.password)
-        db.query("SELECT id,nom,prenom,mail,password FROM campeurs WHERE mail=?",[mailS], (err,rows) =>{
-            if(err){
-                ft.setFlash(res,'warning',"Problème de connexion avec la base de donnée")
-                res.redirect('/connexion')
+        //Check in database if there is a campeur with this email
+        try{
+            const rows = await index.findCampeurByEmail(mailS)
+            //If it is a campeur
+            if(rows[0]){
+
+                //If the password is good
+                if(bcrypt.compareSync(passwordS, rows[0].password)){
+                    //CREATE JSON WEB-TOKEN
+                    const user = {
+                        id : rows[0].id,
+                        nom : rows[0].nom,
+                        prenom : rows[0].prenom,
+                        mail : rows[0].mail
+                    }
+                    const token = index.createToken(user)
+                    ft.setToken(res,token)
+                    res.redirect('/connexion')
+                    
+                }
+                //Invalid password
+                else{
+                    ft.setFlash(res,'danger',"Connexion invalide")
+                    res.redirect('/connexion')
+                }
             }
             else{
-                if(rows[0]){
-
-                    if(bcrypt.compareSync(passwordS, rows[0].password)){
-                        //CREATE JSON WEB-TOKEN
-                        const user = {
-                            id : rows[0].id,
-                            nom : rows[0].nom,
-                            prenom : rows[0].prenom,
-                            mail : rows[0].mail
+                //Need to check in the personnel
+                try{
+                    const rows = await index.findPersonnelByEmail(mailS)
+                    //If it is a personnel
+                    if(rows[0]){
+                        //If the password is good
+                        if(bcrypt.compareSync(passwordS, rows[0].password)){
+                            //CREATE JSON WEB-TOKEN
+                            const user = {
+                                id : rows[0].id,
+                                identifiant : rows[0].identifiant,
+                                estManager : rows[0].estManager
+                            }
+                            const token = index.createToken(user)
+                            ft.setToken(res,token)
+                            res.redirect('/connexion')
+                            
                         }
-
-                        const token = jwt.sign(user,constants.SECRET_KEY,{expiresIn: '5h'})
-                        ft.setToken(res,token)
-                        res.redirect('/connexion')
-                        
-                    }
-                    else{
                         //Invalid password
+                        else{
+                            ft.setFlash(res,'danger',"Connexion invalide")
+                            res.redirect('/connexion')
+                        }
+                    }
+                    //Not in database
+                    else{
                         ft.setFlash(res,'danger',"Connexion invalide")
                         res.redirect('/connexion')
                     }
-
                 }
-                else{
-                    //Is not a campeur
-                    db.query("SELECT id,identifiant,estManager,password FROM personnel WHERE identifiant=?",[mailS], (err,rows) =>{
-                        if(err){
-                            ft.setFlash(res,'warning',"Problème de connexion avec la base de donnée")
-                            res.redirect('/connexion')
-                        }
-                        else{
-                            if(rows[0]){
-                                //Is personnel or manager
-                                if(bcrypt.compareSync(passwordS, rows[0].password)){    
-                                    //CREATE LE JSON WEB-TOKEN
-                                    const user = {
-                                        id : rows[0].id,
-                                        identifiant : rows[0].identifiant,
-                                        estManager : rows[0].estManager
-                                    }
-
-                                    const token = jwt.sign(user,constants.SECRET_KEY,{expiresIn: '5h'})
-                                    ft.setToken(res,token)
-                                    res.redirect('/connexion')
-                                }
-                                else{
-                                    //Invalid password
-                                    ft.setFlash(res,'danger',"Connexion invalide")
-                                    res.redirect('/connexion')
-                                }
-                            }
-                            else{
-                                //Don't know this person
-                                ft.setFlash(res,'danger',"Connexion invalide")
-                                res.redirect('/connexion')
-                            }
-                        }
-                    })
+                catch{
+                    ft.setFlash(res,'warning',"Problème de connexion avec la base de donnée")
+                    res.redirect('/connexion')
                 }
             }
-        })
+        }
+        //Error from database
+        catch{
+            ft.setFlash(res,'warning',"Problème de connexion avec la base de donnée")
+            res.redirect('/connexion')
+        }
     }
     else{
         res.redirect('/connexion')
@@ -117,59 +123,51 @@ exports.index_connexion_post = function(req, res) {
 }
 
 // Display inscription GET
-exports.index_inscription_get = function(req, res) {
+exports.index_inscription_get = (req, res)=>{
     const flash = ft.getFlash(req)
     res.render('index/inscription',{title : "CDS | Inscription",flash})
 }
 
 // Handle inscription POST
-exports.index_inscription_post = function(req, res) {
+exports.index_inscription_post = async (req, res)=>{
+    //Get data from POST
     const isEmail = ft.isEmail(req,res)
     const isPassword = ft.isPswd(req,res)
     const isNom = ft.isNom(req,res)
     const isPrenom = ft.isPrenom(req,res)
     const isTelephone = ft.isTelephone(req,res)
     const isConfirmPassword = ft.isConfirmPassword(req,res)
-    console.log(isEmail)
-    console.log(isPrenom)
-    console.log(isPassword)
-    console.log(isNom)
-    console.log(isTelephone)
-    console.log(isConfirmPassword)
     
+    //If all the data is good
     if(isEmail && isPassword && isNom && isPrenom && isTelephone && isConfirmPassword){
         const mailS = req.sanitize(req.body.email)
         const passwordS = req.sanitize(req.body.password)
         const nomS = req.sanitize(req.body.nom)
         const prenomS = req.sanitize(req.body.prenom)
         const telephoneS = req.sanitize(req.body.telephone)
-        db.query("SELECT id FROM campeurs WHERE mail=?",[mailS], (err,rows) =>{
-            if(err){
-                ft.setFlash(res,'warning',"Problème de connexion avec la base de donnée")
+        try{
+            const rows = await index.findCampeurByEmail(mailS)
+            if(rows[0]){
+                ft.setFlash(res,'danger',"Désolé, cet email est déjà pris")
                 res.redirect('/inscription')
             }
             else{
-                if(rows[0]){
-                    ft.setFlash(res,'danger',"Désolé, cet email est déjà pris")
+                const hashPassword = bcrypt.hashSync(passwordS,10)
+                try{
+                    const created = await index.createCampeur(nomS,prenomS,mailS,telephoneS,hashPassword)
+                    ft.setFlash(res,'success',"Votre compte viens d'être créer")
+                    res.redirect('/connexion')
+                }
+                catch{
+                    ft.setFlash(res,'warning',"Problème de connexion avec la base de donnée")
                     res.redirect('/inscription')
                 }
-                else{
-                    const hashPassword = bcrypt.hashSync(passwordS,10)
-                    console.log(hashPassword)
-                    db.query("INSERT INTO campeurs(nom, prenom, mail, telephone, password) VALUES (?,?,?,?,?)",[nomS,prenomS,mailS,telephoneS,hashPassword],(err,rows) =>{
-                        if(err){
-                            ft.setFlash(res,'warning',"Problème de connexion avec la base de donnée")
-                            res.redirect('/inscription')
-                        }
-                        else{
-                            //Success creating campeur
-                            ft.setFlash(res,'success',"Votre compte viens d'être créer")
-                            res.redirect('/connexion')
-                        }
-                    })
-                }
             }
-        })
+        }
+        catch{
+            ft.setFlash(res,'warning',"Problème de connexion avec la base de donnée")
+            res.redirect('/inscription')
+        }
     }
     else{
         res.redirect('/inscription')
@@ -177,38 +175,89 @@ exports.index_inscription_post = function(req, res) {
 }
 
 // Display tarifs GET
-exports.index_tarifs_get = function(req, res) {
+exports.index_tarifs_get = (req, res)=>{
     res.render('index/tarifs',{title : "CDS | tarifs"})
 }
 
 // Disconnect user GET
-exports.index_deconnexion_get = function(req, res) {
+exports.index_deconnexion_get = (req, res)=>{
     ft.clearToken(res)
     ft.clearFlash(res)
     res.redirect('/')
 }
 
 // Display a propos
-exports.index_a_propos = function(req, res) {
+exports.index_a_propos = (req, res)=>{
     res.render('index/a_propos',{title : "CDS | A propos"})
 }
 
 // Display notre equipe
-exports.index_notre_equipe = function(req, res) {
+exports.index_notre_equipe = (req, res)=>{
     res.render('index/notre_equipe',{title : "CDS | Notre équipe"})
 }
 
 // Display contact
-exports.index_contact = function(req, res) {
+exports.index_contact = (req, res)=>{
     res.render('index/contact',{title : "CDS | Contact"})
 }
 
 // Display mentions legales
-exports.index_mentions_legales = function(req, res) {
+exports.index_mentions_legales = (req, res)=>{
     res.render('index/mentions_legales',{title : "CDS | Mentions légales"})
 }
 
 // Display reservation
-exports.index_reservation = function(req, res) {
-    res.render('index/reservation',{title : "CDS | Réservation"})
+exports.index_reservation = async (req, res)=>{
+    const flash = ft.getFlash(req)
+    const arr = req.query.arrivee
+    const dep = req.query.depart
+    const type = req.query.type
+
+    const arrV = ft.isValidDate(arr)
+    const depV = ft.isValidDate(dep)
+    const typeV = req.sanitize(type)
+
+    if(arrV && depV){
+        if(arr>dep){
+            ft.setFlash(res,'danger','Intervalle de temps non valide')
+            res.redirect('/reservation')
+        }
+        else{
+            if(typeV=='tente'){
+                try{
+                    const rows = await index.findReservPossibleTent(arrV,depV)
+                    res.render('index/reservation',{title : "CDS | Réservation",rows,arr,dep,type})
+                }
+                catch{
+                    ft.setFlash(res,'warning',"Problème de connexion avec la base de donnée")
+                    res.redirect('/reservation')
+                }
+            }
+            else if(typeV=='chalet' || typeV=='suite'){
+                const val = typeV == 'chalet' ? 0 : 1
+                try{
+                    const rows = await index.findReservPossibleChalet(val,arrV,depV)
+                    res.render('index/reservation',{title : "CDS | Réservation",rows,arr,dep,type})
+                }
+                catch{
+                    ft.setFlash(res,'warning',"Problème de connexion avec la base de donnée")
+                    res.redirect('/reservation')
+                }
+            }
+            else{
+                try{
+                    const rows = await index.findReservPossible(arrV,depV)
+                    res.render('index/reservation',{title : "CDS | Réservation",rows,arr,dep})
+                }
+                catch{
+                    ft.setFlash(res,'warning',"Problème de connexion avec la base de donnée")
+                    res.redirect('/reservation')
+                }
+            }
+        }
+    }
+    else{
+        const flash = ft.getFlash(req)
+        res.render('index/reservation',{title : "CDS | Réservation",flash})
+    }
 }

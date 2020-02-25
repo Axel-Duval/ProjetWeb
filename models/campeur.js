@@ -1,3 +1,5 @@
+const db = require('./pool')
+
 function Campeur (params) {
     this.id = params.id
     this.nom = params.nom
@@ -39,6 +41,19 @@ Campeur.prototype.getPassword = function() {
 
 Campeur.prototype.getTelephone = function() {
     return this.telephone
+}
+
+Campeur.prototype.getUserById = async (id)=>{
+    return new Promise((res, rej)=>{
+        db.query("SELECT * FROM campeurs WHERE id=?",[id],(err,rows)=>{
+            if(err){
+                rej(err)
+            }
+            else{
+                res(rows)
+            }
+        })
+    })
 }
   
 module.exports = Campeur
