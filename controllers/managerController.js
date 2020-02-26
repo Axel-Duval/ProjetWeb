@@ -36,8 +36,9 @@ exports.index = (req, res)=>{
 // Display list of the personnel
 exports.personnel_list = async (req, res)=>{
     try{
+        const flash = ft.getFlash(req)
         const rows = await personnel.findAllPersonnel()
-        res.render('manager/personnel',{title : "CDS | Liste du personnel",rows})
+        res.render('manager/personnel',{title : "CDS | Liste du personnel",rows,flash})
     }
     catch{
         const flash = {
@@ -58,13 +59,12 @@ exports.create_personnel_post = async (req, res)=>{
     const isPassword = ft.isPswd(req,res)
     const isNom = ft.isNom(req,res)
     const isConfirmPassword = ft.isConfirmPassword(req,res)
+    const estManager = req.body.estManager
     
     //If all the data is good
     if(isPassword && isNom && isConfirmPassword){
         const passwordS = req.sanitize(req.body.password)
         const nomS = req.sanitize(req.body.nom)
-        const prenomS = req.sanitize(req.body.prenom)
-        const telephoneS = req.sanitize(req.body.telephone)
         try{
             const rows = await personnel.findPersonnelByIdentifiant(nomS)
             if(rows[0]){
@@ -73,8 +73,9 @@ exports.create_personnel_post = async (req, res)=>{
             }
             else{
                 const hashPassword = bcrypt.hashSync(passwordS,10)
+                const manager = estManager ? 1 : 0
                 try{
-                    const created = await personnel.createPersonnel(nomS,0,hashPassword)
+                    const created = await personnel.createPersonnel(nomS,manager,hashPassword)
                     ft.setFlash(res,'success',"Le compte viens d'être créer")
                     res.redirect('/manager/personnel')
                 }
@@ -99,7 +100,8 @@ exports.manager_personnel_id = async (req, res)=>{
         const rows = await personnel.findPersonnelById(req.params.id)
         if(rows[0]){
             const pers = rows[0]
-            res.render('manager/personnel_id',{title : "CDS | Personnel",pers})
+            const flash = ft.getFlash(req)
+            res.render('manager/personnel_id',{title : "CDS | Personnel",pers,flash})
         }
         else{
             ft.setFlash(res,'danger',"Personne avec cet id")
@@ -121,5 +123,31 @@ exports.manager_delete_personnel = async (req, res)=>{
     catch{
         ft.setFlash(res,'warning',"Problème de connexion avec la base de donnée")
         res.redirect('/manager/personnel')
+    }
+}
+
+exports.manager_update_personnel = async (req, res)=>{
+    //Get data from POST
+    const isPassword = ft.isPswd(req,res)
+    const isNom = ft.isNom(req,res)
+    const isConfirmPassword = ft.isConfirmPassword(req,res)
+
+    //If all the data is good
+    if(isPassword && isNom && isConfirmPassword){
+        const passwordS = req.sanitize(req.body.password)
+        const hashPassword = bcrypt.hashSync(passwordS,10)
+        const nomS = req.sanitize(req.body.nom)
+        try{
+            const rows = await personnel.updatePersonnel(req.params.id,nomS,hashPassword)
+            ft.setFlash(res,'success',"La modification viens d'être effectuée")
+            res.redirect('/manager/personnel')
+        }
+        catch{
+            ft.setFlash(res,'warning',"Problème de connexion avec la base de donnée")
+            res.redirect('/manager/personnel')
+        }
+    }
+    else{
+        res.redirect('/manager/personnel/'+req.params.id)
     }
 }

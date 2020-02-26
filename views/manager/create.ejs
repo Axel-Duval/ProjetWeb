@@ -2,21 +2,18 @@
 
 <%- include('../includes/navbarManager'); -%>
 
-<script src="/js/notifications.js"></script>
-
-
 <div class="ovhi">
     <section class="container margin-top-1">
         <div class="columns columns is-centered is-mobile">
             <div class="column is-narrow has-text-centered">
     
                 <h1 class="title is-size-1 has-text-left">Création</h1>
-                <h2 class="subtitle is-size-6 has-text-primary has-text-left">personnel</h2>
+                <h2 class="subtitle is-size-6 has-text-primary has-text-left">de personnel</h2>
     
                 <form method="post">
                     <div class="field">
                         <p class="control has-icons-left has-icons-right">
-                        <input class="input" type="text" placeholder="Nom" name="nom" required>  <!-- Identifiant -->
+                        <input class="input" type="text" placeholder="Identifiant" name="nom" required>  <!-- Identifiant -->
                         <span class="icon is-small is-left">
                             <i class="fas fa-user-friends"></i>
                         </span>
@@ -38,6 +35,12 @@
                         </span>                
                         </p>
                     </div>
+                    
+                    <div class="field">
+                        <input class="checkbox" type="checkbox" id="estManager" name="estManager" value="yes">
+                        <label class="checkbox" for="estManager">Manager</label>
+                    </div>
+
                     <div class="control has-text-centered margin-button">
                         <button type="submit" class="button is-rounded">Créer</button>   <!-- Creation -->
                     </div>
@@ -58,5 +61,7 @@
         </div>
     </section>
 </div>
+
+<script src="/js/notifications.js"></script>
 
 <%- include('../includes/footer'); -%>

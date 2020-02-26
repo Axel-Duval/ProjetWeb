@@ -2,16 +2,14 @@
 
 <%- include('../includes/navbarManager'); -%>
 
-<script src="/js/notifications.js"></script>
-
 
 <div class="ovhi">
     <section class="container margin-top-1">
         <div class="columns columns is-centered is-mobile">
             <div class="column is-narrow has-text-centered">
     
-                <h1 class="title is-size-1 has-text-left">Création</h1>
-                <h2 class="subtitle is-size-6 has-text-primary has-text-left">personnel</h2>
+                <h1 class="title is-size-1 has-text-left">Modification</h1>
+                <h2 class="subtitle is-size-6 has-text-primary has-text-left">du personnel</h2>
     
                 <form method="post">
                     <div class="field">
@@ -42,7 +40,7 @@
                         <button type="submit" class="button is-rounded">Modifier</button>   <!-- Creation -->
                     </div>
                 </form>
-                <a href="/manager/personnel/<%=pers.id%>/delete" class="button is-danger">Supprimer</a>  <!-- Annulation -->
+                <a href="/manager/personnel/<%=pers.id%>/delete" class="button is-danger is-inverted">Supprimer</a>  <!-- Annulation -->
                 <a href="/manager/personnel" class="button is-primary is-inverted">Annuler</a>  <!-- Annulation -->           
             </div>
         </div>
@@ -58,5 +56,7 @@
         </div>
     </section>
 </div>
+
+<script src="/js/notifications.js"></script>
 
 <%- include('../includes/footer'); -%>

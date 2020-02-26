@@ -20,7 +20,7 @@ exports.index_connexion_get = async (req, res)=>{
     if(token){
         try{
             const verified = await index.verifyToken(token)
-            if(verified.estManager){
+            if(verified.estManager==0 || verified.estManager==1){
                 verified.estManager == 0 ? res.redirect('/personnel') : res.redirect('/manager')
             }
             else{

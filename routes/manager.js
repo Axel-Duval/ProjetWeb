@@ -21,6 +21,9 @@ router.post('/personnel/create', manager_controller.isManager, manager_controlle
 // GET personnel by id
 router.get('/personnel/:id', manager_controller.isManager, manager_controller.manager_personnel_id);
 
+// POST update personnel infos
+router.post('/personnel/:id', manager_controller.isManager, manager_controller.manager_update_personnel);
+
 // GET delete personnel from id
 router.get('/personnel/:id/delete', manager_controller.isManager, manager_controller.manager_delete_personnel);
 
