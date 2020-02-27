@@ -2,17 +2,86 @@
 
 <%- include('../includes/navbarManager'); -%>
 
-<section class="container margin-top-1 ovhi">
-    <div class="columns columns is-centered is-mobile">
-        <div class="column is-narrow has-text-centered">
-            <h1 class="title is-size-1 has-text-left">Bonjour</h1>
-            <h2 class="subtitle is-size-3 has-text-primary has-text-left"><%=identifiant%></h2>
+<div class="w-60">
+    <section class="container margin-top-1">
+        <div class="columns is-centered is-mobile">
+            <div class="column is-narrow has-text-centered">
+                <h1 class="title is-size-1 has-text-left">Bonjour</h1>
+                <h2 class="subtitle is-size-3 has-text-primary has-text-left"><%=identifiant%></h2>
+            </div>
         </div>
-    </div>
-</section>
+    </section>
+    
+    <section class="margin-top-1">
+        <div class="tile is-ancestor">
+            <div class="tile is-parent">
+              <article class="tile is-child box notification is-success">
+                <h3 class="title">Réservations</h3>
+                <h4 class="subtitle has-text-weight-semibold">à venir</h4>
+                <div class="content">
+                    <p class="title is-1 has-text-centered is-family-monospace"><%if(campToCome){%><%=campToCome.campeurs%><%}else{%>-<%}%></p>
+                </div>
+              </article>
+            </div>
+            <div class="tile is-parent">
+              <article class="tile is-child box notification is-info">
+                <h3 class="title">Réservations</h3>
+                <h4 class="subtitle has-text-weight-semibold">passées</h4>
+                <div class="content">
+                    <p class="title is-1 has-text-centered is-family-monospace"><%if(campCome){%><%=campCome.campeurs%><%}else{%>-<%}%></p>
+                </div>
+              </article>
+            </div>
+            <div class="tile is-parent">
+              <article class="tile is-child box notification is-warning">
+                <h3 class="title">Séjour</h3>
+                <h4 class="subtitle has-text-weight-semibold">moyen en jours</h4>
+                <div class="content">
+                  <p class="title is-1 has-text-centered is-family-monospace"><%if(avDays){%><%=avDays.av%><%}else{%>-<%}%></p>
+                </div>
+              </article>
+            </div>
+          </div>
+          
+          <div class="tile is-ancestor">
+            <div class="tile is-parent is-8" id="weather">
+              <article class="tile is-child box">
+                <h3 class="title">Météo</h3>
+                <h4 class="subtitle has-text-weight-semibold">Lubéron</h4>
+                <div class="content">
+                    <div class="columns is-centered is-mobile">
+                        <div class="column is-narrow has-text-centered">
+                            <i class="fas fa-sun fa-3x"></i>
+                        </div>
+                        <div class="column is-narrow has-text-centered">
+                            <i class="fas fa-cloud fa-3x"></i>
+                        </div>
+                        <div class="column is-narrow has-text-centered">
+                            <i class="fas fa-bolt fa-3x"></i>
+                        </div>
+                        <div class="column is-narrow has-text-centered">
+                            <i class="fas fa-moon fa-3x"></i>
+                        </div>
+                        <div class="column is-narrow has-text-centered">
+                            <i class="fas fa-snowflake fa-3x"></i>
+                        </div>
+                    </div>      
+                </div>
+              </article>
+            </div>
+            <div class="tile is-parent">
+              <article class="tile is-child box notification is-danger" id="incidents">
+                <h3 class="title">Incidents</h3>
+                <h4 class="subtitle has-text-weight-semibold">du camping</h4>
+                <div class="content">
+                    <p class="title is-1 has-text-centered is-family-monospace"><%if(incidents){%><%=incidents.nb%><%}else{%>-<%}%></p>
+                </div>
+              </article>
+            </div>
+          </div>
+    </section>
+</div>
 
-<section class="has-text-centered margin-top-1">
-    <p>Some data...</p>
-</section>
+<script src="/js/managerCards.js"></script>
 
 <%- include('../includes/footer'); -%>

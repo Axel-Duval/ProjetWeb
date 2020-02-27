@@ -3,6 +3,7 @@ const bcrypt = require('bcryptjs')
 const Sanitizer = require('express-sanitizer')
 const index = require('../models/index')
 const personnel = require('../models/personnel')
+const campeur = require('../models/campeur')
 
 
 // Check if it's a manager
@@ -28,9 +29,27 @@ exports.isManager = async (req, res, next)=>{
 }
 
 // Display index page manager
-exports.index = (req, res)=>{
+exports.index = async (req, res)=>{
     const identifiant = res.locals.identifiant
-    res.render('manager/index',{title : "CDS | Espace manager",identifiant})
+    try{
+        const campeursToCome = await campeur.nbCampeursToCome()
+        const campeursCome = await campeur.nbCampeursCome()
+        const averageDays = await campeur.getAverageDays()
+        const nbIncid = await campeur.getNbIncidents()
+
+        const campToCome = campeursToCome[0]
+        const campCome = campeursCome[0]
+        const avDays = averageDays[0]
+        const incidents = nbIncid[0]
+        res.render('manager/index',{title : "CDS | Espace manager",identifiant,campToCome,campCome,avDays,incidents})
+    }
+    catch{
+        const campToCome = campeursToCome[0]
+        const campCome = campeursCome[0]
+        const avDays = averageDays[0]
+        const incidents = nbIncid[0]
+        res.render('manager/index',{title : "CDS | Espace manager",identifiant,campToCome,campCome,avDays,incidents})
+    }    
 }
 
 // Display list of the personnel

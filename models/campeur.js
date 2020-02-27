@@ -42,6 +42,58 @@ const campeur = {
             })
         })
     },
+
+    nbCampeursToCome : async ()=>{
+        return new Promise((resolve, reject) => {
+            db.query("SELECT COUNT(campeurs.id) AS campeurs FROM campeurs JOIN reservations ON campeurs.id = reservations.idCampeur JOIN emplacements ON emplacements.id = reservations.idEmplacement WHERE reservations.checkin=0", (err,rows)=>{
+                if (err) {
+                    reject(err)
+                }
+                else{
+                    resolve(rows)
+                }
+            })
+        })
+    },
+
+    nbCampeursCome : async ()=>{
+        return new Promise((resolve, reject) => {
+            db.query("SELECT COUNT(campeurs.id) AS campeurs FROM campeurs JOIN reservations ON campeurs.id = reservations.idCampeur JOIN emplacements ON emplacements.id = reservations.idEmplacement WHERE reservations.checkout=1", (err,rows)=>{
+                if (err) {
+                    reject(err)
+                }
+                else{
+                    resolve(rows)
+                }
+            })
+        })
+    },
+
+    getAverageDays : async ()=>{
+        return new Promise((resolve, reject) => {
+            db.query("SELECT AVG(DATEDIFF(reservations.dateFin,reservations.dateDebut)) AS av FROM reservations", (err,rows)=>{
+                if (err) {
+                    reject(err)
+                }
+                else{
+                    resolve(rows)
+                }
+            })
+        })
+    },
+
+    getNbIncidents : async ()=>{
+        return new Promise((resolve, reject) => {
+            db.query("SELECT COUNT(signaler.id) as nb FROM signaler", (err,rows)=>{
+                if (err) {
+                    reject(err)
+                }
+                else{
+                    resolve(rows)
+                }
+            })
+        })
+    }
 }
 
 module.exports = campeur;

@@ -106,3 +106,8 @@
 .pad{
     padding-bottom: 10px;
 }
+
+.w-60{
+    width: 60%;
+    margin-left: 20%;
+}
