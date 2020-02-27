@@ -1,0 +1,39 @@
+<%- include('../includes/header'); -%>
+
+<%- include('../includes/navbarCampeur'); -%>
+
+<div class="w-60">
+    <section class="container margin-top-1 has-text-centered">
+        <h1 class="title is-size-1">Réservation n°<span class="has-text-primary"><%=rows[0].id%></span></h1>
+    </section>
+
+    
+    <section class="margin-top-1">
+        <div class="card">
+            <header class="card-footer">
+                <p class="card-footer-item has-text-weight-bold">Du : <%=rows[0].dateDebut%></p>
+                <p class="card-footer-item has-text-weight-bold">Au : <%=rows[0].dateFin%></p>
+            </header>
+            <div class="card-content">
+                <hr>
+                <h2 class="title has-text-primary">Etat</h2>
+                <p class="is-size-4 has-text-weight-semibold">Checkin : <%if(rows[0].checkin == 1){%><span class="has-text-success has-text-weight-normal">oui</span><%}else{%><span class="has-text-danger has-text-weight-normal">non</span><%}%></p>
+                <p class="is-size-4 has-text-weight-semibold">Checkout : <%if(rows[0].checkout == 1){%><span class="has-text-success has-text-weight-normal">oui</span><%}else{%><span class="has-text-danger has-text-weight-normal">non</span><%}%></p>
+                <hr>
+                <h2 class="title has-text-primary">Type</h2>
+                <%if(rows[0].prestige == 1){%>
+                    <p class="is-size-4 has-text-weight-semibold">Suite de luxe : <span class="has-text-warning has-text-weight-normal"><%=rows[0].nom%></span></p>
+                    <p class="is-size-4 has-text-weight-semibold">Nombre de places : <span class="has-text-warning has-text-weight-normal"><%=rows[0].nombrePersonnes%></span></p>
+                <%}else if(rows[0].prestige == 0){%>
+                    <p class="is-size-4 has-text-weight-semibold">Châlet : <span class="has-text-success has-text-weight-normal"><%=rows[0].nom%></span></p>
+                    <p class="is-size-4 has-text-weight-semibold">Nombre de places : <span class="has-text-success has-text-weight-normal"><%=rows[0].nombrePersonnes%></span></p>
+                <%}else{%>
+                    <p class="is-size-4 has-text-weight-semibold">Emplacement n°<span class="has-text-info has-text-weight-normal"><%=rows[0].idEmplacement%></span></p>
+                    <p class="is-size-4 has-text-weight-semibold">Electicité : <span class="has-text-success has-text-weight-normal">oui</span></p>
+                <%}%>
+            </div>
+          </div>
+    </section>
+</div>
+
+<%- include('../includes/footer'); -%>

@@ -103,7 +103,7 @@ exports.isPrenom = function(req,res){
 
 exports.isTelephone = function(req,res){
     if(req.body.telephone){
-        if(req.body.telephone.length == 14){
+        if(/(0[1-68])(?:[ _.-]?(\d{2})){4}$/.test(req.body.telephone)){
             return true
         }
         else{
@@ -161,9 +161,13 @@ exports.isValidDate = function(dateString){
     return day > 0 && day <= monthLength[month - 1];
 }
 
-exports.formatDate = (date)=>{
+exports.formatDateTime = (date)=>{
     var hours = date.getHours()
     var minutes = date.getMinutes()
     var strTime = hours + ':' + minutes
-    return date.getMonth()+1 + "/" + date.getDate() + "/" + date.getFullYear() + "  " + strTime
-  }
+    return date.getDate() + "/" + (date.getMonth()+1) + "/" + date.getFullYear() + "  " + strTime
+}
+
+exports.formatDate = (date)=>{
+    return date.getDate() + "/" + (date.getMonth()+1) + "/" + date.getFullYear()
+}

@@ -178,7 +178,7 @@ exports.manager_incidents = async (req, res)=>{
         const rows = await campeur.getIncidents()
         var i
         for(i = 0; i < rows.length; i++){
-            rows[i].horodatage = ft.formatDate(rows[i].horodatage)
+            rows[i].horodatage = ft.formatDateTime(rows[i].horodatage)
         }
         res.render('manager/incidents',{title : "CDS | Liste du personnel",rows,flash})
     }

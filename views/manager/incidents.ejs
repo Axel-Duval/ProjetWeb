@@ -7,7 +7,7 @@
         <div class="columns columns is-centered is-mobile">
             <div class="column is-narrow has-text-centered">
                 <h1 class="title is-size-1 has-text-left">Incidents</h1>
-                <h2 class="subtitle is-size-6 has-text-primary has-text-left">du camping</h2>
+                <h2 class="subtitle is-size-6 has-text-primary has-text-left">du camping des sources</h2>
             </div>
         </div>
     </section>
@@ -18,17 +18,20 @@
         <table>
             <% for(var i=0; i < rows.length; i++) { %>
                 <div class="columns">
-                    <div class="column is-6 is-offset-3">
+                    <div class="column is-8 is-offset-2">
                         <div class="box">
-                            <div class="columns is-vcentered has-text-left is-mobile is-desktop">
-                                <div class="column is-2">
+                            <div class="columns is-vcentered">
+                                <div class="column is-1">
                                     <span class="has-text-<%if(rows[i].libelle == 'Bruit'){%>info<%}else if(rows[i].libelle == 'Secours'){%>danger<%}else if(rows[i].libelle == 'Propreté'){%>warning<%}else{%>success<%}%>"><i class="fas <%if(rows[i].libelle == 'Bruit'){%>fa-volume-up<%}else if(rows[i].libelle == 'Secours'){%>fa-exclamation-triangle<%}else if(rows[i].libelle == 'Propreté'){%>fa-broom<%}else{%>fa-asterisk<%}%> fa-2x"></i></span>
                                 </div>
+                                <div class="column is-2">
+                                    <p class="title is-5"><%= rows[i].endroit %></p>
+                                </div>
                                 <div class="column is-3">
-                                    <p class="title is-5"><%= rows[i].nom %></p>
+                                    <p class="title is-5">Nom : <span class="has-text-weight-light"><%= rows[i].nom %></span></p>
                                 </div>
                                 <div class="column is-5">
-                                    <p class="title is-5"><span class="has-text-weight-light"><%= rows[i].horodatage %></span></p>
+                                    <p class="title is-5">Heure : <span class="has-text-weight-light"><%= rows[i].horodatage %></span></p>
                                 </div>
                                 <div class="column is-1">
                                     <a class="button is-small is-danger" href="incident/<%=rows[i].id%>/delete">Supprimer</a>

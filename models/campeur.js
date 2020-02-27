@@ -43,6 +43,19 @@ const campeur = {
         })
     },
 
+    updateCampeur : async (id,nom,prenom,mail,telephone,password)=>{
+        return new Promise((resolve, reject) => {
+            db.query("UPDATE campeurs SET nom=?, prenom=?, mail=?, telephone=?, password=? WHERE id=?", [nom,prenom,mail,telephone,password,id], (err,rows)=>{
+                if (err) {
+                    reject(err)
+                }
+                else{
+                    resolve(rows)
+                }
+            })
+        })
+    },
+
     nbCampeursToCome : async ()=>{
         return new Promise((resolve, reject) => {
             db.query("SELECT COUNT(campeurs.id) AS campeurs FROM campeurs JOIN reservations ON campeurs.id = reservations.idCampeur JOIN emplacements ON emplacements.id = reservations.idEmplacement WHERE reservations.checkin=0", (err,rows)=>{
@@ -97,7 +110,7 @@ const campeur = {
 
     getIncidents : async ()=>{
         return new Promise((resolve, reject) => {
-            db.query("SELECT signaler.id, signaler.horodatage, campeurs.nom, infrastructures.libelle, types.libelle FROM signaler JOIN types ON types.id = signaler.idTypeSignal JOIN campeurs ON campeurs.id = signaler.idCampeur LEFT JOIN infrastructures ON infrastructures.id = signaler.idInfrastructure", (err,rows)=>{
+            db.query("SELECT signaler.id, signaler.horodatage, campeurs.nom, infrastructures.libelle AS endroit, types.libelle FROM signaler JOIN types ON types.id = signaler.idTypeSignal JOIN campeurs ON campeurs.id = signaler.idCampeur LEFT JOIN infrastructures ON infrastructures.id = signaler.idInfrastructure", (err,rows)=>{
                 if (err) {
                     reject(err)
                 }
@@ -119,7 +132,85 @@ const campeur = {
                 }
             })
         })
-    }
+    },
+
+    getAllReservationsById : async (id)=>{
+        return new Promise((resolve, reject) => {
+            db.query("SELECT id, dateDebut, dateFin FROM reservations WHERE reservations.idCampeur=?", [id], (err,rows)=>{
+                if (err) {
+                    reject(err)
+                }
+                else{
+                    resolve(rows)
+                }
+            })
+        })
+    },
+
+    getIdReservationsById : async (id)=>{
+        return new Promise((resolve, reject) => {
+            db.query("SELECT id FROM reservations WHERE reservations.idCampeur=?", [id], (err,rows)=>{
+                if (err) {
+                    reject(err)
+                }
+                else{
+                    resolve(rows)
+                }
+            })
+        })
+    },
+
+    getReservationById : async (id)=>{
+        return new Promise((resolve, reject) => {
+            db.query("SELECT reservations.id, reservations.dateDebut, reservations.dateFin, reservations.checkin, reservations.checkout, reservations.idEmplacement,chalets.nom, chalets.prestige,chalets.nombrePersonnes FROM reservations JOIN campeurs ON campeurs.id = reservations.idCampeur JOIN emplacements ON emplacements.id = reservations.idEmplacement LEFT JOIN chalets ON chalets.id = emplacements.idChalet WHERE reservations.id=?", [id], (err,rows)=>{
+                if (err) {
+                    reject(err)
+                }
+                else{
+                    resolve(rows)
+                }
+            })
+        })
+    },
+
+    getAllInfrastructures : async ()=>{
+        return new Promise((resolve, reject) => {
+            db.query("SELECT * FROM infrastructures", (err,rows)=>{
+                if (err) {
+                    reject(err)
+                }
+                else{
+                    resolve(rows)
+                }
+            })
+        })
+    },
+
+    getAllTypes : async ()=>{
+        return new Promise((resolve, reject) => {
+            db.query("SELECT * FROM types", (err,rows)=>{
+                if (err) {
+                    reject(err)
+                }
+                else{
+                    resolve(rows)
+                }
+            })
+        })
+    },
+
+    createSignalement : async (idCampeur,idType,idInfrastructure)=>{
+        return new Promise((resolve, reject) => {
+            db.query("INSERT INTO signaler (idCampeur, idTypeSignal, idInfrastructure) VALUES (?,?,?);", [idCampeur,idType,idInfrastructure], (err,rows)=>{
+                if (err) {
+                    reject(err)
+                }
+                else{
+                    resolve(rows)
+                }
+            })
+        })
+    },
 }
 
 module.exports = campeur;

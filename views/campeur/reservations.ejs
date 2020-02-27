@@ -1,0 +1,62 @@
+<%- include('../includes/header'); -%>
+
+<%- include('../includes/navbarCampeur'); -%>
+
+<div class="ovhi">
+    <section class="container margin-top-1">
+        <div class="columns columns is-centered is-mobile">
+            <div class="column is-narrow has-text-centered">
+                <h1 class="title is-size-1 has-text-left">Mes réservations</h1>
+                <h2 class="subtitle is-size-6 has-text-primary has-text-left">Bonjour <%=prenom%></h2>
+            </div>
+        </div>
+    </section>
+
+    
+    <section class="margin-top-1">
+        <% if (locals.rows) { %>
+            <table>
+                <% for(var i=0; i < rows.length; i++) { %>
+                    <div class="columns">
+                        <div class="column is-6 is-offset-3">
+                            <div class="box">
+                                <div class="columns is-vcentered has-text-left is-mobile is-desktop">
+                                    <div class="column is-1">
+                                        <span class="has-text-info"><i class="fas fa-map-signs fa-2x"></i></span>
+                                    </div>
+                                    <div class="column is-2">
+                                        <p class="title is-5">Id : <span class="has-text-weight-light"><%= rows[i].id %></span></p>
+                                    </div>
+                                    <div class="column is-4">
+                                        <p class="title is-5">Début : <span class="has-text-weight-light"><%= rows[i].dateDebut %></span></p>
+                                    </div>
+                                    <div class="column is-4">
+                                        <p class="title is-5">Fin : <span class="has-text-weight-light"><%= rows[i].dateFin %></span></p>
+                                    </div>
+                                    <div class="column is-1">
+                                        <a class="button is-small is-info" href="/campeur/reservation/<%=rows[i].id%>">Voir</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <% } %>
+            </table>
+        <%}%>
+    </section>
+
+    <div class="columns is-centered">
+        <div class="column is-4 has-text-centered">
+            <% if (locals.flash) { %>
+            <div class="notification is-<%= flash.type %>">
+                <button class="delete"></button>
+                <%= locals.flash.text %>
+            </div>
+            <%}%>
+        </div>
+    </div>
+</div>
+
+<script src="/js/notifications.js"></script>
+
+<%- include('../includes/footer'); -%>
