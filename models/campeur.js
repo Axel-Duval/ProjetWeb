@@ -93,6 +93,32 @@ const campeur = {
                 }
             })
         })
+    },
+
+    getIncidents : async ()=>{
+        return new Promise((resolve, reject) => {
+            db.query("SELECT signaler.id, signaler.horodatage, campeurs.nom, infrastructures.libelle, types.libelle FROM signaler JOIN types ON types.id = signaler.idTypeSignal JOIN campeurs ON campeurs.id = signaler.idCampeur LEFT JOIN infrastructures ON infrastructures.id = signaler.idInfrastructure", (err,rows)=>{
+                if (err) {
+                    reject(err)
+                }
+                else{
+                    resolve(rows)
+                }
+            })
+        })
+    },
+
+    deleteIncidentById : async (id)=>{
+        return new Promise((resolve, reject) => {
+            db.query("DELETE FROM signaler WHERE id=?", [id], (err,rows)=>{
+                if (err) {
+                    reject(err)
+                }
+                else{
+                    resolve(rows)
+                }
+            })
+        })
     }
 }
 

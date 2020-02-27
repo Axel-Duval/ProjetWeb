@@ -160,3 +160,10 @@ exports.isValidDate = function(dateString){
     // Check the range of the day
     return day > 0 && day <= monthLength[month - 1];
 }
+
+exports.formatDate = (date)=>{
+    var hours = date.getHours()
+    var minutes = date.getMinutes()
+    var strTime = hours + ':' + minutes
+    return date.getMonth()+1 + "/" + date.getDate() + "/" + date.getFullYear() + "  " + strTime
+  }

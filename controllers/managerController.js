@@ -170,3 +170,35 @@ exports.manager_update_personnel = async (req, res)=>{
         res.redirect('/manager/personnel/'+req.params.id)
     }
 }
+
+// Display list of the personnel
+exports.manager_incidents = async (req, res)=>{
+    try{
+        const flash = ft.getFlash(req)
+        const rows = await campeur.getIncidents()
+        var i
+        for(i = 0; i < rows.length; i++){
+            rows[i].horodatage = ft.formatDate(rows[i].horodatage)
+        }
+        res.render('manager/incidents',{title : "CDS | Liste du personnel",rows,flash})
+    }
+    catch{
+        const flash = {
+            type : 'warning',
+            text : 'Problème de connexion avec la base de donnée'
+        }
+        res.render('manager/incidents',{title : "CDS | Liste du personnel",flash})
+    }
+}
+
+exports.manager_incident_delete_id = async (req, res)=>{
+    try{
+        const rows = await campeur.deleteIncidentById(req.params.id)
+        ft.setFlash(res,'success',"L'incident a bien été supprimé")
+        res.redirect('/manager/incidents')
+    }
+    catch{
+        ft.setFlash(res,'warning',"Problème de connexion avec la base de donnée")
+        res.redirect('/manager/incidents')
+    }
+}

@@ -8,5 +8,5 @@ function getWeather(event){
 }
 
 function redirectIssues(event){
-    window.location.href = "/personnel/incidents"
+    window.location.href = "/manager/incidents"
 }

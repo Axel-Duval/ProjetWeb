@@ -29,9 +29,7 @@ exports.index_connexion_get = async (req, res)=>{
         }
         catch{
             res.render('index/connexion',{title : "CDS | Connexion",flash})
-        }
-        
-        
+        } 
     }
     else{
         res.render('index/connexion',{title : "CDS | Connexion",flash})

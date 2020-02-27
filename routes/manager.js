@@ -27,4 +27,10 @@ router.post('/personnel/:id', manager_controller.isManager, manager_controller.m
 // GET delete personnel from id
 router.get('/personnel/:id/delete', manager_controller.isManager, manager_controller.manager_delete_personnel);
 
+// GET incidents
+router.get('/incidents', manager_controller.isManager, manager_controller.manager_incidents);
+
+// GET delete incident
+router.get('/incident/:id/delete', manager_controller.isManager, manager_controller.manager_incident_delete_id);
+
 module.exports = router;
