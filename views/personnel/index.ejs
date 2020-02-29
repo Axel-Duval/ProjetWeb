@@ -1,0 +1,87 @@
+<%- include('../includes/header'); -%>
+
+<%- include('../includes/navbarPersonnel'); -%>
+
+<div class="w-60">
+    <section class="container margin-top-1 has-text-centered">
+      <h1 class="title is-size-1">Bonjour <span class="has-text-primary"><%=identifiant%></span></h1>
+    </section>
+    
+    <section class="margin-top-1">
+        <div class="tile is-ancestor">
+            <div class="tile is-parent">
+              <article class="tile is-child box notification is-success" id="arrivals">
+                <h3 class="title is-4">Arrivées</h3>
+                <h4 class="subtitle has-text-weight-semibold">du jour</h4>
+                <div class="content">
+                    <p class="title is-1 has-text-centered is-family-monospace"><%if(arrivals){%><%=arrivals.cpt%><%}else{%>-<%}%></p>
+                </div>
+              </article>
+            </div>
+            <div class="tile is-parent">
+              <article class="tile is-child box notification is-info"  id="departures">
+                <h3 class="title is-4">Départs</h3>
+                <h4 class="subtitle has-text-weight-semibold">du jour</h4>
+                <div class="content">
+                    <p class="title is-1 has-text-centered is-family-monospace"><%if(departures){%><%=departures.cpt%><%}else{%>-<%}%></p>
+                </div>
+              </article>
+            </div>
+            <div class="tile is-parent">
+              <article class="tile is-child box notification is-warning" id="campeurs">
+                <h3 class="title is-4">Capeurs</h3>
+                <h4 class="subtitle has-text-weight-semibold">actuels</h4>
+                <div class="content">
+                  <p class="title is-1 has-text-centered is-family-monospace"><%if(camp){%><%=camp.cpt%><%}else{%>-<%}%></p>
+                </div>
+              </article> 
+            </div>
+          </div>
+
+          <div class="tile is-ancestor">
+            <div class="tile is-parent">
+                <article class="tile is-child box notification is-warning" id="inf">
+                  <h3 class="title is-4">Pointage</h3>
+                  <h4 class="subtitle has-text-weight-semibold">des infrastructures</h4>
+                  <div class="content">
+                      <p class="title is-1 has-text-centered is-family-monospace"><%if(infrastructures){%><%=infrastructures.cpt%><%}else{%>-<%}%></p>
+                  </div>
+                </article>
+            </div>
+            <div class="tile is-parent">
+              <article class="tile is-child box notification is-danger" id="incidents">
+                <h3 class="title is-4">Incidents</h3>
+                <h4 class="subtitle has-text-weight-semibold">du camping</h4>
+                <div class="content">
+                    <p class="title is-1 has-text-centered is-family-monospace"><%if(incidents){%><%=incidents.nb%><%}else{%>-<%}%></p>
+                </div>
+              </article>
+            </div>
+            <div class="tile is-parent">
+                <article class="tile is-child box notification is-success" id="plan">
+                  <h3 class="title is-4">Plan</h3>
+                  <h4 class="subtitle has-text-weight-semibold">interactif</h4>
+                  <div class="content has-text-centered">
+                    <i class="far fa-map fa-3x"></i>
+                </div>
+                </article>
+            </div>
+          </div>
+    </section>
+
+    <div class="columns is-centered">
+      <div class="column is-4 has-text-centered">
+          <% if (locals.flash) { %>
+          <div class="notification is-<%= flash.type %>">
+              <button class="delete"></button>
+              <%= locals.flash.text %>
+          </div>
+          <%}%>
+      </div>
+  </div>
+  
+</div>
+
+<script src="/js/personnelCards.js"></script>
+
+<%- include('../includes/footer'); -%>

@@ -80,6 +80,71 @@ const personnel = {
                 }
             })
         })
+    },
+
+    nbArrivals : async ()=>{
+        return new Promise((resolve, reject) => {
+            db.query("SELECT COUNT(reservations.id) AS cpt FROM reservations WHERE reservations.dateDebut = DATE(NOW())", (err,rows)=>{
+                if (err) {
+                    reject(err)
+                }
+                else{
+                    resolve(rows)
+                }
+            })
+        })
+    },
+
+    nbDepartures : async ()=>{
+        return new Promise((resolve, reject) => {
+            db.query("SELECT COUNT(reservations.id) AS cpt FROM reservations WHERE reservations.dateFin = DATE(NOW())", (err,rows)=>{
+                if (err) {
+                    reject(err)
+                }
+                else{
+                    resolve(rows)
+                }
+            })
+        })
+    },
+
+    nbCampeurs : async ()=>{
+        return new Promise((resolve, reject) => {
+            db.query("SELECT COUNT(reservations.id) AS cpt FROM reservations WHERE reservations.checkin=1 AND reservations.checkout=0", (err,rows)=>{
+                if (err) {
+                    reject(err)
+                }
+                else{
+                    resolve(rows)
+                }
+            })
+        })
+    },
+
+    actualCampeurs : async ()=>{
+        return new Promise((resolve, reject) => {
+            db.query("SELECT campeurs.id, campeurs.nom, campeurs.prenom FROM campeurs JOIN reservations ON campeurs.id = reservations.idCampeur WHERE reservations.checkin=1 AND reservations.checkout=0", (err,rows)=>{
+                if (err) {
+                    reject(err)
+                }
+                else{
+                    resolve(rows)
+                }
+            })
+        })
+    },
+
+    nbInfrastructuresToCome : async ()=>{
+        return new Promise((resolve, reject) => {
+            db.query("SELECT COUNT(infrastructures.id) AS cpt FROM infrastructures WHERE infrastructures.id NOT IN( SELECT infrastructures.id FROM infrastructures JOIN passer ON infrastructures.id = passer.idInfrastructure WHERE TIMEDIFF(NOW(), passer.horodatage) < infrastructures.intervalle)", (err,rows)=>{
+                if (err) {
+                    reject(err)
+                }
+                else{
+                    resolve(rows)
+                }
+            })
+        })
     }
 }
 

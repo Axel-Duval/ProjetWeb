@@ -140,17 +140,17 @@ exports.isValidDate = function(dateString){
     }        
 
     // Parse the date parts to integers
-    var parts = dateString.split("-");
-    var day = parseInt(parts[2], 10);
-    var month = parseInt(parts[1], 10);
-    var year = parseInt(parts[0], 10);
+    let parts = dateString.split("-");
+    let day = parseInt(parts[2], 10);
+    let month = parseInt(parts[1], 10);
+    let year = parseInt(parts[0], 10);
 
     // Check the ranges of month and year
     if(year < 1000 || year > 3000 || month == 0 || month > 12){
         return false;
     }
 
-    var monthLength = [ 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 ];
+    let monthLength = [ 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 ];
 
     // Adjust for leap years
     if(year % 400 == 0 || (year % 100 != 0 && year % 4 == 0)){
@@ -162,12 +162,30 @@ exports.isValidDate = function(dateString){
 }
 
 exports.formatDateTime = (date)=>{
-    var hours = date.getHours()
-    var minutes = date.getMinutes()
-    var strTime = hours + ':' + minutes
-    return date.getDate() + "/" + (date.getMonth()+1) + "/" + date.getFullYear() + "  " + strTime
+    let day = date.getDate()
+    let month = date.getMonth()+1
+    let year = date.getFullYear()
+    let hours = date.getHours()
+    let minutes = date.getMinutes()
+    let strTime = hours + ':' + minutes
+    if(day < 10){
+        day = '0'+ day
+    }
+    if(month < 10){
+        month = '0' + month
+    } 
+    return day + "/" + month + "/" + year + "  " + strTime
 }
 
 exports.formatDate = (date)=>{
-    return date.getDate() + "/" + (date.getMonth()+1) + "/" + date.getFullYear()
+    let day = date.getDate()
+    let month = date.getMonth()+1
+    let year = date.getFullYear()
+    if(day < 10){
+        day = '0'+ day
+    }
+    if(month < 10){
+        month = '0' + month
+    }
+    return day + "/" + month + "/" + year
 }

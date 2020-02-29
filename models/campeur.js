@@ -110,7 +110,7 @@ const campeur = {
 
     getIncidents : async ()=>{
         return new Promise((resolve, reject) => {
-            db.query("SELECT signaler.id, signaler.horodatage, campeurs.nom, infrastructures.libelle AS endroit, types.libelle FROM signaler JOIN types ON types.id = signaler.idTypeSignal JOIN campeurs ON campeurs.id = signaler.idCampeur LEFT JOIN infrastructures ON infrastructures.id = signaler.idInfrastructure", (err,rows)=>{
+            db.query("SELECT signaler.id, signaler.horodatage, campeurs.telephone ,campeurs.nom, infrastructures.libelle AS endroit, types.libelle FROM signaler JOIN types ON types.id = signaler.idTypeSignal JOIN campeurs ON campeurs.id = signaler.idCampeur LEFT JOIN infrastructures ON infrastructures.id = signaler.idInfrastructure", (err,rows)=>{
                 if (err) {
                     reject(err)
                 }

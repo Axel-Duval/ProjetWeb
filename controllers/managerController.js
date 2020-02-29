@@ -44,11 +44,7 @@ exports.index = async (req, res)=>{
         res.render('manager/index',{title : "CDS | Espace manager",identifiant,campToCome,campCome,avDays,incidents})
     }
     catch{
-        const campToCome = campeursToCome[0]
-        const campCome = campeursCome[0]
-        const avDays = averageDays[0]
-        const incidents = nbIncid[0]
-        res.render('manager/index',{title : "CDS | Espace manager",identifiant,campToCome,campCome,avDays,incidents})
+        res.render('manager/index',{title : "CDS | Espace manager",identifiant})
     }    
 }
 
@@ -180,14 +176,14 @@ exports.manager_incidents = async (req, res)=>{
         for(i = 0; i < rows.length; i++){
             rows[i].horodatage = ft.formatDateTime(rows[i].horodatage)
         }
-        res.render('manager/incidents',{title : "CDS | Liste du personnel",rows,flash})
+        res.render('manager/incidents',{title : "CDS | Liste des incidents",rows,flash})
     }
     catch{
         const flash = {
             type : 'warning',
             text : 'Problème de connexion avec la base de donnée'
         }
-        res.render('manager/incidents',{title : "CDS | Liste du personnel",flash})
+        res.render('manager/incidents',{title : "CDS | Liste des incidents",flash})
     }
 }
 

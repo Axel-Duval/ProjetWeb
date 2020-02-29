@@ -11,7 +11,7 @@
         <div class="tile is-ancestor">
             <div class="tile is-parent">
               <article class="tile is-child box notification is-success">
-                <h3 class="title">Réservations</h3>
+                <h3 class="title is-4">Réservations</h3>
                 <h4 class="subtitle has-text-weight-semibold">à venir</h4>
                 <div class="content">
                     <p class="title is-1 has-text-centered is-family-monospace"><%if(campToCome){%><%=campToCome.campeurs%><%}else{%>-<%}%></p>
@@ -20,7 +20,7 @@
             </div>
             <div class="tile is-parent">
               <article class="tile is-child box notification is-info">
-                <h3 class="title">Réservations</h3>
+                <h3 class="title is-4">Réservations</h3>
                 <h4 class="subtitle has-text-weight-semibold">passées</h4>
                 <div class="content">
                     <p class="title is-1 has-text-centered is-family-monospace"><%if(campCome){%><%=campCome.campeurs%><%}else{%>-<%}%></p>
@@ -29,7 +29,7 @@
             </div>
             <div class="tile is-parent">
               <article class="tile is-child box notification is-warning">
-                <h3 class="title">Séjour</h3>
+                <h3 class="title is-4">Séjour</h3>
                 <h4 class="subtitle has-text-weight-semibold">moyen en jours</h4>
                 <div class="content">
                   <p class="title is-1 has-text-centered is-family-monospace"><%if(avDays){%><%=avDays.av%><%}else{%>-<%}%></p>
@@ -41,23 +41,20 @@
           <div class="tile is-ancestor">
             <div class="tile is-parent is-8" id="weather">
               <article class="tile is-child box">
-                <h3 class="title">Météo</h3>
+                <h3 class="title is-4">Météo</h3>
                 <h4 class="subtitle has-text-weight-semibold">Lubéron</h4>
                 <div class="content">
-                    <div class="columns is-centered is-mobile">
-                        <div class="column is-narrow has-text-centered">
+                    <div class="columns is-mobile">
+                        <div class="column is-3">
+                          <i class="fas fa-cloud fa-3x"></i>
+                        </div>
+                        <div class="column is-3">
                             <i class="fas fa-sun fa-3x"></i>
                         </div>
-                        <div class="column is-narrow has-text-centered">
-                            <i class="fas fa-cloud fa-3x"></i>
-                        </div>
-                        <div class="column is-narrow has-text-centered">
-                            <i class="fas fa-bolt fa-3x"></i>
-                        </div>
-                        <div class="column is-narrow has-text-centered">
+                        <div class="column is-3">
                             <i class="fas fa-moon fa-3x"></i>
                         </div>
-                        <div class="column is-narrow has-text-centered">
+                        <div class="column is-3">
                             <i class="fas fa-snowflake fa-3x"></i>
                         </div>
                     </div>      
@@ -66,7 +63,7 @@
             </div>
             <div class="tile is-parent">
               <article class="tile is-child box notification is-danger" id="incidents">
-                <h3 class="title">Incidents</h3>
+                <h3 class="title is-4">Incidents</h3>
                 <h4 class="subtitle has-text-weight-semibold">du camping</h4>
                 <div class="content">
                     <p class="title is-1 has-text-centered is-family-monospace"><%if(incidents){%><%=incidents.nb%><%}else{%>-<%}%></p>
