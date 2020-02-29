@@ -39,25 +39,12 @@
           </div>
           
           <div class="tile is-ancestor">
-            <div class="tile is-parent is-8" id="weather">
+            <div class="tile is-parent" id="weather">
               <article class="tile is-child box">
                 <h3 class="title is-4">Météo</h3>
                 <h4 class="subtitle has-text-weight-semibold">Lubéron</h4>
-                <div class="content">
-                    <div class="columns is-mobile">
-                        <div class="column is-3">
-                          <i class="fas fa-cloud fa-3x"></i>
-                        </div>
-                        <div class="column is-3">
-                            <i class="fas fa-sun fa-3x"></i>
-                        </div>
-                        <div class="column is-3">
-                            <i class="fas fa-moon fa-3x"></i>
-                        </div>
-                        <div class="column is-3">
-                            <i class="fas fa-snowflake fa-3x"></i>
-                        </div>
-                    </div>      
+                <div class="content has-text-centered">
+                  <i class="fas fa-cloud fa-3x"></i>
                 </div>
               </article>
             </div>
@@ -70,7 +57,19 @@
                 </div>
               </article>
             </div>
+
+            <div class="tile is-parent">
+              <article class="tile is-child box notification is-success" id="incidents">
+                <h3 class="title is-4">Chiffre affaires</h3>
+                <h4 class="subtitle has-text-weight-semibold">du camping</h4>
+                <div class="content">
+                    <p class="title is-1 has-text-centered is-family-monospace"><%if(sales){%><%=sales.tot%><%}else{%>-<%}%>€</p>
+                </div>
+              </article>
+            </div>
           </div>
+
+
     </section>
 </div>
 

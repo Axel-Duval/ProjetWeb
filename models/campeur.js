@@ -17,6 +17,19 @@ const campeur = {
         })
     },
 
+    findAllCampeurs : async (id)=>{
+        return new Promise((resolve, reject) => {
+            db.query("SELECT * FROM campeurs", [id], (err,rows)=>{
+                if (err) {
+                    reject(err)
+                }
+                else{
+                    resolve(rows)
+                }
+            })
+        })
+    },
+
     findCampeurByEmail : async (email)=>{
         return new Promise((resolve, reject) => {
             db.query("SELECT * FROM campeurs WHERE mail=?", [email], (err,rows)=>{

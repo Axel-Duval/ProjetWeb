@@ -1,0 +1,37 @@
+<%- include('../includes/header'); -%>
+
+<%- include('../includes/navbarPersonnel'); -%>
+
+<div class="w-40">
+    <section class="container margin-top-1 has-text-centered">
+        <h1 class="title is-size-1">Emplacement n°<span class="has-text-primary"><%=rows.id%></span></h1>
+    </section>
+
+    
+    <section class="margin-top-1">
+        <div class="card">
+            <div class="card-content">
+                <p class="is-size-4 has-text-weight-semibold">Surface : <span class="has-text-info has-text-weight-normal"><%=rows.surface%>m²</span></p>
+                <p class="is-size-4 has-text-weight-semibold">Electricité : <%if(rows.electricite==1){%><span class="has-text-success has-text-weight-normal">oui</span><%}else{%><span class="has-text-danger has-text-weight-normal">non</span><%}%></p>
+                <p class="is-size-4 has-text-weight-semibold">Occupé : <%if(occupied){%><span class="has-text-success has-text-weight-normal">oui</span><%}else{%><span class="has-text-danger has-text-weight-normal">non</span><%}%></p>
+                <%if(occupied){%>
+                    <p class="is-size-4 has-text-weight-semibold">Par : <span class="has-text-success has-text-weight-normal"><%=occupied.nom%></span>(<%=occupied.id%>)</p>
+                <%}if(rows.prestige == 0){%>
+                    <hr>
+                    <p class="is-size-4 has-text-weight-semibold">Châlet : <span class="has-text-info has-text-weight-normal"><%=rows.nom%></span></p>
+                    <p class="is-size-4 has-text-weight-semibold">Places : <span class="has-text-success has-text-weight-normal"><%=rows.nombrePersonnes%></span></p>
+                    <p class="is-size-4 has-text-weight-semibold">Date création : <span class="has-text-danger has-text-weight-normal"><%=rows.dateCreation%></span></p>
+                    <p class="is-size-4 has-text-weight-semibold">Zone : <span class="has-text-info has-text-weight-normal"><%=rows.libelle%></span></p>
+                <%}if(rows.prestige == 1){%>
+                    <hr>
+                    <p class="is-size-4 has-text-weight-semibold">Suite de luxe : <span class="has-text-info has-text-weight-normal"><%=rows.nom%></span></p>
+                    <p class="is-size-4 has-text-weight-semibold">Places : <span class="has-text-success has-text-weight-normal"><%=rows.nombrePersonnes%></span></p>
+                    <p class="is-size-4 has-text-weight-semibold">Date création : <span class="has-text-danger has-text-weight-normal"><%=rows.dateCreation%></span></p>
+                    <p class="is-size-4 has-text-weight-semibold">Zone : <span class="has-text-info has-text-weight-normal"><%=rows.libelle%></span></p>
+                <%}%>
+            </div>
+          </div>
+    </section>
+</div>
+
+<%- include('../includes/footer'); -%>

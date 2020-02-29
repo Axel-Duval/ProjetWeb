@@ -36,12 +36,14 @@ exports.index = async (req, res)=>{
         const campeursCome = await campeur.nbCampeursCome()
         const averageDays = await campeur.getAverageDays()
         const nbIncid = await campeur.getNbIncidents()
+        const _sales = await personnel.sales()
 
         const campToCome = campeursToCome[0]
         const campCome = campeursCome[0]
         const avDays = averageDays[0]
         const incidents = nbIncid[0]
-        res.render('manager/index',{title : "CDS | Espace manager",identifiant,campToCome,campCome,avDays,incidents})
+        const sales = ft.formatSales(_sales[0])
+        res.render('manager/index',{title : "CDS | Espace manager",identifiant,campToCome,campCome,avDays,incidents,sales})
     }
     catch{
         res.render('manager/index',{title : "CDS | Espace manager",identifiant})

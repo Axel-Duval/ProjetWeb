@@ -189,3 +189,13 @@ exports.formatDate = (date)=>{
     }
     return day + "/" + month + "/" + year
 }
+
+exports.formatSales = (sales)=>{
+    if(sales>1000){
+        sales = Math.round(sales/100)/10
+        return sales + 'K'
+    }
+    else{
+        return sales
+    }    
+}

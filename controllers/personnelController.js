@@ -107,11 +107,99 @@ exports.personnel_campeur_id = async (req, res)=>{
     try{
         const _rows = await campeur.findCampeurById(req.params.id)
         const rows = _rows[0]
-        console.log(rows)
         res.render('personnel/campeur_id',{title : "CDS | Campeur "+ req.params.id,rows})
     }
     catch{
         ft.setFlash(res,'warning',"Problème de connexion avec la base de donnée")
         res.redirect('/personnel/campeurs')
+    }
+}
+
+exports.personnel_campeurs_all = async (req, res)=>{
+    try{
+        
+        const rows = await campeur.findAllCampeurs()
+        res.render('personnel/campeurs_all',{title : "CDS | Tous les campeurs",rows,flash})
+    }
+    catch{
+        ft.setFlash(res,'warning',"Problème de connexion avec la base de donnée")
+        res.redirect('/personnel/campeurs/all')
+    }
+}
+
+// Display incidents
+exports.personnel_arrivees = async (req, res)=>{
+    try{
+        const flash = ft.getFlash(req)
+        const rows = await personnel.arrivals()
+        res.render('personnel/arrivees',{title : "CDS | Liste des arrivées",rows,flash})
+    }
+    catch{
+        const flash = {
+            type : 'warning',
+            text : 'Problème de connexion avec la base de donnée'
+        }
+        res.render('personnel/arrivees',{title : "CDS | Liste des arrivées",flash})
+    }
+}
+
+// Display incidents
+exports.personnel_departs = async (req, res)=>{
+    try{
+        const flash = ft.getFlash(req)
+        const rows = await personnel.departures()
+        res.render('personnel/departs',{title : "CDS | Liste des départs",rows,flash})
+    }
+    catch{
+        const flash = {
+            type : 'warning',
+            text : 'Problème de connexion avec la base de donnée'
+        }
+        res.render('personnel/departs',{title : "CDS | Liste des départs",flash})
+    }
+}
+
+exports.personnel_departs_checkout = async (req, res)=>{
+    try{
+        const rows = await personnel.checkout(req.params.id)
+        ft.setFlash(res,'success',"Le checkout viens d'être enregistré")
+        res.redirect('/personnel/departs')
+    }
+    catch{
+        ft.setFlash(res,'warning',"Problème de connexion avec la base de donnée")
+        res.redirect('/personnel/departs')
+    }
+}
+
+exports.personnel_arrivees_checkin = async (req, res)=>{
+    try{
+        const rows = await personnel.checkin(req.params.id)
+        ft.setFlash(res,'success',"Le checkin viens d'être enregistré")
+        res.redirect('/personnel/arrivees')
+    }
+    catch{
+        ft.setFlash(res,'warning',"Problème de connexion avec la base de donnée")
+        res.redirect('/personnel/arrivees')
+    }
+}
+
+// Display incidents
+exports.personnel_plan_interactif = async (req, res)=>{
+    res.render('personnel/plan_interactif',{title : "CDS | Plan interractif"})
+}
+
+exports.personnel_emplacement_id = async (req, res)=>{
+    try{
+        const _rows = await personnel.findEmplacementById(req.params.id)
+        const rows = _rows[0]
+        if(rows.dateCreation){
+            rows.dateCreation = ft.formatDate(rows.dateCreation)
+        }
+        const _occupied = await personnel.occupiedLocation(req.params.id)
+        const occupied = _occupied[0]
+        res.render('personnel/emplacement_id',{title : "CDS | Emplacement " + req.params.id,rows,occupied})
+    }
+    catch{
+        res.redirect('/personnel/plan')
     }
 }
