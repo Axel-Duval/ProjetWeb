@@ -27,10 +27,10 @@
                     <h2 class="title has-text-primary">Type</h2>
                     <%if(rows[0].prestige == 1){%>
                         <p class="title is-5">Suite de luxe : <span class="has-text-warning has-text-weight-light"><%=rows[0].nom%></span></p>
-                        <p class="title is-5">Nombre de places : <span class="has-text-warning has-text-weight-light"><%=rows[0].nombrePersonnes%></span></p>
+                        <p class="title is-5">Places : <span class="has-text-warning has-text-weight-light"><%=rows[0].nombrePersonnes%></span></p>
                     <%}else if(rows[0].prestige == 0){%>
                         <p class="title is-5">Châlet : <span class="has-text-success has-text-weight-light"><%=rows[0].nom%></span></p>
-                        <p class="title is-5">Nombre de places : <span class="has-text-success has-text-weight-light"><%=rows[0].nombrePersonnes%></span></p>
+                        <p class="title is-5">Places : <span class="has-text-success has-text-weight-light"><%=rows[0].nombrePersonnes%></span></p>
                     <%}else{%>
                         <p class="title is-5">Emplacement n°<span class="has-text-info has-text-weight-light"><%=rows[0].idEmplacement%></span></p>
                         <p class="title is-5">Electicité : <span class="has-text-success has-text-weight-light">oui</span></p>
