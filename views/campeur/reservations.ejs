@@ -38,11 +38,8 @@
                                 <div class="column is-2">
                                     <p class="title is-5">Id : <span class="has-text-weight-light"><%= rows[i].id %></span></p>
                                 </div>
-                                <div class="column is-3">
-                                    <p class="title is-5">Début : <span class="has-text-weight-light"><%= rows[i].dateDebut %></span></p>
-                                </div>
-                                <div class="column is-4">
-                                    <p class="title is-5">Fin : <span class="has-text-weight-light"><%= rows[i].dateFin %></span></p>
+                                <div class="column is-7">
+                                    <p class="title is-5 has-text-weight-light"><%= rows[i].dateDebut %> - <%= rows[i].dateFin %></p>
                                 </div>
                                 <div class="column is-2 has-text-right">
                                     <a class="button is-primary is-small is-rounded is-outlined" href="/campeur/reservation/<%=rows[i].id%>">Voir</a>
