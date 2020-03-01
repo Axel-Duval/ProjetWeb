@@ -2,59 +2,55 @@
 
 <%- include('../includes/navbarPersonnel'); -%>
 
-<div class="ovhi">
-
-    <section class="container margin-top-1 ">
-        <div class="columns is-centered">
-            <div class="column is-narrow has-text-centered">
-                <h1 class="title is-1 has-text-left">Campeurs</h1>
-                <h2 class="subtitle has-text-primary has-text-left">Dans le camping</h2>
-                <a class="button is-primary is-small is-rounded is-outlined" href="/personnel/campeurs/all">Tous les campeurs</a>
-            </div>
+<section class="container margin-top-1 margin-bottom-1">
+    <div class="columns is-centered is-mobile">
+        <div class="column is-narrow has-text-centered">
+            <h1 class="title is-1 has-text-left">Campeurs</h1>
+            <h2 class="subtitle has-text-primary has-text-left">Dans le camping</h2>
+            <a class="button is-primary is-small is-rounded is-outlined" href="/personnel/campeurs/all">Tous les campeurs</a>
         </div>
-    </section>
+    </div>
+</section>
 
-    <section>
-        <% if (flash){ %>
-            <div class="columns is-centered margin-top-1">
-                <div class="column is-5 has-text-centered">
-                    <div class="notification is-<%= flash.type %>">
-                        <button class="delete"></button>
-                        <%= locals.flash.text %>
-                    </div>
+<section>
+    <% if(flash){ %>
+        <div class="columns is-centered has-text-centered">
+            <div class="column is-6-desktop is-9-tablet is-12-mobile">
+                <div class="notification is-<%= flash.type %>">
+                    <button class="delete"></button>
+                    <%= flash.text %>
                 </div>
             </div>
-        <% } %>
-    </section>
+        </div>
+    <% } %>
+</section>
 
-    <section class="margin-top-1">
-        <% if(rows){ %>
-            <% for(var i=0; i < rows.length; i++){ %>
-                <div class="columns is-centered">
-                    <div class="column is-5">
-                        <div class="box">
-                            <div class="columns is-vcentered">
-                                <div class="column is-1">
-                                    <i class="fas fa-user fa-2x has-text-primary"></i>
-                                </div>
-                                <div class="column is-4">
-                                    <p class="title is-5">Nom : <span class="has-text-weight-light"><%= rows[i].nom %></span></p>
-                                </div>
-                                <div class="column is-5">
-                                    <p class="title is-5">Prenom : <span class="has-text-weight-light"><%= rows[i].prenom %></span></p>
-                                </div>
-                                <div class="column is-2 has-text-right">
-                                    <a class="button is-primary is-small is-rounded is-outlined" href="/personnel/campeur/<%=rows[i].id%>">Voir</a>
-                                </div>
+<section>
+    <% if(rows){ %>
+        <% for(var i=0; i < rows.length; i++){ %>
+            <div class="columns is-centered">
+                <div class="column is-6-desktop is-9-tablet is-12-mobile">
+                    <div class="box">
+                        <div class="columns is-vcentered is-mobile">
+                            <div class="column is-1">
+                                <i class="fas fa-user fa-2x has-text-primary"></i>
+                            </div>
+                            <div class="column is-4">
+                                <p class="title is-5">Nom : <span class="has-text-weight-light"><%= rows[i].nom %></span></p>
+                            </div>
+                            <div class="column is-5">
+                                <p class="title is-5">Prenom : <span class="has-text-weight-light"><%= rows[i].prenom %></span></p>
+                            </div>
+                            <div class="column is-2 has-text-right">
+                                <a class="button is-primary is-small is-rounded is-outlined" href="/personnel/campeur/<%=rows[i].id%>">Voir</a>
                             </div>
                         </div>
                     </div>
                 </div>
-            <% } %>
+            </div>
         <% } %>
-    </section>
-
-</div>
+    <% } %>
+</section>
 
 <script src="/js/notifications.js"></script>
 

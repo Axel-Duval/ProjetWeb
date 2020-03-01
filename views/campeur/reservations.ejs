@@ -2,60 +2,59 @@
 
 <%- include('../includes/navbarCampeur'); -%>
 
-<div class="ovhi">
-    <section class="container margin-top-1">
-        <div class="columns columns is-centered is-mobile">
-            <div class="column is-narrow has-text-centered">
-                <h1 class="title is-size-1 has-text-left">Mes réservations</h1>
-                <h2 class="subtitle is-size-6 has-text-primary has-text-left">Bonjour <%=prenom%></h2>
+<section class="container margin-top-1 margin-bottom-1">
+    <div class="columns is-centered is-mobile">
+        <div class="column is-narrow has-text-centered">
+            <h1 class="title is-1 has-text-left">Vos réservations</h1>
+            <h2 class="subtitle has-text-primary has-text-left">Bonjour <%=prenom%></h2>
+        </div>
+    </div>
+</section>
+
+<section>
+    <% if(flash){ %>
+        <div class="columns is-centered has-text-centered">
+            <div class="column is-6-desktop is-9-tablet is-12-mobile">
+                <div class="notification is-<%= flash.type %>">
+                    <button class="delete"></button>
+                    <%= locals.flash.text %>
+                </div>
             </div>
         </div>
-    </section>
+    <% } %>
+</section>
 
-    
-    <section class="margin-top-1">
-        <% if (locals.rows) { %>
-            <table>
-                <% for(var i=0; i < rows.length; i++) { %>
-                    <div class="columns">
-                        <div class="column is-6 is-offset-3">
-                            <div class="box">
-                                <div class="columns is-vcentered has-text-left is-mobile is-desktop">
-                                    <div class="column is-1">
-                                        <span class="has-text-info"><i class="fas fa-map-signs fa-2x"></i></span>
-                                    </div>
-                                    <div class="column is-2">
-                                        <p class="title is-5">Id : <span class="has-text-weight-light"><%= rows[i].id %></span></p>
-                                    </div>
-                                    <div class="column is-4">
-                                        <p class="title is-5">Début : <span class="has-text-weight-light"><%= rows[i].dateDebut %></span></p>
-                                    </div>
-                                    <div class="column is-4">
-                                        <p class="title is-5">Fin : <span class="has-text-weight-light"><%= rows[i].dateFin %></span></p>
-                                    </div>
-                                    <div class="column is-1">
-                                        <a class="button is-small is-info" href="/campeur/reservation/<%=rows[i].id%>">Voir</a>
-                                    </div>
+<section>
+    <% if (locals.rows) { %>
+        <table>
+            <% for(var i=0; i < rows.length; i++) { %>
+                <div class="columns is-centered">
+                    <div class="column is-6-desktop">
+                        <div class="box">
+                            <div class="columns is-vcentered">
+                                <div class="column is-1">
+                                    <i class="has-text-primary fas fa-map-signs fa-2x"></i>
+                                </div>
+                                <div class="column is-2">
+                                    <p class="title is-5">Id : <span class="has-text-weight-light"><%= rows[i].id %></span></p>
+                                </div>
+                                <div class="column is-3">
+                                    <p class="title is-5">Début : <span class="has-text-weight-light"><%= rows[i].dateDebut %></span></p>
+                                </div>
+                                <div class="column is-4">
+                                    <p class="title is-5">Fin : <span class="has-text-weight-light"><%= rows[i].dateFin %></span></p>
+                                </div>
+                                <div class="column is-2 has-text-right">
+                                    <a class="button is-primary is-small is-rounded is-outlined" href="/campeur/reservation/<%=rows[i].id%>">Voir</a>
                                 </div>
                             </div>
                         </div>
                     </div>
-                <% } %>
-            </table>
-        <%}%>
-    </section>
-
-    <div class="columns is-centered">
-        <div class="column is-4 has-text-centered">
-            <% if (locals.flash) { %>
-            <div class="notification is-<%= flash.type %>">
-                <button class="delete"></button>
-                <%= locals.flash.text %>
-            </div>
-            <%}%>
-        </div>
-    </div>
-</div>
+                </div>
+            <% } %>
+        </table>
+    <%}%>
+</section>
 
 <script src="/js/notifications.js"></script>
 

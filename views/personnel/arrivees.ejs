@@ -2,91 +2,83 @@
 
 <%- include('../includes/navbarPersonnel'); -%>
 
-<div class="ovhi">
-    <section class="container margin-top-1 ">
-        <div class="columns columns is-centered is-mobile">
-            <div class="column is-narrow has-text-centered">
-                <h1 class="title is-size-1 has-text-left">Arrivées</h1>
-                <h2 class="subtitle is-size-6 has-text-primary has-text-left">aujourd'hui</h2>
+<section class="container margin-top-1 margin-bottom-1">
+    <div class="columns is-centered is-mobile">
+        <div class="column is-narrow has-text-centered">
+            <h1 class="title is-1 has-text-left">Arrivées</h1>
+            <h2 class="subtitle has-text-primary has-text-left">Du jour</h2>
+            <a class="button is-primary is-small is-rounded is-outlined" href="/personnel/departs">Voir les départs</a>
+        </div>
+    </div>
+</section>
+
+<section>
+    <% if(flash){ %>
+        <div class="columns is-centered has-text-centered">
+            <div class="column is-6-desktop is-9-tablet is-12-mobile">
+                <div class="notification is-<%= flash.type %>">
+                    <button class="delete"></button>
+                    <%= locals.flash.text %>
+                </div>
             </div>
         </div>
-    </section>
+    <% } %>
+</section>
 
-    <section class="margin-top-1">
-        <% if (locals.rows) { %>
-            <table>
-                <% for(var i=0; i < rows.length; i++) { %>
-                    <div class="columns has-text-centered">
-                        <div class="column is-6 is-offset-3">
+<section>
+    <% if (locals.rows) { %>
+        <table>
+            <% for(var i=0; i < rows.length; i++) { %>
+                <div class="columns is-centered">
+                    <div class="column is-6-desktop is-9-tablet is-12-mobile">
                         <div class="box">
                             <% if (rows[i].nomChalet) { %>
                                 <% if(rows[i].prestige == 1){ %>
-                                    <div class="columns is-vcentered is-desktop">
-                                        <div class="column is-2">
-                                            <span class="icon has-text-warning"><i class="fas fa-star fa-2x"></i></span>
+                                    <div class="columns is-vcentered is-mobile">
+                                        <div class="column is-1">
+                                            <i class="fas fa-star fa-2x has-text-primary"></i>
                                         </div>
-                                        <div class="column is-4">
-                                            <p class="title is-5">Nom : <span class="has-text-weight-light"><%= rows[i].nom %> </span>{<%= rows[i].idCampeur %>}</p>
+                                        <div class="column is-5">
+                                            <p class="title is-5">Nom : <span class="has-text-weight-light"><%= rows[i].nom %> </span><span class="has-text-primary"><%= rows[i].idCampeur %></span></p>
                                         </div>
                                         <div class="column is-4">
                                             <p class="title is-5">Suite de luxe : <span class="has-text-weight-light"><%= rows[i].nomChalet %></span></p>
                                         </div>
-                                        <div class="column is-2">
-                                            <a class="button is-small is-warning" href="/personnel/arrivees/<%=rows[i].id%>">Checkin</a>
-                                        </div>
-                                    </div>
                                 <% }else{ %>
-                                    <div class="columns is-vcentered has-text-left is-mobile">
-                                        <div class="column is-2">
-                                            <span class="icon has-text-success"><i class="fas fa-home fa-2x"></i></span>
+                                    <div class="columns is-vcentered is-mobile">
+                                        <div class="column is-1">
+                                            <i class="fas fa-home fa-2x has-text-primary"></i>
                                         </div>
-                                        <div class="column is-4">
-                                            <p class="title is-5">Nom : <span class="has-text-weight-light"><%= rows[i].nom %> </span>{<%= rows[i].idCampeur %>}</p>
+                                        <div class="column is-5">
+                                            <p class="title is-5">Nom : <span class="has-text-weight-light"><%= rows[i].nom %> </span><span class="has-text-primary"><%= rows[i].idCampeur %></span></p>
                                         </div>
                                         <div class="column is-4">
                                             <p class="title is-5">Châlet : <span class="has-text-weight-light"><%= rows[i].nomChalet %></span></p>
                                         </div>
-                                        <div class="column is-2">
-                                            <a class="button is-small is-success" href="/personnel/arrivees/<%=rows[i].id%>">Checkin</a>
-                                        </div>
-                                    </div>
                                 <% } %>
                             <% }else{ %>
-                                <div class="columns is-vcentered is-desktop">
-                                    <div class="column is-2">
-                                        <span class="icon has-text-info"><i class="fab fa-pagelines fa-2x"></i></span>
+                                <div class="columns is-vcentered is-mobile">
+                                    <div class="column is-1">
+                                        <i class="fab fa-pagelines fa-2x has-text-primary"></i>
                                     </div>
-                                    <div class="column is-4">
-                                        <p class="title is-5">Nom : <span class="has-text-weight-light"><%= rows[i].nom %> </span>{<%= rows[i].idCampeur %>}</p>
+                                    <div class="column is-5">
+                                        <p class="title is-5">Nom : <span class="has-text-weight-light"><%= rows[i].nom %> </span><span class="has-text-primary"><%= rows[i].idCampeur %></span></p>
                                     </div>
                                     <div class="column is-4">
                                         <p class="title is-5">Emp n° <span class="has-text-weight-light"><%= rows[i].id %></span></p>
                                     </div>
-                                    <div class="column is-2">
-                                        <a class="button is-small is-info" href="/personnel/arrivees/<%=rows[i].id%>">Checkin</a>
-                                    </div>
-                                </div>
                             <% } %>
-                        </div>
+                                <div class="column is-2 has-text-right">
+                                    <a class="button is-primary is-small is-rounded is-outlined" href="/personnel/arrivees/<%=rows[i].id%>">Check</a>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                <% } %>
-            </table>
-        <%}%>
-    </section>
-
-
-    <div class="columns is-centered">
-        <div class="column is-4 has-text-centered">
-            <% if (locals.flash) { %>
-            <div class="notification is-<%= flash.type %>">
-                <button class="delete"></button>
-                <%= locals.flash.text %>
-            </div>
-            <%}%>
-        </div>
-    </div>
-</div>
+                </div>
+            <% } %>
+        </table>
+    <%}%>
+</section>
 
 <script src="/js/notifications.js"></script>
 

@@ -2,20 +2,36 @@
 
 <%- include('../includes/navbar'); -%>
 
-<script src="/js/notifications.js"></script>
-
-
-<section class="container margin-top-1 ovhi">
+<section class="container margin-top-1 margin-bottom-1">
     <div class="columns is-centered is-mobile">
         <div class="column is-narrow has-text-centered">
+            <h1 class="title is-1 has-text-left">Connexion</h1>
+            <h2 class="subtitle has-text-primary has-text-left">Accedez à votre espace</h2>
+        </div>
+    </div>
+</section>
 
-            <h1 class="title is-size-1 has-text-left">Connexion</h1>
-            <h2 class="subtitle is-size-6 has-text-primary has-text-left">Accédez à votre compte</h2>
+<section>
+    <% if(flash){ %>
+        <div class="columns is-centered has-text-centered">
+            <div class="column is-3-desktop is-4-tablet is-6-mobile is-offset-3-mobile has-text-centered">
+                <div class="notification is-<%= flash.type %>">
+                    <button class="delete"></button>
+                    <%= locals.flash.text %>
+                </div>
+            </div>
+        </div>
+    <% } %>
+</section>
 
+
+<section>
+    <div class="columns is-centered">
+        <div class="column is-3-desktop is-4-tablet is-6-mobile is-offset-3-mobile has-text-centered">
             <form method="post">
                 <div class="field margin-form">
                     <p class="control has-icons-left has-icons-right">
-                    <input class="input" type="text" placeholder="Email" name="email" required>  <!-- Email/Username -->
+                    <input class="input" type="text" placeholder="Email" name="email" required>
                     <span class="icon is-small is-left">
                         <i class="fas fa-envelope"></i>
                     </span>
@@ -23,32 +39,22 @@
                 </div>
                 <div class="field margin-form">
                     <p class="control has-icons-left has-icons-right">
-                    <input class="input" type="password" placeholder="Mot de passe" name="password" required>    <!-- Password -->
+                    <input class="input" type="password" placeholder="Mot de passe" name="password" required>
                     <span class="icon is-small is-left">
                         <i class="fas fa-lock"></i>
-                    </span>                 
+                    </span>
                     </p>
                 </div>
                 <div class="control has-text-centered margin-button">
-                    <button type="submit" class="button is-rounded">Se connecter</button>   <!-- Se connecter -->
+                    <button type="submit" class="button is-primary is-small is-rounded is-outlined">Se connecter</button>
+                    <a class="button is-secondary is-small is-rounded is-outlined" href="/inscription">Je n'ai pas de compte !</a>
                 </div>
-            </form>
-            <a href="/inscription" class="button is-primary is-inverted">Je n'ai pas encore de compte !</a>  <!-- Pas encore de compte -->           
-        </div>
-    </div>
-    <div class="columns is-centered is-mobile">
-        <div class="column is-half has-text-centered">
-            <% if (locals.flash) { %>
-            <div class="notification is-<%= flash.type %>">
-                <button class="delete"></button>
-                <%= locals.flash.text %>
-            </div>
-            <%}%>
+            </form>          
         </div>
     </div>
 </section>
 
 
-
+<script src="/js/notifications.js"></script>
 
 <%- include('../includes/footer'); -%>

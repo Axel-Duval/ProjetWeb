@@ -2,76 +2,93 @@
 
 <%- include('../includes/navbarManager'); -%>
 
-<div class="w-60">
-    <section class="container margin-top-1 has-text-centered">
-      <h1 class="title is-size-1">Bonjour <span class="has-text-primary"><%=identifiant%></span></h1>
-    </section>
+<section class="container margin-top-1 margin-bottom-1">
+  <div class="columns is-centered is-mobile">
+      <div class="column is-narrow has-text-centered">
+        <h1 class="title is-size-1">Bonjour <span class="has-text-primary"><%=identifiant%></span></h1>
+      </div>
+  </div>
+</section>
+
+<section>
+  <% if(flash){ %>
+      <div class="columns is-centered has-text-centered">
+          <div class="column is-8-desktop is-10-tablet is-12-mobile">
+              <div class="notification is-<%=flash.type%>">
+                  <button class="delete"></button>
+                  <%= flash.text %>
+              </div>
+          </div>
+      </div>
+  <% } %>
+</section>
     
-    <section class="margin-top-1">
-        <div class="tile is-ancestor">
-            <div class="tile is-parent">
-              <article class="tile is-child box notification is-success">
-                <h3 class="title is-4">Réservations</h3>
-                <h4 class="subtitle has-text-weight-semibold">à venir</h4>
-                <div class="content">
-                    <p class="title is-1 has-text-centered is-family-monospace"><%if(campToCome){%><%=campToCome.campeurs%><%}else{%>-<%}%></p>
-                </div>
-              </article>
+<section>
+  <div class="columns is-centered">
+    <div class="column is-8-desktop is-10-tablet is-12-mobile">
+      <div class="tile is-ancestor">
+        <div class="tile is-parent">
+          <article class="tile is-child box notification is-success">
+            <h3 class="title is-4">Réservations</h3>
+            <h4 class="subtitle has-text-weight-semibold">à venir</h4>
+            <div class="content">
+                <p class="title is-1 has-text-centered is-family-monospace"><%if(campToCome){%><%=campToCome.campeurs%><%}else{%>-<%}%></p>
             </div>
-            <div class="tile is-parent">
-              <article class="tile is-child box notification is-info">
-                <h3 class="title is-4">Réservations</h3>
-                <h4 class="subtitle has-text-weight-semibold">passées</h4>
-                <div class="content">
-                    <p class="title is-1 has-text-centered is-family-monospace"><%if(campCome){%><%=campCome.campeurs%><%}else{%>-<%}%></p>
-                </div>
-              </article>
+          </article>
+        </div>
+        <div class="tile is-parent">
+          <article class="tile is-child box notification is-info">
+            <h3 class="title is-4">Réservations</h3>
+            <h4 class="subtitle has-text-weight-semibold">passées</h4>
+            <div class="content">
+                <p class="title is-1 has-text-centered is-family-monospace"><%if(campCome){%><%=campCome.campeurs%><%}else{%>-<%}%></p>
             </div>
-            <div class="tile is-parent">
-              <article class="tile is-child box notification is-warning">
-                <h3 class="title is-4">Séjour</h3>
-                <h4 class="subtitle has-text-weight-semibold">moyen en jours</h4>
-                <div class="content">
-                  <p class="title is-1 has-text-centered is-family-monospace"><%if(avDays){%><%=avDays.av%><%}else{%>-<%}%></p>
-                </div>
-              </article>
+          </article>
+        </div>
+        <div class="tile is-parent">
+          <article class="tile is-child box notification is-warning">
+            <h3 class="title is-4">Séjour</h3>
+            <h4 class="subtitle has-text-weight-semibold">moyen en jours</h4>
+            <div class="content">
+              <p class="title is-1 has-text-centered is-family-monospace"><%if(avDays){%><%=avDays.av%><%}else{%>-<%}%></p>
             </div>
-          </div>
-          
-          <div class="tile is-ancestor">
-            <div class="tile is-parent" id="weather">
-              <article class="tile is-child box">
-                <h3 class="title is-4">Météo</h3>
-                <h4 class="subtitle has-text-weight-semibold">Lubéron</h4>
-                <div class="content has-text-centered">
-                  <i class="fas fa-cloud fa-3x"></i>
-                </div>
-              </article>
+          </article>
+        </div>
+      </div>
+      
+      <div class="tile is-ancestor">
+        <div class="tile is-parent" id="weather">
+          <article class="tile is-child box">
+            <h3 class="title is-4">Météo</h3>
+            <h4 class="subtitle has-text-weight-semibold">Lubéron</h4>
+            <div class="content has-text-centered">
+              <i class="fas fa-cloud fa-3x"></i>
             </div>
-            <div class="tile is-parent">
-              <article class="tile is-child box notification is-danger" id="incidents">
-                <h3 class="title is-4">Incidents</h3>
-                <h4 class="subtitle has-text-weight-semibold">du camping</h4>
-                <div class="content">
-                    <p class="title is-1 has-text-centered is-family-monospace"><%if(incidents){%><%=incidents.nb%><%}else{%>-<%}%></p>
-                </div>
-              </article>
+          </article>
+        </div>
+        <div class="tile is-parent">
+          <article class="tile is-child box notification is-danger" id="incidents">
+            <h3 class="title is-4">Incidents</h3>
+            <h4 class="subtitle has-text-weight-semibold">du camping</h4>
+            <div class="content">
+                <p class="title is-1 has-text-centered is-family-monospace"><%if(incidents){%><%=incidents.nb%><%}else{%>-<%}%></p>
             </div>
+          </article>
+        </div>
 
-            <div class="tile is-parent">
-              <article class="tile is-child box notification is-success" id="incidents">
-                <h3 class="title is-4">Chiffre affaires</h3>
-                <h4 class="subtitle has-text-weight-semibold">du camping</h4>
-                <div class="content">
-                    <p class="title is-1 has-text-centered is-family-monospace"><%if(sales){%><%=sales.tot%><%}else{%>-<%}%>€</p>
-                </div>
-              </article>
+        <div class="tile is-parent">
+          <article class="tile is-child box notification is-success" id="incidents">
+            <h3 class="title is-4">Chiffre affaires</h3>
+            <h4 class="subtitle has-text-weight-semibold">du camping</h4>
+            <div class="content">
+                <p class="title is-1 has-text-centered is-family-monospace"><%if(sales){%><%=sales.tot%><%}else{%>-<%}%>€</p>
             </div>
-          </div>
-
-
-    </section>
-</div>
+          </article>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
 <script src="/js/managerCards.js"></script>
 

@@ -2,61 +2,55 @@
 
 <%- include('../includes/navbarManager'); -%>
 
-<div class="ovhi">
-    <section class="container margin-top-1">
-        <div class="columns columns is-centered is-mobile">
-            <div class="column is-narrow has-text-centered">
-                <h1 class="title is-size-1 has-text-left">Personnel</h1>
-                <h2 class="subtitle is-size-6 has-text-primary has-text-left">du camping des sources</h2>
-            </div>
+<section class="container margin-top-1 margin-bottom-1">
+    <div class="columns is-centered is-mobile">
+        <div class="column is-narrow has-text-centered">
+            <h1 class="title is-1 has-text-left">Personnel</h1>
+            <h2 class="subtitle has-text-primary has-text-left">Tout le personnel</h2>
+            <a class="button is-primary is-small is-rounded is-outlined" href="/manager/personnel/create">Créer</a>
         </div>
-        <div class="columns columns is-centered is-mobile">
-            <div class="column is-narrow has-text-centered">
-                <a class="button is-primary has-text-centered" href="personnel/create">Créer</a>
-            </div>
-        </div>
-    </section>
+    </div>
+</section>
 
-    
-    
-    <% if (locals.rows) { %>
-        <table>
-            <% for(var i=0; i < rows.length; i++) { %>
-                <div class="columns">
-                    <div class="column is-4 is-offset-4">
-                        <div class="box">
-                            <div class="columns is-vcentered has-text-left is-mobile">
-                                <div class="column is-2">
-                                    <span class="has-text-<%if(rows[i].estManager == 1){%>warning<%}else{%>info<%}%>"><i class="fas fa-user fa-2x"></i></span>
-                                </div>
-                                <div class="column is-2">
-                                    <p class="title is-5"><%= rows[i].id %></p>
-                                </div>
-                                <div class="column is-6">
-                                    <p class="title is-5"><span class="has-text-weight-light"><%= rows[i].identifiant %></span></p>
-                                </div>
-                                <div class="column is-2">
-                                    <a class="button is-small is-info" href="personnel/<%=rows[i].id%>">Voir</a>
-                                </div>
+<section>
+    <% if(flash){ %>
+        <div class="columns is-centered has-text-centered">
+            <div class="column is-5-desktop is-7-tablet is-10-mobile">
+                <div class="notification is-<%= flash.type %>">
+                    <button class="delete"></button>
+                    <%= locals.flash.text %>
+                </div>
+            </div>
+        </div>
+    <% } %>
+</section>
+
+<section>
+    <% if(rows){ %>
+        <% for(var i=0; i < rows.length; i++){ %>
+            <div class="columns is-centered">
+                <div class="column is-5-desktop is-7-tablet is-10-mobile">
+                    <div class="box">
+                        <div class="columns is-vcentered is-mobile">
+                            <div class="column is-3">
+                                <i class="fas fa-user fa-2x has-text-<%if(rows[i].estManager == 1){%>warning<%}else{%>primary<%}%>"></i>
+                            </div>
+                            <div class="column is-2">
+                                <p class="title is-5">Id : <span class="has-text-weight-light"><%= rows[i].id %></span></p>
+                            </div>
+                            <div class="column is-5">
+                                <p class="title is-5">Nom : <span class="has-text-weight-light"><%= rows[i].identifiant %></span></p>
+                            </div>
+                            <div class="column is-2 has-text-right">
+                                <a class="button is-primary is-small is-rounded is-outlined" href="/manager/personnel/<%=rows[i].id%>">Voir</a>
                             </div>
                         </div>
                     </div>
                 </div>
-            <% } %>
-        </table>
-    <%}%>
-
-    <div class="columns is-centered">
-        <div class="column is-4 has-text-centered">
-            <% if (locals.flash) { %>
-            <div class="notification is-<%= flash.type %>">
-                <button class="delete"></button>
-                <%= locals.flash.text %>
             </div>
-            <%}%>
-        </div>
-    </div>
-</div>
+        <% } %>
+    <% } %>
+</section>
 
 <script src="/js/notifications.js"></script>
 

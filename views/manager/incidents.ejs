@@ -2,60 +2,59 @@
 
 <%- include('../includes/navbarManager'); -%>
 
-<div class="ovhi">
-    <section class="container margin-top-1 ">
-        <div class="columns columns is-centered is-mobile">
-            <div class="column is-narrow has-text-centered">
-                <h1 class="title is-size-1 has-text-left">Incidents</h1>
-                <h2 class="subtitle is-size-6 has-text-primary has-text-left">du camping des sources</h2>
+<section class="container margin-top-1 margin-bottom-1">
+    <div class="columns is-centered is-mobile">
+        <div class="column is-narrow has-text-centered">
+            <h1 class="title is-1 has-text-left">Incidents</h1>
+            <h2 class="subtitle has-text-primary has-text-left">Dans le camping</h2>
+        </div>
+    </div>
+</section>
+
+<section>
+    <% if(flash){ %>
+        <div class="columns is-centered has-text-centered">
+            <div class="column is-8-desktop">
+                <div class="notification is-<%= flash.type %>">
+                    <button class="delete"></button>
+                    <%= locals.flash.text %>
+                </div>
             </div>
         </div>
-    </section>
+    <% } %>
+</section>
 
-    
-    <section class="margin-top-1">
-    <% if (locals.rows) { %>
-        <table>
-            <% for(var i=0; i < rows.length; i++) { %>
-                <div class="columns">
-                    <div class="column is-8 is-offset-2">
-                        <div class="box">
-                            <div class="columns is-vcentered">
-                                <div class="column is-1">
-                                    <span class="has-text-<%if(rows[i].libelle == 'Bruit'){%>info<%}else if(rows[i].libelle == 'Secours'){%>danger<%}else if(rows[i].libelle == 'Propreté'){%>warning<%}else{%>success<%}%>"><i class="fas <%if(rows[i].libelle == 'Bruit'){%>fa-volume-up<%}else if(rows[i].libelle == 'Secours'){%>fa-exclamation-triangle<%}else if(rows[i].libelle == 'Propreté'){%>fa-broom<%}else{%>fa-asterisk<%}%> fa-2x"></i></span>
-                                </div>
-                                <div class="column is-2">
-                                    <p class="title is-5"><%= rows[i].endroit %></p>
-                                </div>
-                                <div class="column is-3">
-                                    <p class="title is-5">Tel : <span class="has-text-weight-light"><%= rows[i].telephone %></span></p>
-                                </div>
-                                <div class="column is-5">
-                                    <p class="title is-5">Heure : <span class="has-text-weight-light"><%= rows[i].horodatage %></span></p>
-                                </div>
-                                <div class="column is-1">
-                                    <a class="button is-small is-danger" href="incident/<%=rows[i].id%>/delete">Supprimer</a>
-                                </div>
+<section>
+<% if (locals.rows) { %>
+    <table>
+        <% for(var i=0; i < rows.length; i++) { %>
+            <div class="columns is-centered">
+                <div class="column is-8-desktop">
+                    <div class="box">
+                        <div class="columns is-vcentered">
+                            <div class="column is-1">
+                                <i class="has-text-danger fas fa-2x <%if(rows[i].libelle == 'Bruit'){%>fa-volume-up<%}else if(rows[i].libelle == 'Secours'){%>fa-exclamation-triangle<%}else if(rows[i].libelle == 'Propreté'){%>fa-broom<%}else{%>fa-asterisk<%}%>"></i>
+                            </div>
+                            <div class="column is-3">
+                                <p class="title is-5"><%= rows[i].endroit %></p>
+                            </div>
+                            <div class="column is-3">
+                                <p class="title is-5">Tel : <span class="has-text-weight-light"><%= rows[i].telephone %></span></p>
+                            </div>
+                            <div class="column is-3">
+                                <p class="title is-5">Heure : <span class="has-text-weight-light"><%= rows[i].horodatage %></span></p>
+                            </div>
+                            <div class="column is-2 has-text-right">
+                                <a class="button is-danger is-small is-rounded is-outlined" href="/manager/incident/<%=rows[i].id%>/delete">Clore</a>
                             </div>
                         </div>
                     </div>
                 </div>
-            <% } %>
-        </table>
-    <%}%>
-    </section>
-
-    <div class="columns is-centered">
-        <div class="column is-4 has-text-centered">
-            <% if (locals.flash) { %>
-            <div class="notification is-<%= flash.type %>">
-                <button class="delete"></button>
-                <%= locals.flash.text %>
             </div>
-            <%}%>
-        </div>
-    </div>
-</div>
+        <% } %>
+    </table>
+<%}%>
+</section>
 
 <script src="/js/notifications.js"></script>
 

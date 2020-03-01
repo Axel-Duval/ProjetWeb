@@ -2,36 +2,44 @@
 
 <%- include('../includes/navbarPersonnel'); -%>
 
-<div class="w-40">
-    <section class="container margin-top-1 has-text-centered">
-        <h1 class="title is-size-1">Emplacement n°<span class="has-text-primary"><%=rows.id%></span></h1>
-    </section>
+<section class="container margin-top-1 margin-bottom-1">
+    <div class="columns is-centered is-mobile">
+        <div class="column is-narrow has-text-centered">
+            <h1 class="title is-1 has-text-left">Emplacement</h1>
+            <h2 class="subtitle has-text-primary has-text-left">N°<%=rows.id%></h2>
+            <a class="button is-primary is-small is-rounded is-outlined" href="/personnel/plan">Voir la carte</a>
+        </div>
+    </div>
+</section>
 
-    
-    <section class="margin-top-1">
-        <div class="card">
-            <div class="card-content">
-                <p class="is-size-4 has-text-weight-semibold">Surface : <span class="has-text-info has-text-weight-normal"><%=rows.surface%>m²</span></p>
-                <p class="is-size-4 has-text-weight-semibold">Electricité : <%if(rows.electricite==1){%><span class="has-text-success has-text-weight-normal">oui</span><%}else{%><span class="has-text-danger has-text-weight-normal">non</span><%}%></p>
-                <p class="is-size-4 has-text-weight-semibold">Occupé : <%if(occupied){%><span class="has-text-success has-text-weight-normal">oui</span><%}else{%><span class="has-text-danger has-text-weight-normal">non</span><%}%></p>
-                <%if(occupied){%>
-                    <p class="is-size-4 has-text-weight-semibold">Par : <span class="has-text-success has-text-weight-normal"><%=occupied.nom%></span>(<%=occupied.id%>)</p>
-                <%}if(rows.prestige == 0){%>
-                    <hr>
-                    <p class="is-size-4 has-text-weight-semibold">Châlet : <span class="has-text-info has-text-weight-normal"><%=rows.nom%></span></p>
-                    <p class="is-size-4 has-text-weight-semibold">Places : <span class="has-text-success has-text-weight-normal"><%=rows.nombrePersonnes%></span></p>
-                    <p class="is-size-4 has-text-weight-semibold">Date création : <span class="has-text-danger has-text-weight-normal"><%=rows.dateCreation%></span></p>
-                    <p class="is-size-4 has-text-weight-semibold">Zone : <span class="has-text-info has-text-weight-normal"><%=rows.libelle%></span></p>
-                <%}if(rows.prestige == 1){%>
-                    <hr>
-                    <p class="is-size-4 has-text-weight-semibold">Suite de luxe : <span class="has-text-info has-text-weight-normal"><%=rows.nom%></span></p>
-                    <p class="is-size-4 has-text-weight-semibold">Places : <span class="has-text-success has-text-weight-normal"><%=rows.nombrePersonnes%></span></p>
-                    <p class="is-size-4 has-text-weight-semibold">Date création : <span class="has-text-danger has-text-weight-normal"><%=rows.dateCreation%></span></p>
-                    <p class="is-size-4 has-text-weight-semibold">Zone : <span class="has-text-info has-text-weight-normal"><%=rows.libelle%></span></p>
-                <%}%>
+
+<section>
+    <div class="columns is-centered">
+        <div class="column is-4-desktop is-6-tablet is-8-mobile is-offset-2-mobile">
+            <div class="card">
+                <div class="card-content">
+                    <p class="title is-5">Surface : <span class="has-text-info "><%=rows.surface%>m²</span></p>
+                    <p class="title is-5">Electricité : <%if(rows.electricite==1){%><span class="has-text-success ">oui</span><%}else{%><span class="has-text-danger ">non</span><%}%></p>
+                    <p class="title is-5">Occupé : <%if(occupied){%><span class="has-text-success ">oui</span><%}else{%><span class="has-text-danger ">non</span><%}%></p>
+                    <%if(occupied){%>
+                        <p class="title is-5">Par : <span class="has-text-primary"><%=occupied.nom%></span> - <span class="has-text-primary"><%=occupied.id%></span></p>
+                    <%}if(rows.prestige == 0){%>
+                        <hr>
+                        <p class="title is-5">Châlet : <span class="has-text-info "><%=rows.nom%></span></p>
+                        <p class="title is-5">Places : <span class="has-text-success "><%=rows.nombrePersonnes%></span></p>
+                        <p class="title is-5">Date création : <span class="has-text-danger "><%=rows.dateCreation%></span></p>
+                        <p class="title is-5">Zone : <span class="has-text-info "><%=rows.libelle%></span></p>
+                    <%}if(rows.prestige == 1){%>
+                        <hr>
+                        <p class="title is-5">Suite de luxe : <span class="has-text-info "><%=rows.nom%></span></p>
+                        <p class="title is-5">Places : <span class="has-text-success "><%=rows.nombrePersonnes%></span></p>
+                        <p class="title is-5">Date création : <span class="has-text-danger "><%=rows.dateCreation%></span></p>
+                        <p class="title is-5">Zone : <span class="has-text-info "><%=rows.libelle%></span></p>
+                    <%}%>
+                </div>
             </div>
-          </div>
-    </section>
-</div>
+        </div>
+    </div>
+</section>
 
 <%- include('../includes/footer'); -%>

@@ -2,60 +2,65 @@
 
 <%- include('../includes/navbarManager'); -%>
 
-
-<div class="ovhi">
-    <section class="container margin-top-1">
-        <div class="columns columns is-centered is-mobile">
-            <div class="column is-narrow has-text-centered">
-    
-                <h1 class="title is-size-1 has-text-left">Modification</h1>
-                <h2 class="subtitle is-size-6 has-text-primary has-text-left">du personnel</h2>
-    
-                <form method="post">
-                    <div class="field">
-                        <p class="control has-icons-left has-icons-right">
-                        <input class="input" type="text" value="<%=pers.identifiant%>" name="nom" required>  <!-- Identifiant -->
-                        <span class="icon is-small is-left">
-                            <i class="fas fa-user-friends"></i>
-                        </span>
-                        </p>
-                    </div>
-                    <div class="field">
-                        <p class="control has-icons-left has-icons-right">
-                        <input class="input" type="password" placeholder="Mot de passe" name="password" required>    <!-- Mot de passe -->
-                        <span class="icon is-small is-left">
-                            <i class="fas fa-lock"></i>
-                        </span>                
-                        </p>
-                    </div>
-                    <div class="field">
-                        <p class="control has-icons-left has-icons-right">
-                        <input class="input" type="password" placeholder="Confirmation mdp" name="confirm_password" required>    <!-- Confirmation du mot de passe -->
-                        <span class="icon is-small is-left">
-                            <i class="fas fa-lock"></i>
-                        </span>                
-                        </p>
-                    </div>
-                    <div class="control has-text-centered margin-button">
-                        <button type="submit" class="button is-rounded">Modifier</button>   <!-- Creation -->
-                    </div>
-                </form>
-                <a href="/manager/personnel/<%=pers.id%>/delete" class="button is-danger is-inverted">Supprimer</a>  <!-- Annulation -->
-                <a href="/manager/personnel" class="button is-primary is-inverted">Annuler</a>  <!-- Annulation -->           
-            </div>
+<section class="container margin-top-1 margin-bottom-1">
+    <div class="columns is-centered is-mobile">
+        <div class="column is-narrow has-text-centered">
+            <h1 class="title is-1 has-text-left">Modification</h1>
+            <h2 class="subtitle has-text-primary has-text-left">Personnel n°<%=pers.id%></h2>
         </div>
-        <div class="columns columns is-centered is-mobile">
-            <div class="column is-half has-text-centered">
-            <% if (locals.flash) { %>
+    </div>
+</section>
+
+<section>
+    <% if(flash){ %>
+        <div class="columns is-centered has-text-centered">
+            <div class="column is-3-desktop is-4-tablet is-6-mobile is-offset-3-mobile has-text-centered">
                 <div class="notification is-<%= flash.type %>">
                     <button class="delete"></button>
                     <%= locals.flash.text %>
                 </div>
-                <%}%>
             </div>
         </div>
-    </section>
-</div>
+    <% } %>
+</section>
+
+<section>
+    <div class="columns is-centered">
+        <div class="column is-3-desktop is-4-tablet is-6-mobile is-offset-3-mobile has-text-centered">
+            <form method="post">
+                <div class="field">
+                    <p class="control has-icons-left has-icons-right">
+                    <input class="input" type="text" value="<%=pers.identifiant%>" name="nom" required>
+                    <span class="icon is-small is-left">
+                        <i class="fas fa-user-friends"></i>
+                    </span>
+                    </p>
+                </div>
+                <div class="field">
+                    <p class="control has-icons-left has-icons-right">
+                    <input class="input" type="password" placeholder="Mot de passe" name="password" required>
+                    <span class="icon is-small is-left">
+                        <i class="fas fa-lock"></i>
+                    </span>                
+                    </p>
+                </div>
+                <div class="field">
+                    <p class="control has-icons-left has-icons-right">
+                    <input class="input" type="password" placeholder="Confirmation mdp" name="confirm_password" required>
+                    <span class="icon is-small is-left">
+                        <i class="fas fa-lock"></i>
+                    </span>
+                    </p>
+                </div>
+                <div class="control has-text-centered margin-button">
+                    <button type="submit" class="button is-primary is-small is-rounded is-outlined">Modifier</button>
+                    <a class="button is-secondary is-small is-rounded is-outlined" href="/manager/personnel">Retour</a>
+                    <a class="button is-danger is-small is-rounded is-outlined" href="/manager/personnel/<%=pers.id%>/delete">Supprimer</a>
+                </div>
+            </form>       
+        </div>
+    </div>
+</section>
 
 <script src="/js/notifications.js"></script>
 

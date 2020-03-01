@@ -43,7 +43,10 @@ exports.index = async (req, res)=>{
         const camp = _camp[0]
         const incidents = _nbIncid[0]
         const infrastructures = _infr[0]
-        res.render('personnel/index',{title : "CDS | Espace personnel",identifiant,arrivals,departures,camp,incidents,infrastructures})
+
+        const flash = ft.getFlash(req)
+        
+        res.render('personnel/index',{title : "CDS | Espace personnel",identifiant,arrivals,departures,camp,incidents,infrastructures,flash})
         
     }
     catch{
@@ -117,7 +120,7 @@ exports.personnel_campeur_id = async (req, res)=>{
 
 exports.personnel_campeurs_all = async (req, res)=>{
     try{
-        
+        const flash = ft.getFlash(req)
         const rows = await campeur.findAllCampeurs()
         res.render('personnel/campeurs_all',{title : "CDS | Tous les campeurs",rows,flash})
     }

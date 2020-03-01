@@ -2,38 +2,43 @@
 
 <%- include('../includes/navbarCampeur'); -%>
 
-<div class="w-60">
-    <section class="container margin-top-1 has-text-centered">
-        <h1 class="title is-size-1">Réservation n°<span class="has-text-primary"><%=rows[0].id%></span></h1>
-    </section>
+<section class="container margin-top-1 margin-bottom-1">
+    <div class="columns is-centered is-mobile">
+        <div class="column is-narrow has-text-centered">
+            <h1 class="title is-1 has-text-left">Réservation</h1>
+            <h2 class="subtitle has-text-primary has-text-left">N°<%=rows[0].id%></h2>
+        </div>
+    </div>
+</section>
 
-    
-    <section class="margin-top-1">
-        <div class="card">
-            <header class="card-footer">
-                <p class="card-footer-item has-text-weight-bold">Du : <%=rows[0].dateDebut%></p>
-                <p class="card-footer-item has-text-weight-bold">Au : <%=rows[0].dateFin%></p>
-            </header>
-            <div class="card-content">
-                <hr>
-                <h2 class="title has-text-primary">Etat</h2>
-                <p class="is-size-4 has-text-weight-semibold">Checkin : <%if(rows[0].checkin == 1){%><span class="has-text-success has-text-weight-normal">oui</span><%}else{%><span class="has-text-danger has-text-weight-normal">non</span><%}%></p>
-                <p class="is-size-4 has-text-weight-semibold">Checkout : <%if(rows[0].checkout == 1){%><span class="has-text-success has-text-weight-normal">oui</span><%}else{%><span class="has-text-danger has-text-weight-normal">non</span><%}%></p>
-                <hr>
-                <h2 class="title has-text-primary">Type</h2>
-                <%if(rows[0].prestige == 1){%>
-                    <p class="is-size-4 has-text-weight-semibold">Suite de luxe : <span class="has-text-warning has-text-weight-normal"><%=rows[0].nom%></span></p>
-                    <p class="is-size-4 has-text-weight-semibold">Nombre de places : <span class="has-text-warning has-text-weight-normal"><%=rows[0].nombrePersonnes%></span></p>
-                <%}else if(rows[0].prestige == 0){%>
-                    <p class="is-size-4 has-text-weight-semibold">Châlet : <span class="has-text-success has-text-weight-normal"><%=rows[0].nom%></span></p>
-                    <p class="is-size-4 has-text-weight-semibold">Nombre de places : <span class="has-text-success has-text-weight-normal"><%=rows[0].nombrePersonnes%></span></p>
-                <%}else{%>
-                    <p class="is-size-4 has-text-weight-semibold">Emplacement n°<span class="has-text-info has-text-weight-normal"><%=rows[0].idEmplacement%></span></p>
-                    <p class="is-size-4 has-text-weight-semibold">Electicité : <span class="has-text-success has-text-weight-normal">oui</span></p>
-                <%}%>
+<section>
+    <div class="columns is-centered">
+        <div class="column is-4-desktop is-6-tablet is-8-mobile is-offset-2-mobile">
+            <div class="card">
+                <header class="card-footer">
+                    <p class="card-footer-item has-text-weight-bold">Du : <%=rows[0].dateDebut%></p>
+                    <p class="card-footer-item has-text-weight-bold">Au : <%=rows[0].dateFin%></p>
+                </header>
+                <div class="card-content">
+                    <h2 class="title has-text-primary">Etat</h2>
+                    <p class="title is-5">Checkin : <%if(rows[0].checkin == 1){%><span class="has-text-success has-text-weight-light">oui</span><%}else{%><span class="has-text-danger has-text-weight-light">non</span><%}%></p>
+                    <p class="title is-5">Checkout : <%if(rows[0].checkout == 1){%><span class="has-text-success has-text-weight-light">oui</span><%}else{%><span class="has-text-danger has-text-weight-light">non</span><%}%></p>
+                    <hr>
+                    <h2 class="title has-text-primary">Type</h2>
+                    <%if(rows[0].prestige == 1){%>
+                        <p class="title is-5">Suite de luxe : <span class="has-text-warning has-text-weight-light"><%=rows[0].nom%></span></p>
+                        <p class="title is-5">Nombre de places : <span class="has-text-warning has-text-weight-light"><%=rows[0].nombrePersonnes%></span></p>
+                    <%}else if(rows[0].prestige == 0){%>
+                        <p class="title is-5">Châlet : <span class="has-text-success has-text-weight-light"><%=rows[0].nom%></span></p>
+                        <p class="title is-5">Nombre de places : <span class="has-text-success has-text-weight-light"><%=rows[0].nombrePersonnes%></span></p>
+                    <%}else{%>
+                        <p class="title is-5">Emplacement n°<span class="has-text-info has-text-weight-light"><%=rows[0].idEmplacement%></span></p>
+                        <p class="title is-5">Electicité : <span class="has-text-success has-text-weight-light">oui</span></p>
+                    <%}%>
+                </div>
             </div>
-          </div>
-    </section>
-</div>
+        </div>
+    </div>
+</section>
 
 <%- include('../includes/footer'); -%>
