@@ -6,7 +6,6 @@ const personnel = require('../models/personnel')
 const campeur = require('../models/campeur')
 
 
-// Check if it's a manager
 exports.isManager = async (req, res, next)=>{
     var token = ft.getToken(req)
     try{
@@ -28,7 +27,7 @@ exports.isManager = async (req, res, next)=>{
     }
 }
 
-// Display index page manager
+
 exports.index = async (req, res)=>{
     const identifiant = res.locals.identifiant
     try{
@@ -52,7 +51,7 @@ exports.index = async (req, res)=>{
     }    
 }
 
-// Display list of the personnel
+
 exports.personnel_list = async (req, res)=>{
     try{
         const flash = ft.getFlash(req)
@@ -70,7 +69,7 @@ exports.personnel_list = async (req, res)=>{
 
 exports.create_personnel_get = (req, res)=>{
     const flash = ft.getFlash(req)
-    res.render('manager/create',{title : "CDS | Création de personnel",flash})
+    res.render('manager/create',{title : "CDS | Création de personnel",flash,csrfToken : req.csrfToken()})
 }
 
 exports.create_personnel_post = async (req, res)=>{
@@ -120,7 +119,7 @@ exports.manager_personnel_id = async (req, res)=>{
         if(rows[0]){
             const pers = rows[0]
             const flash = ft.getFlash(req)
-            res.render('manager/personnel_id',{title : "CDS | Personnel",pers,flash})
+            res.render('manager/personnel_id',{title : "CDS | Personnel",pers,flash,csrfToken : req.csrfToken()})
         }
         else{
             ft.setFlash(res,'danger',"Personne avec cet id")
@@ -171,7 +170,7 @@ exports.manager_update_personnel = async (req, res)=>{
     }
 }
 
-// Display list of the personnel
+
 exports.manager_incidents = async (req, res)=>{
     try{
         const flash = ft.getFlash(req)

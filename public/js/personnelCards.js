@@ -17,7 +17,7 @@ $campeurs.addEventListener('click', (event)=>{
 
 const $inf = document.getElementById('inf')
 $inf.addEventListener('click', (event)=>{
-    window.location.href = "/personnel/passages"
+    window.location.href = "/personnel/pointage"
 })
 
 const $incidents = document.getElementById('incidents')

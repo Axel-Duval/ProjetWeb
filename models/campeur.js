@@ -173,6 +173,19 @@ const campeur = {
         })
     },
 
+    getNbReservationsById : async (id)=>{
+        return new Promise((resolve, reject) => {
+            db.query("SELECT COUNT(reservations.id) AS cpt FROM reservations WHERE reservations.idCampeur=?", [id], (err,rows)=>{
+                if (err) {
+                    reject(err)
+                }
+                else{
+                    resolve(rows)
+                }
+            })
+        })
+    },
+
     getReservationById : async (id)=>{
         return new Promise((resolve, reject) => {
             db.query("SELECT reservations.id, reservations.dateDebut, reservations.dateFin, reservations.checkin, reservations.checkout, reservations.idEmplacement,chalets.nom, chalets.prestige,chalets.nombrePersonnes FROM reservations JOIN campeurs ON campeurs.id = reservations.idCampeur JOIN emplacements ON emplacements.id = reservations.idEmplacement LEFT JOIN chalets ON chalets.id = emplacements.idChalet WHERE reservations.id=?", [id], (err,rows)=>{

@@ -6,13 +6,13 @@ const personnel = require('../models/personnel')
 const campeur = require('../models/campeur')
 
 
-// Check if it's a personnel
-exports.isPersonnel = async (req, res, next)=>{
+exports.is_staff = async (req, res, next)=>{
     var token = ft.getToken(req)
     try{
         const verified = await index.verifyToken(token)
         if(verified.identifiant && verified.estManager == 0){
             res.locals.identifiant = verified.identifiant
+            res.locals.id = verified.id
             next()
         }
         else{
@@ -28,8 +28,8 @@ exports.isPersonnel = async (req, res, next)=>{
     }
 }
 
-// Display list of all personnel.
-exports.index = async (req, res)=>{
+
+exports.staff_index = async (req, res)=>{
     const identifiant = res.locals.identifiant
     try{
         const _arrivals = await personnel.nbArrivals()
@@ -58,8 +58,8 @@ exports.index = async (req, res)=>{
     }
 }
 
-// Display incidents
-exports.personnel_incidents = async (req, res)=>{
+
+exports.staff_reports = async (req, res)=>{
     try{
         const flash = ft.getFlash(req)
         const rows = await campeur.getIncidents()
@@ -78,7 +78,7 @@ exports.personnel_incidents = async (req, res)=>{
     }
 }
 
-exports.personnel_incident_delete_id = async (req, res)=>{
+exports.staff_report_delete = async (req, res)=>{
     try{
         const rows = await campeur.deleteIncidentById(req.params.id)
         ft.setFlash(res,'success',"L'incident a bien été supprimé")
@@ -90,8 +90,8 @@ exports.personnel_incident_delete_id = async (req, res)=>{
     }
 }
 
-// Display incidents
-exports.personnel_campeurs = async (req, res)=>{
+
+exports.staff_campers = async (req, res)=>{
     try{
         const flash = ft.getFlash(req)
         const rows = await personnel.actualCampeurs()
@@ -106,11 +106,13 @@ exports.personnel_campeurs = async (req, res)=>{
     }
 }
 
-exports.personnel_campeur_id = async (req, res)=>{
+exports.staff_camper = async (req, res)=>{
     try{
         const _rows = await campeur.findCampeurById(req.params.id)
+        const reservations = await campeur.getNbReservationsById(req.params.id)
+        const reserv  = reservations[0]
         const rows = _rows[0]
-        res.render('personnel/campeur_id',{title : "CDS | Campeur "+ req.params.id,rows})
+        res.render('personnel/campeur_id',{title : "CDS | Campeur "+ req.params.id,rows,reserv})
     }
     catch{
         ft.setFlash(res,'warning',"Problème de connexion avec la base de donnée")
@@ -118,7 +120,7 @@ exports.personnel_campeur_id = async (req, res)=>{
     }
 }
 
-exports.personnel_campeurs_all = async (req, res)=>{
+exports.staff_all_campers = async (req, res)=>{
     try{
         const flash = ft.getFlash(req)
         const rows = await campeur.findAllCampeurs()
@@ -130,8 +132,8 @@ exports.personnel_campeurs_all = async (req, res)=>{
     }
 }
 
-// Display incidents
-exports.personnel_arrivees = async (req, res)=>{
+
+exports.staff_arrivals = async (req, res)=>{
     try{
         const flash = ft.getFlash(req)
         const rows = await personnel.arrivals()
@@ -146,8 +148,8 @@ exports.personnel_arrivees = async (req, res)=>{
     }
 }
 
-// Display incidents
-exports.personnel_departs = async (req, res)=>{
+
+exports.staff_departures = async (req, res)=>{
     try{
         const flash = ft.getFlash(req)
         const rows = await personnel.departures()
@@ -162,7 +164,7 @@ exports.personnel_departs = async (req, res)=>{
     }
 }
 
-exports.personnel_departs_checkout = async (req, res)=>{
+exports.staff_checkout = async (req, res)=>{
     try{
         const rows = await personnel.checkout(req.params.id)
         ft.setFlash(res,'success',"Le checkout viens d'être enregistré")
@@ -174,7 +176,7 @@ exports.personnel_departs_checkout = async (req, res)=>{
     }
 }
 
-exports.personnel_arrivees_checkin = async (req, res)=>{
+exports.staff_checkin = async (req, res)=>{
     try{
         const rows = await personnel.checkin(req.params.id)
         ft.setFlash(res,'success',"Le checkin viens d'être enregistré")
@@ -186,12 +188,12 @@ exports.personnel_arrivees_checkin = async (req, res)=>{
     }
 }
 
-// Display incidents
-exports.personnel_plan_interactif = async (req, res)=>{
+
+exports.staff_plan = async (req, res)=>{
     res.render('personnel/plan_interactif',{title : "CDS | Plan interractif"})
 }
 
-exports.personnel_emplacement_id = async (req, res)=>{
+exports.staff_location = async (req, res)=>{
     try{
         const _rows = await personnel.findEmplacementById(req.params.id)
         const rows = _rows[0]
@@ -206,3 +208,27 @@ exports.personnel_emplacement_id = async (req, res)=>{
         res.redirect('/personnel/plan')
     }
 }
+
+exports.staff_check_get = async (req, res)=>{
+    try{
+        const rows = await personnel.pointage()
+        res.render('personnel/pointage',{title : "CDS | Pointage",rows})
+    }
+    catch{
+        ft.setFlash(res,'warning',"Problème de connexion avec la base de donnée")
+        res.redirect('/connexion')
+    }
+}
+
+exports.staff_check_post = async (req, res)=>{
+    try{
+        const rows = await personnel.pointer(req.params.id,res.locals.id)
+        ft.setFlash(res,'success','Pointage enregistré')
+        res.redirect('/personnel/pointage')
+    }
+    catch{
+        ft.setFlash(res,'warning',"Problème de connexion avec la base de donnée")
+        res.redirect('/personnel/pointage')
+    }
+}
+

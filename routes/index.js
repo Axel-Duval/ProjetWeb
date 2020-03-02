@@ -1,45 +1,43 @@
 var express = require('express');
 var router = express.Router();
 
-// Require controller modules.
+// Require index controller
 var index_controller = require('../controllers/indexController');
 
-/// index ROUTES ///
-
-// GET page principale
+// GET main section
 router.get('/', index_controller.index);
 
-// GET a propos
-router.get('/a_propos', index_controller.index_a_propos);
+// GET about section
+router.get('/a_propos', index_controller.index_about);
 
-// GET contact
+// GET contact section
 router.get('/contact', index_controller.index_contact);
 
-// GET notre equipe
-router.get('/notre_equipe', index_controller.index_notre_equipe);
+// GET our team section
+router.get('/notre_equipe', index_controller.index_team);
 
-// GET reservation
-router.get('/reservation', index_controller.index_reservation);
+// GET booking section
+router.get('/reservation', index_controller.index_booking);
 
-// GET mentions legales
-router.get('/mentions_legales', index_controller.index_mentions_legales);
+// GET legal notice section
+router.get('/mentions_legales', index_controller.index_legal_notice);
 
-// GET request for get connexion
-router.get('/connexion', index_controller.index_connexion_get);
+// GET login section
+router.get('/connexion', index_controller.index_login_get);
 
-// POST request for connexion
-router.post('/connexion', index_controller.index_connexion_post);
+// POST login inputs
+router.post('/connexion', index_controller.index_login_post);
 
-// GET request to get inscription
-router.get('/inscription', index_controller.index_inscription_get);
+// GET register
+router.get('/inscription', index_controller.index_register_get);
 
-// POST request to create inscription
-router.post('/inscription', index_controller.index_inscription_post);
+// POST register inputs
+router.post('/inscription', index_controller.index_register_post);
 
-// GET request to get tarifs
-router.get('/tarifs', index_controller.index_tarifs_get);
+// GET prices section
+router.get('/tarifs', index_controller.index_prices);
 
-// GET request to deconnect
-router.get('/deconnexion', index_controller.index_deconnexion_get);
+// GET logout
+router.get('/deconnexion', index_controller.index_logout);
 
 module.exports = router;

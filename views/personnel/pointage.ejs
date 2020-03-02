@@ -1,0 +1,59 @@
+<%- include('../includes/header'); -%>
+
+<%- include('../includes/navbarPersonnel'); -%>
+
+<section class="container margin-top-1 margin-bottom-1">
+    <div class="columns is-centered is-mobile">
+        <div class="column is-narrow has-text-centered">
+            <h1 class="title is-1 has-text-left">Pointage</h1>
+            <h2 class="subtitle has-text-primary has-text-left">Des infrastructures</h2>
+            <a class="button is-primary is-small is-rounded is-outlined" href="/personnel/pointage">Refresh</a>
+        </div>
+    </div>
+</section>
+
+<section>
+    <% if(locals.flash){ %>
+        <div class="columns is-centered has-text-centered">
+            <div class="column is-8-desktop">
+                <div class="notification is-<%= flash.type %>">
+                    <button class="delete"></button>
+                    <%= locals.flash.text %>
+                </div>
+            </div>
+        </div>
+    <% } %>
+</section>
+
+<section>
+<% if (locals.rows) { %>
+    <table>
+        <% for(var i=0; i < rows.length; i++) { %>
+            <div class="columns is-centered">
+                <div class="column is-5-desktop">
+                    <div class="box">
+                        <div class="columns is-vcentered">
+                            <div class="column is-2">
+                                <i class="fas fa-2x fa-bookmark <%if(rows[i].besoin=='oui'){%>has-text-danger<%}else{%>has-text-primary<%}%>"></i>
+                            </div>
+                            <div class="column is-4">
+                                <p class="title is-5"><%= rows[i].libelle %></p>
+                            </div>
+                            <div class="column is-4">
+                                <p class="title is-5 ">Temps : <span class="has-text-weight-light <%if(rows[i].besoin=='oui'){%>has-text-danger<%}else{%>has-text-primary<%}%>"><%= rows[i].time %></span></p>
+                            </div>
+                            <div class="column is-2 has-text-right">
+                                <a class="button is-small is-rounded is-outlined <%if(rows[i].besoin=='oui'){%>is-danger<%}else{%>is-primary<%}%>" href="/personnel/pointage/<%=rows[i].idInfrastructure%>">Check</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <% } %>
+    </table>
+<%}%>
+</section>
+
+<script src="/js/notifications.js"></script>
+
+<%- include('../includes/footer'); -%>

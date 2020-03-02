@@ -1,12 +1,11 @@
-const ft = require("../functions")
-const bcrypt = require('bcryptjs')
-const Sanitizer = require('express-sanitizer')
-const index = require('../models/index')
-const campeur = require('../models/campeur')
+const ft = require("../functions");
+const bcrypt = require('bcryptjs');
+const Sanitizer = require('express-sanitizer');
+const index = require('../models/index');
+const campeur = require('../models/campeur');
 
 
-// Check if it's a manager
-exports.isCampeur = async (req, res, next)=>{
+exports.camper_is_camper = async (req, res, next)=>{
     var token = ft.getToken(req)
     try{
         const verified = await index.verifyToken(token)
@@ -28,8 +27,7 @@ exports.isCampeur = async (req, res, next)=>{
     }
 }
 
-// Check if it can access to this reservation
-exports.canAccessReservation = async (req, res, next)=>{
+exports.camper_see_booking = async (req, res, next)=>{
     try{
         const rows = await campeur.getIdReservationsById(res.locals.id)
         let i = 0
@@ -54,8 +52,7 @@ exports.canAccessReservation = async (req, res, next)=>{
 
 
 
-// Display index
-exports.campeur_reservations = async (req, res)=>{ 
+exports.camper_bookings = async (req, res)=>{ 
     const prenom = res.locals.prenom
     try{
         const flash = ft.getFlash(req)
@@ -76,7 +73,7 @@ exports.campeur_reservations = async (req, res)=>{
     }
 }
 
-exports.campeur_reservation_id = async (req, res)=>{ 
+exports.camper_booking = async (req, res)=>{ 
     try{
         const rows = await campeur.getReservationById(req.params.id)
         rows[0].dateDebut = ft.formatDate(rows[0].dateDebut)
@@ -89,12 +86,12 @@ exports.campeur_reservation_id = async (req, res)=>{
     }
 }
 
-exports.campeur_signaler_get = async (req, res)=>{
+exports.camper_report_get = async (req, res)=>{
     try{
         const infrastructures = await campeur.getAllInfrastructures()
         const types = await campeur.getAllTypes()
         const flash = ft.getFlash(req)
-        res.render('campeur/signaler',{title : "CDS | Signaler",flash,infrastructures,types})
+        res.render('campeur/signaler',{title : "CDS | Signaler",flash,infrastructures,types,csrfToken : req.csrfToken()})
     }
     catch{
         ft.setFlash(res,'warning','Problème de connexion avec la base de donnée')
@@ -102,7 +99,7 @@ exports.campeur_signaler_get = async (req, res)=>{
     }
 }
 
-exports.campeur_signaler_post = async (req, res)=>{
+exports.camper_report_post = async (req, res)=>{
     try{
         const signal = await campeur.createSignalement(res.locals.id,req.body.type,req.body.infrastructure)
         ft.setFlash(res,'success',"Le signalement viens d'être envoyé")
@@ -114,12 +111,12 @@ exports.campeur_signaler_post = async (req, res)=>{
     }
 }
 
-exports.campeur_compte_get = async (req, res)=>{
+exports.camper_account_get = async (req, res)=>{
     try{
         const rows = await campeur.findCampeurById(res.locals.id)
         const camp = rows[0]
         const flash = ft.getFlash(req)
-        res.render('campeur/compte',{title : "CDS | Mon compte",camp,flash})
+        res.render('campeur/compte',{title : "CDS | Mon compte",camp,flash,csrfToken : req.csrfToken()})
     }
     catch{
         ft.setFlash(res,'warning',"Problème de connexion avec la base de donnée")
@@ -127,7 +124,7 @@ exports.campeur_compte_get = async (req, res)=>{
     }
 }
 
-exports.campeur_compte_post = async (req, res)=>{
+exports.camper_account_post = async (req, res)=>{
     //Get data from POST
     const isEmail = ft.isEmail(req,res)
     const isPassword = ft.isPswd(req,res)

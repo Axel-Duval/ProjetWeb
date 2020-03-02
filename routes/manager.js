@@ -1,36 +1,34 @@
 var express = require('express');
 var router = express.Router();
 
-// Require controller modules.
+// Require manager controller
 var manager_controller = require('../controllers/managerController');
 
-/// manager ROUTES ///
-
-// GET manager home page.
+// GET manager home page
 router.get('/', manager_controller.isManager,manager_controller.index);
 
-// GET request for list of all manager items.
+// GET staff section
 router.get('/personnel', manager_controller.isManager, manager_controller.personnel_list);
 
-// GET request to get the form
+// GET new staff member form
 router.get('/personnel/create', manager_controller.isManager, manager_controller.create_personnel_get);
 
-// POST to create a personnel
+// POST create new staff member
 router.post('/personnel/create', manager_controller.isManager, manager_controller.create_personnel_post);
 
-// GET personnel by id
+// GET staff by :id
 router.get('/personnel/:id', manager_controller.isManager, manager_controller.manager_personnel_id);
 
-// POST update personnel infos
+// POST update staff infos
 router.post('/personnel/:id', manager_controller.isManager, manager_controller.manager_update_personnel);
 
-// GET delete personnel from id
+// GET delete staff member by :id
 router.get('/personnel/:id/delete', manager_controller.isManager, manager_controller.manager_delete_personnel);
 
-// GET incidents
+// GET report section
 router.get('/incidents', manager_controller.isManager, manager_controller.manager_incidents);
 
-// GET delete incident
+// GET delete report by :id
 router.get('/incident/:id/delete', manager_controller.isManager, manager_controller.manager_incident_delete_id);
 
 module.exports = router;

@@ -236,6 +236,32 @@ const personnel = {
                 }
             })
         })
+    },
+
+    pointage : async ()=>{
+        return new Promise((resolve, reject) => {
+            db.query("SELECT passer.id, passer.idInfrastructure,infrastructures.libelle, passer.idPersonnel,MAX(passer.horodatage) AS recent,TIMEDIFF(NOW(),MAX(passer.horodatage)) AS time, (CASE WHEN TIMEDIFF(NOW(), MAX(passer.horodatage)) < TIME(infrastructures.intervalle) THEN 'non' ELSE 'oui' END) AS besoin FROM passer JOIN infrastructures ON infrastructures.id = passer.idInfrastructure GROUP BY passer.idInfrastructure", (err,rows)=>{
+                if (err) {
+                    reject(err)
+                }
+                else{
+                    resolve(rows)
+                }
+            })
+        })
+    },
+
+    pointer : async (idInfra,IdPers)=>{
+        return new Promise((resolve, reject) => {
+            db.query("INSERT INTO passer (idInfrastructure, idPersonnel) VALUES (?,?);",[idInfra,IdPers], (err,rows)=>{
+                if (err) {
+                    reject(err)
+                }
+                else{
+                    resolve(rows)
+                }
+            })
+        })
     }
 }
 
