@@ -1,8 +1,9 @@
 var express = require('express');
 var router = express.Router();
 
-// Require index controller
+// Require index  and camper controller
 var index_controller = require('../controllers/indexController');
+var camper_controller = require('../controllers/camperController');
 
 // GET main section
 router.get('/', index_controller.index);
@@ -39,5 +40,8 @@ router.get('/tarifs', index_controller.index_prices);
 
 // GET logout
 router.get('/deconnexion', index_controller.index_logout);
+
+// GET booking from location and dates
+router.get('/reservation/:id_location/:arrival/:departure', camper_controller.camper_is_camper ,index_controller.index_booking_location);
 
 module.exports = router;

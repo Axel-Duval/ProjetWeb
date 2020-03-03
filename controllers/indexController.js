@@ -248,3 +248,40 @@ exports.index_booking = async (req, res)=>{
         res.render('index/reservation',{title : "CDS | Réservation",flash});
     }
 }
+
+exports.index_booking_location = async (req, res)=>{
+    const flash = ft.getFlash(req);
+    const _arr = req.params.arrival
+    const _dep = req.params.departure;
+    const _location = req.params.id_location;
+
+    const arr = ft.isValidDate(_arr);
+    const dep = ft.isValidDate(_dep);
+    try{
+        const location = await booking.location_exists(_location);
+        if(arr && dep && location){
+            if(_arr<_dep){
+                try{
+                    const rows = await booking.create(_arr,_dep,res.locals.id,_location)
+                    ft.setFlash(res,'success',"La réservation viens d'être enregistrée");
+                    res.redirect('/connexion');
+                }
+                catch{
+                    ft.setFlash(res,'warning',"Problème de connexion avec la base de donnée");
+                    res.redirect('/reservation');
+                }
+            }
+            else{
+                ft.setFlash(res,'danger','Intervalle de temps non valide');
+                res.redirect('/reservation');
+            }
+        }
+        else{
+            ft.setFlash(res,'danger','Entrées non valides');
+            res.redirect('/reservation');
+        }
+    }
+    catch{
+        res.redirect('/reservation');
+    }
+}

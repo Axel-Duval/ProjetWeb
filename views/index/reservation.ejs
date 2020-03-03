@@ -35,7 +35,7 @@
 <section>
     <% if(locals.flash){ %>
         <div class="columns is-centered has-text-centered">
-            <div class="column is-4-desktop is-6-tablet is-10-mobile is-offset-1-mobile has-text-centered">
+            <div class="column is-5-desktop is-6-tablet has-text-centered">
                 <div class="notification is-<%= flash.type %>">
                     <button class="delete"></button>
                     <%= locals.flash.text %>
@@ -58,7 +58,7 @@
                                         <div class="column is-2">
                                             <i class="fas fa-star fa-2x has-text-primary"></i>
                                         </div>
-                                        <div class="column is-8">
+                                        <div class="column is-7">
                                             <p class="title is-5">Suite de luxe : <span class="has-text-weight-light"><%= rows[i].nom %></span></p>
                                         </div>
                                 <% }else{ %>
@@ -66,7 +66,7 @@
                                         <div class="column is-2">
                                             <i class="fas fa-home fa-2x has-text-primary"></i>
                                         </div>
-                                        <div class="column is-8">
+                                        <div class="column is-7">
                                             <p class="title is-5">Châlet : <span class="has-text-weight-light"><%= rows[i].nom %></span></p>
                                         </div>
                                 <% } %>
@@ -75,12 +75,12 @@
                                     <div class="column is-2">
                                         <i class="fab fa-pagelines fa-2x has-text-primary"></i>
                                     </div>
-                                    <div class="column is-8">
+                                    <div class="column is-7">
                                         <p class="title is-5">Emplacement n°<span class="has-text-weight-light"><%= rows[i].id %></span></p>
                                     </div>
                             <% } %>
-                                <div class="column is-2 has-text-right">
-                                    <a class="button is-primary is-small is-rounded is-outlined" href="/emplacement/<%=rows[i].id%>">Voir</a>
+                                <div class="column is-3 has-text-right">
+                                    <a class="button is-primary is-small is-rounded is-outlined" href="/reservation/<%=rows[i].id%>/<%=locals.arr%>/<%=locals.dep%>">Réserver</a>
                                 </div>
                             </div>
                         </div>

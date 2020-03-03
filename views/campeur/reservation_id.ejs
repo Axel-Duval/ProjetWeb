@@ -35,6 +35,10 @@
                         <p class="title is-5">Emplacement n°<span class="has-text-info has-text-weight-light"><%=rows[0].idEmplacement%></span></p>
                         <p class="title is-5">Electicité : <span class="has-text-success has-text-weight-light">oui</span></p>
                     <%}%>
+                    <%if(rows[0].checkin==0){%>
+                        <hr>
+                        <a class="button is-danger is-small is-rounded is-outlined has-text-centered" href="/campeur/reservation/<%=rows[0].id%>/delete">Supprimer</a>
+                    <%}%>
                 </div>
             </div>
         </div>

@@ -4,6 +4,32 @@ const constants = require("../constants");
 
 const booking = {
 
+    create : async (arr,dep,camp,loc)=>{
+        return new Promise((resolve, reject) => {
+            db.query("INSERT INTO reservations (dateDebut, dateFin, checkin, checkout, idCampeur, idEmplacement) VALUES (?,?,0,0,?,?)", [arr,dep,camp,loc], (err,rows)=>{
+                if (err) {
+                    reject(err)
+                }
+                else{
+                    resolve(rows)
+                }
+            })
+        })
+    },
+
+    delete : async (id)=>{
+        return new Promise((resolve, reject) => {
+            db.query("DELETE FROM reservations WHERE reservations.id=?", [id], (err,rows)=>{
+                if (err) {
+                    reject(err)
+                }
+                else{
+                    resolve(rows)
+                }
+            })
+        })
+    },
+
     checkin : async (id)=>{
         return new Promise((resolve, reject) => {
             db.query("UPDATE reservations SET checkin=1 WHERE id=?",[id], (err,rows)=>{
@@ -155,6 +181,19 @@ const booking = {
                 }
                 else{
                     resolve(rows)
+                }
+            })
+        })
+    },
+
+    location_exists : async (id)=>{
+        return new Promise((resolve, reject) => {
+            db.query("SELECT COUNT(emplacements.id) AS cpt FROM emplacements WHERE emplacements.id=?", [id], (err,rows)=>{
+                if (err) {
+                    reject(err)
+                }
+                else{
+                    resolve(rows[0].cpt==1)
                 }
             })
         })

@@ -4,6 +4,7 @@ const Sanitizer = require('express-sanitizer');
 const index = require('../models/index');
 const camper = require('../models/camper');
 const report = require('../models/report');
+const booking = require('../models/booking');
 
 
 exports.camper_is_camper = async (req, res, next)=>{
@@ -169,3 +170,34 @@ exports.camper_account_post = async (req, res)=>{
         res.redirect('/campeur/compte')
     }
 }
+
+exports.camper_delete_booking = async (req, res)=>{ 
+    try{        
+        await booking.delete(req.params.id)
+        ft.setFlash(res,'success',"La réservation viens d'être supprimée")
+        res.redirect('/campeur')
+        
+    }
+    catch{
+        ft.setFlash(res,'warning',"Problème de connexion avec la base de donnée")
+        res.redirect('/campeur')
+    }
+}
+
+exports.camper_can_delete = async (req, res, next)=>{
+    try{        
+        const res = await camper.find_booking(req.params.id)
+        if(res[0].checkin==0){
+            next()
+        }
+        else{
+            ft.setFlash(res,'danger',"Vous ne pouvez pas supprimer cette réservation")
+            res.redirect('/campeur')
+        }        
+    }
+    catch{
+        ft.setFlash(res,'danger',"Vous ne pouvez pas supprimer cette réservation")
+        res.redirect('/campeur')
+    }
+}
+

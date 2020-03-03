@@ -13,6 +13,9 @@ router.get('/',camper_controller.camper_bookings);
 // GET booking by :id
 router.get('/reservation/:id',camper_controller.camper_see_booking,camper_controller.camper_booking);
 
+// GET delete booking
+router.get('/reservation/:id/delete',camper_controller.camper_see_booking,camper_controller.camper_can_delete,camper_controller.camper_delete_booking);
+
 // GET report section
 router.get('/signaler',camper_controller.camper_report_get);
 
