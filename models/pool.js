@@ -1,5 +1,5 @@
-const mysql = require('mysql')
-const constants = require("../constants")
+const mysql = require('mysql');
+const constants = require("../constants");
 
 
 //const pool = mysql.createPool(process.env.CLEARDB_DATABASE_URL);
@@ -24,4 +24,4 @@ pool.getConnection((err, connection) => {
 })
 
 
-module.exports = pool
+module.exports = pool;

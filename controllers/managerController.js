@@ -1,15 +1,17 @@
-const ft = require("../functions")
-const bcrypt = require('bcryptjs')
-const Sanitizer = require('express-sanitizer')
-const index = require('../models/index')
-const personnel = require('../models/personnel')
-const campeur = require('../models/campeur')
+const ft = require("../functions");
+const bcrypt = require('bcryptjs');
+const Sanitizer = require('express-sanitizer');
+const index = require('../models/index');
+const staff = require('../models/staff');
+const camper = require('../models/camper');
+const stats = require('../models/stats');
+const report = require('../models/report');
 
 
-exports.isManager = async (req, res, next)=>{
+exports.is_manager = async (req, res, next)=>{
     var token = ft.getToken(req)
     try{
-        const verified = await index.verifyToken(token)
+        const verified = await index.verify_token(token)
         if(verified.identifiant && verified.estManager == 1){
             res.locals.identifiant = verified.identifiant
             next()
@@ -27,15 +29,14 @@ exports.isManager = async (req, res, next)=>{
     }
 }
 
-
-exports.index = async (req, res)=>{
+exports.manager_index = async (req, res)=>{
     const identifiant = res.locals.identifiant
     try{
-        const campeursToCome = await campeur.nbCampeursToCome()
-        const campeursCome = await campeur.nbCampeursCome()
-        const averageDays = await campeur.getAverageDays()
-        const nbIncid = await campeur.getNbIncidents()
-        const _sales = await personnel.sales()
+        const campeursToCome = await stats.campers_coming()
+        const campeursCome = await stats.campers_came()
+        const averageDays = await stats.days_average()
+        const nbIncid = await report.count()
+        const _sales = await stats.sales()
 
         const campToCome = campeursToCome[0]
         const campCome = campeursCome[0]
@@ -51,11 +52,10 @@ exports.index = async (req, res)=>{
     }    
 }
 
-
-exports.personnel_list = async (req, res)=>{
+exports.manager_all_staff = async (req, res)=>{
     try{
         const flash = ft.getFlash(req)
-        const rows = await personnel.findAllPersonnel()
+        const rows = await staff.find_all()
         res.render('manager/personnel',{title : "CDS | Liste du personnel",rows,flash})
     }
     catch{
@@ -67,12 +67,12 @@ exports.personnel_list = async (req, res)=>{
     }
 }
 
-exports.create_personnel_get = (req, res)=>{
+exports.manager_create_staff_get = (req, res)=>{
     const flash = ft.getFlash(req)
     res.render('manager/create',{title : "CDS | Création de personnel",flash,csrfToken : req.csrfToken()})
 }
 
-exports.create_personnel_post = async (req, res)=>{
+exports.manager_create_staff_post = async (req, res)=>{
     //Get data from POST
     const isPassword = ft.isPswd(req,res)
     const isNom = ft.isNom(req,res)
@@ -84,7 +84,7 @@ exports.create_personnel_post = async (req, res)=>{
         const passwordS = req.sanitize(req.body.password)
         const nomS = req.sanitize(req.body.nom)
         try{
-            const rows = await personnel.findPersonnelByIdentifiant(nomS)
+            const rows = await staff.find_by_name(nomS)
             if(rows[0]){
                 ft.setFlash(res,'danger',"Désolé, cet identifiant est déjà pris")
                 res.redirect('/manager/personnel/create')
@@ -93,7 +93,7 @@ exports.create_personnel_post = async (req, res)=>{
                 const hashPassword = bcrypt.hashSync(passwordS,10)
                 const manager = estManager ? 1 : 0
                 try{
-                    const created = await personnel.createPersonnel(nomS,manager,hashPassword)
+                    const created = await staff.create(nomS,manager,hashPassword)
                     ft.setFlash(res,'success',"Le compte viens d'être créer")
                     res.redirect('/manager/personnel')
                 }
@@ -113,9 +113,9 @@ exports.create_personnel_post = async (req, res)=>{
     }
 }
 
-exports.manager_personnel_id = async (req, res)=>{
+exports.manager_staff = async (req, res)=>{
     try{
-        const rows = await personnel.findPersonnelById(req.params.id)
+        const rows = await staff.find_by_id(req.params.id)
         if(rows[0]){
             const pers = rows[0]
             const flash = ft.getFlash(req)
@@ -132,9 +132,9 @@ exports.manager_personnel_id = async (req, res)=>{
     }
 }
 
-exports.manager_delete_personnel = async (req, res)=>{
+exports.manager_delete_staff = async (req, res)=>{
     try{
-        const rows = await personnel.deletePersonnelById(req.params.id)
+        const rows = await staff.delete(req.params.id)
         ft.setFlash(res,'success',"L'utilisateur a bien été supprimé")
         res.redirect('/manager/personnel')
     }
@@ -144,7 +144,7 @@ exports.manager_delete_personnel = async (req, res)=>{
     }
 }
 
-exports.manager_update_personnel = async (req, res)=>{
+exports.manager_update_staff = async (req, res)=>{
     //Get data from POST
     const isPassword = ft.isPswd(req,res)
     const isNom = ft.isNom(req,res)
@@ -156,7 +156,7 @@ exports.manager_update_personnel = async (req, res)=>{
         const hashPassword = bcrypt.hashSync(passwordS,10)
         const nomS = req.sanitize(req.body.nom)
         try{
-            const rows = await personnel.updatePersonnel(req.params.id,nomS,hashPassword)
+            const rows = await staff.update(req.params.id,nomS,hashPassword)
             ft.setFlash(res,'success',"La modification viens d'être effectuée")
             res.redirect('/manager/personnel')
         }
@@ -170,11 +170,10 @@ exports.manager_update_personnel = async (req, res)=>{
     }
 }
 
-
-exports.manager_incidents = async (req, res)=>{
+exports.manager_all_reports = async (req, res)=>{
     try{
         const flash = ft.getFlash(req)
-        const rows = await campeur.getIncidents()
+        const rows = await report.find_all()
         var i
         for(i = 0; i < rows.length; i++){
             rows[i].horodatage = ft.formatDateTime(rows[i].horodatage)
@@ -190,9 +189,9 @@ exports.manager_incidents = async (req, res)=>{
     }
 }
 
-exports.manager_incident_delete_id = async (req, res)=>{
+exports.manager_delete_report = async (req, res)=>{
     try{
-        const rows = await campeur.deleteIncidentById(req.params.id)
+        const rows = await report.delete(req.params.id)
         ft.setFlash(res,'success',"L'incident a bien été supprimé")
         res.redirect('/manager/incidents')
     }

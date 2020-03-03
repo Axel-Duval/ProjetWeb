@@ -1,29 +1,29 @@
-const cookieParser = require('cookie-parser')
+const cookieParser = require('cookie-parser');
 
 exports.setCookie = function(res,name,args,time){
     return res.cookie(name, args, { maxAge: time * 1000, httpOnly: true })
-};
+}
 
 exports.getCookie = function(req,name){
     return req.cookies[name]
-};
+}
 
 exports.clearCookie = function(res,name){
     return res.cookie(name, '', { maxAge: 0, httpOnly: true })
-};
+}
 
 exports.setFlash = function(res,ftype,ftext){
     flash = {type : ftype, text : ftext}
     return res.cookie("flash_message",flash, { maxAge: 1 * 1000, httpOnly: true })
-};
+}
 
 exports.getFlash = function(req){
     return req.cookies["flash_message"]
-};
+}
 
 exports.clearFlash = function(res){
     return res.cookie("flash_message", '', { maxAge: 0, httpOnly: true })
-};
+}
 
 exports.setToken = function(res,token){
     return res.cookie('auth', token, { maxAge: 6 * 60 * 60 * 1000, httpOnly: true })
@@ -103,7 +103,7 @@ exports.isPrenom = function(req,res){
 
 exports.isTelephone = function(req,res){
     if(req.body.telephone){
-        if(/(0[1-68])(?:[ _.-]?(\d{2})){4}$/.test(req.body.telephone)){
+        if(/^((\+)33|0)[1-9](?:[ _.-]?(\d{2})){4}$/g.test(req.body.telephone)){
             return true
         }
         else{

@@ -3,7 +3,9 @@ const constants = require("../constants");
 const bcrypt = require('bcryptjs');
 const Sanitizer = require('express-sanitizer');
 const index = require('../models/index');
-const campeur = require('../models/campeur');
+const camper = require('../models/camper');
+const staff = require('../models/staff');
+const booking = require('../models/booking');
 
 
 exports.index = (req, res)=>{
@@ -15,7 +17,7 @@ exports.index_login_get = async (req, res)=>{
     const token = ft.getToken(req);
     if(token){
         try{
-            const verified = await index.verifyToken(token)
+            const verified = await index.verify_token(token)
             if(verified.estManager==0 || verified.estManager==1){
                 verified.estManager == 0 ? res.redirect('/personnel') : res.redirect('/manager');
             }
@@ -30,8 +32,7 @@ exports.index_login_get = async (req, res)=>{
     else{
         res.render('index/connexion',{title : "CDS | Connexion",flash,csrfToken : req.csrfToken()});
     }    
-};
-
+}
 
 exports.index_login_post = async (req, res)=>{
     //Get email and password from POST
@@ -45,7 +46,7 @@ exports.index_login_post = async (req, res)=>{
         const passwordS = req.sanitize(req.body.password);
         //Check in database if there is a campeur with this email
         try{
-            const rows = await campeur.findCampeurByEmail(mailS);
+            const rows = await camper.find_by_email(mailS);
             //If it is a campeur
             if(rows[0]){
 
@@ -58,7 +59,7 @@ exports.index_login_post = async (req, res)=>{
                         prenom : rows[0].prenom,
                         mail : rows[0].mail
                     };
-                    const token = index.createToken(user);
+                    const token = index.create_token(user);
                     ft.setToken(res,token);
                     res.redirect('/connexion');
                     
@@ -72,7 +73,7 @@ exports.index_login_post = async (req, res)=>{
             else{
                 //Need to check in the personnel
                 try{
-                    const rows = await index.findPersonnelByEmail(mailS);
+                    const rows = await staff.find_by_name(mailS);
                     //If it is a personnel
                     if(rows[0]){
                         //If the password is good
@@ -83,7 +84,7 @@ exports.index_login_post = async (req, res)=>{
                                 identifiant : rows[0].identifiant,
                                 estManager : rows[0].estManager
                             };
-                            const token = index.createToken(user);
+                            const token = index.create_token(user);
                             ft.setToken(res,token);
                             res.redirect('/connexion');
                             
@@ -117,12 +118,10 @@ exports.index_login_post = async (req, res)=>{
     }    
 }
 
-
 exports.index_register_get = (req, res)=>{
     const flash = ft.getFlash(req);
     res.render('index/inscription',{title : "CDS | Inscription",flash,csrfToken : req.csrfToken()});
 }
-
 
 exports.index_register_post = async (req, res)=>{
     //Get data from POST
@@ -141,7 +140,7 @@ exports.index_register_post = async (req, res)=>{
         const prenomS = req.sanitize(req.body.prenom);
         const telephoneS = req.sanitize(req.body.telephone);
         try{
-            const rows = await campeur.findCampeurByEmail(mailS);
+            const rows = await camper.find_by_email(mailS);
             if(rows[0]){
                 ft.setFlash(res,'danger',"Désolé, cet email est déjà pris");
                 res.redirect('/inscription');
@@ -149,7 +148,7 @@ exports.index_register_post = async (req, res)=>{
             else{
                 const hashPassword = bcrypt.hashSync(passwordS,10);
                 try{
-                    const created = await campeur.createCampeur(nomS,prenomS,mailS,telephoneS,hashPassword)
+                    const created = await camper.create(nomS,prenomS,mailS,telephoneS,hashPassword)
                     ft.setFlash(res,'success',"Votre compte viens d'être créer");
                     res.redirect('/connexion');
                 }
@@ -169,11 +168,9 @@ exports.index_register_post = async (req, res)=>{
     }
 }
 
-
 exports.index_prices = (req, res)=>{
     res.render('index/tarifs',{title : "CDS | tarifs"});
 }
-
 
 exports.index_logout = (req, res)=>{
     ft.clearToken(res);
@@ -181,26 +178,21 @@ exports.index_logout = (req, res)=>{
     res.redirect('/');
 }
 
-
 exports.index_about = (req, res)=>{
     res.render('index/a_propos',{title : "CDS | A propos"});
 }
-
 
 exports.index_team = (req, res)=>{
     res.render('index/notre_equipe',{title : "CDS | Notre équipe"});
 }
 
-
 exports.index_contact = (req, res)=>{
     res.render('index/contact',{title : "CDS | Contact"});
 }
 
-
 exports.index_legal_notice = (req, res)=>{
     res.render('index/mentions_legales',{title : "CDS | Mentions légales"});
 }
-
 
 exports.index_booking = async (req, res)=>{
     const flash = ft.getFlash(req);
@@ -220,7 +212,7 @@ exports.index_booking = async (req, res)=>{
         else{
             if(typeV=='tente'){
                 try{
-                    const rows = await index.findReservPossibleTent(arrV,depV);
+                    const rows = await booking.find_location(arrV,depV);
                     res.render('index/reservation',{title : "CDS | Réservation",rows,arr,dep,type});
                 }
                 catch{
@@ -231,7 +223,7 @@ exports.index_booking = async (req, res)=>{
             else if(typeV=='chalet' || typeV=='suite'){
                 const val = typeV == 'chalet' ? 0 : 1
                 try{
-                    const rows = await index.findReservPossibleChalet(val,arrV,depV);
+                    const rows = await booking.find_chalet(val,arrV,depV);
                     res.render('index/reservation',{title : "CDS | Réservation",rows,arr,dep,type});
                 }
                 catch{
@@ -241,7 +233,7 @@ exports.index_booking = async (req, res)=>{
             }
             else{
                 try{
-                    const rows = await index.findReservPossible(arrV,depV);
+                    const rows = await booking.find_all(arrV,depV);
                     res.render('index/reservation',{title : "CDS | Réservation",rows,arr,dep});
                 }
                 catch{

@@ -2,13 +2,14 @@ const ft = require("../functions");
 const bcrypt = require('bcryptjs');
 const Sanitizer = require('express-sanitizer');
 const index = require('../models/index');
-const campeur = require('../models/campeur');
+const camper = require('../models/camper');
+const report = require('../models/report');
 
 
 exports.camper_is_camper = async (req, res, next)=>{
     var token = ft.getToken(req)
     try{
-        const verified = await index.verifyToken(token)
+        const verified = await index.verify_token(token)
         if(verified.mail){
             res.locals.prenom = verified.prenom
             res.locals.id = verified.id
@@ -29,7 +30,7 @@ exports.camper_is_camper = async (req, res, next)=>{
 
 exports.camper_see_booking = async (req, res, next)=>{
     try{
-        const rows = await campeur.getIdReservationsById(res.locals.id)
+        const rows = await camper.find_all_bookings_id(res.locals.id)
         let i = 0
         while (rows[i].id != req.params.id && i < rows.length) {
             i++;
@@ -50,13 +51,11 @@ exports.camper_see_booking = async (req, res, next)=>{
     }
 }
 
-
-
 exports.camper_bookings = async (req, res)=>{ 
     const prenom = res.locals.prenom
     try{
         const flash = ft.getFlash(req)
-        const rows = await campeur.getAllReservationsById(res.locals.id)
+        const rows = await camper.find_all_bookings(res.locals.id)
         var i
         for(i = 0; i < rows.length; i++){
             rows[i].dateDebut = ft.formatDate(rows[i].dateDebut)
@@ -75,7 +74,7 @@ exports.camper_bookings = async (req, res)=>{
 
 exports.camper_booking = async (req, res)=>{ 
     try{
-        const rows = await campeur.getReservationById(req.params.id)
+        const rows = await camper.find_booking(req.params.id)
         rows[0].dateDebut = ft.formatDate(rows[0].dateDebut)
         rows[0].dateFin = ft.formatDate(rows[0].dateFin)
         res.render('campeur/reservation_id',{title : "CDS | Réservation "+ req.params.id,rows})
@@ -88,8 +87,8 @@ exports.camper_booking = async (req, res)=>{
 
 exports.camper_report_get = async (req, res)=>{
     try{
-        const infrastructures = await campeur.getAllInfrastructures()
-        const types = await campeur.getAllTypes()
+        const infrastructures = await report.find_all_infrastructures()
+        const types = await report.find_all_types()
         const flash = ft.getFlash(req)
         res.render('campeur/signaler',{title : "CDS | Signaler",flash,infrastructures,types,csrfToken : req.csrfToken()})
     }
@@ -101,7 +100,7 @@ exports.camper_report_get = async (req, res)=>{
 
 exports.camper_report_post = async (req, res)=>{
     try{
-        const signal = await campeur.createSignalement(res.locals.id,req.body.type,req.body.infrastructure)
+        const signal = await report.create(res.locals.id,req.body.type,req.body.infrastructure)
         ft.setFlash(res,'success',"Le signalement viens d'être envoyé")
         res.redirect('/campeur')
     }
@@ -113,7 +112,7 @@ exports.camper_report_post = async (req, res)=>{
 
 exports.camper_account_get = async (req, res)=>{
     try{
-        const rows = await campeur.findCampeurById(res.locals.id)
+        const rows = await camper.find_by_id(res.locals.id)
         const camp = rows[0]
         const flash = ft.getFlash(req)
         res.render('campeur/compte',{title : "CDS | Mon compte",camp,flash,csrfToken : req.csrfToken()})
@@ -143,7 +142,7 @@ exports.camper_account_post = async (req, res)=>{
         try{
             const hashPassword = bcrypt.hashSync(passwordS,10)
             try{
-                const uptdated = await campeur.updateCampeur(res.locals.id,nomS,prenomS,mailS,telephoneS,hashPassword)
+                const uptdated = await camper.update(res.locals.id,nomS,prenomS,mailS,telephoneS,hashPassword)
                 ft.setFlash(res,'success',"Votre compte viens d'être modifié")
                 ft.clearToken(res)
                 const user = {
@@ -152,7 +151,7 @@ exports.camper_account_post = async (req, res)=>{
                     prenom : prenomS,
                     mail : mailS
                 }
-                const token = index.createToken(user)
+                const token = index.create_token(user)
                 ft.setToken(res,token)
                 res.redirect('/campeur')
             }
