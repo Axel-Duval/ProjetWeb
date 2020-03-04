@@ -101,13 +101,20 @@ exports.camper_report_get = async (req, res)=>{
 
 exports.camper_report_post = async (req, res)=>{
     try{
-        const signal = await report.create(res.locals.id,req.body.type,req.body.infrastructure)
-        ft.setFlash(res,'success',"Le signalement viens d'être envoyé")
-        res.redirect('/campeur')
+        const rows = await booking.current_campers()
+        let i = 0;
+        while(i < rows.length && rows[i].id != req.locals.id) {
+            i++;
+        }
+        if(rows[i].id == req.locals.id){        
+            const signal = await report.create(res.locals.id,req.body.type,req.body.infrastructure)
+            ft.setFlash(res,'success',"Le signalement viens d'être envoyé")
+            res.redirect('/campeur')
+        }
     }
     catch{
-        ft.setFlash(res,'warning','Problème de connexion avec la base de donnée')
-        res.redirect('/campeur/signaler')
+        ft.setFlash(res,'danger',"Vous ne pouvez pas envoyer de signalements car vous n'êtes pas dans le camping")
+            res.redirect('/campeur')
     }
 }
 
