@@ -287,12 +287,12 @@ exports.index_booking_location = async (req, res)=>{
 
 exports.index_send_mail_token = async (req, res)=>{
 
-    const email = req.body.email;
+    const mailS = req.sanitize(req.body.email);
     const mailV = ft.isEmail(req,res)
 
     if(mailV){
         try{
-            const camperL = await camper.find_by_email(email)
+            const camperL = await camper.find_by_email(mailS)
             if(camperL[0]){
                 //CREATE JWT TOKEN TO AUTH 
                 const user = {
@@ -317,7 +317,7 @@ exports.index_send_mail_token = async (req, res)=>{
             
                 let mailOptions = {
                     from: 'H707.assist@gmail.com',
-                    to: email,
+                    to: mailS,
                     subject: 'Réinitialisation du mot de passe',
                     text: 'Voici le lien pour réinitialiser votre mot de passe : ' + "https://camping-des-sources.herokuapp.com/token_connexion/" + token.replace('.','/')
                   };
@@ -325,7 +325,8 @@ exports.index_send_mail_token = async (req, res)=>{
                 transporter.sendMail(mailOptions, function(error, info){
                     if (error) {
                         ft.setFlash(res,'warning',"Il y a eu un problème avec l'envoi du lien de récupération")
-                        res.redirect('/reinitialisation_mot_de_passe')
+                        //res.redirect('/reinitialisation_mot_de_passe')
+                        res.send(error)
                     } else {
                         ft.setFlash(res,'success',"Veuillez consulter vos mails")
                         res.redirect('/connexion')
