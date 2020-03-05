@@ -14,7 +14,7 @@ exports.clearCookie = function(res,name){
 
 exports.setFlash = function(res,ftype,ftext){
     const flash = {type : ftype, text : ftext}
-    return res.cookie("flash_message",flash, { maxAge: 1 * 1000, httpOnly: true })
+    return res.cookie("flash_message",flash, { maxAge: 1 * 1000, httpOnly: true ,sameSite: true,secure: true})
 }
 
 exports.getFlash = function(req){
@@ -26,7 +26,7 @@ exports.clearFlash = function(res){
 }
 
 exports.setToken = function(res,token){
-    return res.cookie('auth', token, { maxAge: 6 * 60 * 60 * 1000, httpOnly: true })
+    return res.cookie('auth', token, { maxAge: 6 * 60 * 60 * 1000, httpOnly: true,sameSite: true,secure: true})
 }
 
 exports.getToken = function(req){

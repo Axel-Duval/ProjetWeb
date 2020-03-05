@@ -8,6 +8,7 @@ const path = require('path')
 const cookieParser = require('cookie-parser')
 const expressSanitizer = require('express-sanitizer')
 const csrf = require('csurf')
+const hpp = require('hpp')
 
 
 //Listen on PORT
@@ -23,14 +24,15 @@ const managerRouter = require('./routes/manager')
 const csrfMW = csrf({cookie:true})
 
 app.use(express.static(__dirname + '/public'));
-app.use(bodyParser.urlencoded({extended:false}))
-app.use(bodyParser.json())
-app.use(cookieParser())
-app.use(expressSanitizer())
-app.use(csrfMW)
+app.use(bodyParser.urlencoded({extended:false}));
+app.use(bodyParser.json());
+app.use(cookieParser());
+app.use(expressSanitizer());
+app.use(csrfMW);
+app.use(hpp());
 
 app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'ejs')
+app.set('view engine', 'ejs');
 
 app.use('/', indexRouter)
 app.use('/campeur', camperRouter)

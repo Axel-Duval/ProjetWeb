@@ -3,8 +3,8 @@ const constants = require("../constants");
 
 
 const pool = mysql.createPool(process.env.CLEARDB_DATABASE_URL);
-
 /*
+
 const pool = mysql.createPool({
     connectionLimit: constants.DB_LIMIT,
     host: constants.DB_HOST,
@@ -12,8 +12,8 @@ const pool = mysql.createPool({
     password: constants.DB_PSWD,
     database: constants.DB_NAME
 })
-*/
 
+*/
 
 pool.getConnection((err, connection) => {
     if(err) 
