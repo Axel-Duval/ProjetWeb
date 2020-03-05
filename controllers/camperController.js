@@ -107,7 +107,7 @@ exports.camper_report_post = async (req, res)=>{
             i++;
         }
         if(rows[i].id == req.locals.id){        
-            const signal = await report.create(res.locals.id,req.body.type,req.body.infrastructure)
+            await report.create(res.locals.id,req.body.type,req.body.infrastructure)
             ft.setFlash(res,'success',"Le signalement viens d'être envoyé")
             res.redirect('/campeur')
         }
@@ -150,7 +150,7 @@ exports.camper_account_post = async (req, res)=>{
         try{
             const hashPassword = bcrypt.hashSync(passwordS,10)
             try{
-                const uptdated = await camper.update(res.locals.id,nomS,prenomS,mailS,telephoneS,hashPassword)
+                await camper.update(res.locals.id,nomS,prenomS,mailS,telephoneS,hashPassword)
                 ft.setFlash(res,'success',"Votre compte viens d'être modifié")
                 ft.clearToken(res)
                 const user = {
@@ -193,8 +193,8 @@ exports.camper_delete_booking = async (req, res)=>{
 
 exports.camper_can_delete = async (req, res, next)=>{
     try{        
-        const res = await camper.find_booking(req.params.id)
-        if(res[0].checkin==0){
+        const booking = await camper.find_booking(req.params.id)
+        if(booking[0].checkin==0){
             next()
         }
         else{

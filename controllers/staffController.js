@@ -80,7 +80,7 @@ exports.staff_reports = async (req, res) => {
 
 exports.staff_report_delete = async (req, res) => {
     try {
-        const rows = await report.delete(req.params.id)
+        await report.delete(req.params.id)
         ft.setFlash(res, 'success', "L'incident a bien été supprimé")
         res.redirect('/personnel/incidents')
     }
@@ -163,7 +163,7 @@ exports.staff_departures = async (req, res) => {
 
 exports.staff_checkout = async (req, res) => {
     try {
-        const rows = await booking.checkout(req.params.id)
+        await booking.checkout(req.params.id)
         ft.setFlash(res, 'success', "Le checkout viens d'être enregistré")
         res.redirect('/personnel/departs')
     }
@@ -175,7 +175,7 @@ exports.staff_checkout = async (req, res) => {
 
 exports.staff_checkin = async (req, res) => {
     try {
-        const rows = await booking.checkin(req.params.id)
+        await booking.checkin(req.params.id)
         ft.setFlash(res, 'success', "Le checkin viens d'être enregistré")
         res.redirect('/personnel/arrivees')
     }
@@ -218,7 +218,7 @@ exports.staff_check_get = async (req, res) => {
 
 exports.staff_check_post = async (req, res) => {
     try {
-        const rows = await staff.clean(req.params.id, res.locals.id)
+        await staff.clean(req.params.id, res.locals.id)
         ft.setFlash(res, 'success', 'Pointage enregistré')
         res.redirect('/personnel/pointage')
     }

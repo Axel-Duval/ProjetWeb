@@ -46,21 +46,20 @@ exports.index_login_post = async (req, res)=>{
         const passwordS = req.sanitize(req.body.password);
         //Check in database if there is a campeur with this email
         try{
-            const rows = await camper.find_by_email(mailS);
+            const camper = await camper.find_by_email(mailS);
             //If it is a campeur
-            if(rows[0]){
+            if(camper[0]){
 
                 //If the password is good
-                if(bcrypt.compareSync(passwordS, rows[0].password)){
+                if(bcrypt.compareSync(passwordS, camper[0].password)){
                     //CREATE JSON WEB-TOKEN
                     const user = {
-                        id : rows[0].id,
-                        nom : rows[0].nom,
-                        prenom : rows[0].prenom,
-                        mail : rows[0].mail
+                        id : camper[0].id,
+                        nom : camper[0].nom,
+                        prenom : camper[0].prenom,
+                        mail : camper[0].mail
                     };
-                    const token = index.create_token(user);
-                    ft.setToken(res,token);
+                    ft.setToken(res,index.create_token(user));
                     res.redirect('/connexion');
                     
                 }
@@ -73,19 +72,18 @@ exports.index_login_post = async (req, res)=>{
             else{
                 //Need to check in the personnel
                 try{
-                    const rows = await staff.find_by_name(mailS);
+                    const staff = await staff.find_by_name(mailS);
                     //If it is a personnel
-                    if(rows[0]){
+                    if(staff[0]){
                         //If the password is good
-                        if(bcrypt.compareSync(passwordS, rows[0].password)){
+                        if(bcrypt.compareSync(passwordS, staff[0].password)){
                             //CREATE JSON WEB-TOKEN
                             const user = {
-                                id : rows[0].id,
-                                identifiant : rows[0].identifiant,
-                                estManager : rows[0].estManager
+                                id : staff[0].id,
+                                identifiant : staff[0].identifiant,
+                                estManager : staff[0].estManager
                             };
-                            const token = index.create_token(user);
-                            ft.setToken(res,token);
+                            ft.setToken(res,index.create_token(user));
                             res.redirect('/connexion');
                             
                         }
@@ -140,15 +138,15 @@ exports.index_register_post = async (req, res)=>{
         const prenomS = req.sanitize(req.body.prenom);
         const telephoneS = req.sanitize(req.body.telephone);
         try{
-            const rows = await camper.find_by_email(mailS);
-            if(rows[0]){
+            const camper = await camper.find_by_email(mailS);
+            if(camper[0]){
                 ft.setFlash(res,'danger',"Désolé, cet email est déjà pris");
                 res.redirect('/inscription');
             }
             else{
                 const hashPassword = bcrypt.hashSync(passwordS,10);
                 try{
-                    const created = await camper.create(nomS,prenomS,mailS,telephoneS,hashPassword)
+                    await camper.create(nomS,prenomS,mailS,telephoneS,hashPassword)
                     ft.setFlash(res,'success',"Votre compte viens d'être créer");
                     res.redirect('/connexion');
                 }
@@ -195,7 +193,6 @@ exports.index_legal_notice = (req, res)=>{
 }
 
 exports.index_booking = async (req, res)=>{
-    const flash = ft.getFlash(req);
     const arr = req.query.arrivee;
     const dep = req.query.depart;
     const type = req.query.type;
@@ -250,7 +247,6 @@ exports.index_booking = async (req, res)=>{
 }
 
 exports.index_booking_location = async (req, res)=>{
-    const flash = ft.getFlash(req);
     const _arr = req.params.arrival
     const _dep = req.params.departure;
     const _location = req.params.id_location;
@@ -262,7 +258,7 @@ exports.index_booking_location = async (req, res)=>{
         if(arr && dep && location){
             if(_arr<_dep){
                 try{
-                    const rows = await booking.create(_arr,_dep,res.locals.id,_location)
+                    await booking.create(_arr,_dep,res.locals.id,_location)
                     ft.setFlash(res,'success',"La réservation viens d'être enregistrée");
                     res.redirect('/connexion');
                 }

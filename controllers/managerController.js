@@ -93,7 +93,7 @@ exports.manager_create_staff_post = async (req, res)=>{
                 const hashPassword = bcrypt.hashSync(passwordS,10)
                 const manager = estManager ? 1 : 0
                 try{
-                    const created = await staff.create(nomS,manager,hashPassword)
+                    await staff.create(nomS,manager,hashPassword)
                     ft.setFlash(res,'success',"Le compte viens d'être créer")
                     res.redirect('/manager/personnel')
                 }
@@ -134,7 +134,7 @@ exports.manager_staff = async (req, res)=>{
 
 exports.manager_delete_staff = async (req, res)=>{
     try{
-        const rows = await staff.delete(req.params.id)
+        await staff.delete(req.params.id)
         ft.setFlash(res,'success',"L'utilisateur a bien été supprimé")
         res.redirect('/manager/personnel')
     }
@@ -156,7 +156,7 @@ exports.manager_update_staff = async (req, res)=>{
         const hashPassword = bcrypt.hashSync(passwordS,10)
         const nomS = req.sanitize(req.body.nom)
         try{
-            const rows = await staff.update(req.params.id,nomS,hashPassword)
+            await staff.update(req.params.id,nomS,hashPassword)
             ft.setFlash(res,'success',"La modification viens d'être effectuée")
             res.redirect('/manager/personnel')
         }
@@ -191,7 +191,7 @@ exports.manager_all_reports = async (req, res)=>{
 
 exports.manager_delete_report = async (req, res)=>{
     try{
-        const rows = await report.delete(req.params.id)
+        await report.delete(req.params.id)
         ft.setFlash(res,'success',"L'incident a bien été supprimé")
         res.redirect('/manager/incidents')
     }

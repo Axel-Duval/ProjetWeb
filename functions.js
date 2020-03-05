@@ -13,7 +13,7 @@ exports.clearCookie = function(res,name){
 }
 
 exports.setFlash = function(res,ftype,ftext){
-    flash = {type : ftype, text : ftext}
+    const flash = {type : ftype, text : ftext}
     return res.cookie("flash_message",flash, { maxAge: 1 * 1000, httpOnly: true })
 }
 

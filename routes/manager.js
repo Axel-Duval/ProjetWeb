@@ -25,7 +25,7 @@ router.get('/personnel/:id',manager_controller.manager_staff);
 // POST update staff infos
 router.post('/personnel/:id',manager_controller.manager_update_staff);
 
-// GET delete staff member by :id
+// DELETE staff member by :id
 router.get('/personnel/:id/delete',manager_controller.manager_delete_staff);
 
 // GET report section
