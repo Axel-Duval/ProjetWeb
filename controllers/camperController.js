@@ -193,8 +193,8 @@ exports.camper_delete_booking = async (req, res)=>{
 
 exports.camper_can_delete = async (req, res, next)=>{
     try{        
-        const booking = await camper.find_booking(req.params.id)
-        if(booking[0].checkin==0){
+        const bookingL = await camper.find_booking(req.params.id)
+        if(bookingL[0].checkin==0){
             next()
         }
         else{

@@ -46,18 +46,18 @@ exports.index_login_post = async (req, res)=>{
         const passwordS = req.sanitize(req.body.password);
         //Check in database if there is a campeur with this email
         try{
-            const camper = await camper.find_by_email(mailS);
+            const camperL = await camper.find_by_email(mailS);
             //If it is a campeur
-            if(camper[0]){
+            if(camperL[0]){
 
                 //If the password is good
-                if(bcrypt.compareSync(passwordS, camper[0].password)){
+                if(bcrypt.compareSync(passwordS, camperL[0].password)){
                     //CREATE JSON WEB-TOKEN
                     const user = {
-                        id : camper[0].id,
-                        nom : camper[0].nom,
-                        prenom : camper[0].prenom,
-                        mail : camper[0].mail
+                        id : camperL[0].id,
+                        nom : camperL[0].nom,
+                        prenom : camperL[0].prenom,
+                        mail : camperL[0].mail
                     };
                     ft.setToken(res,index.create_token(user));
                     res.redirect('/connexion');
@@ -72,16 +72,16 @@ exports.index_login_post = async (req, res)=>{
             else{
                 //Need to check in the personnel
                 try{
-                    const staff = await staff.find_by_name(mailS);
+                    const staffL = await staff.find_by_name(mailS);
                     //If it is a personnel
-                    if(staff[0]){
+                    if(staffL[0]){
                         //If the password is good
-                        if(bcrypt.compareSync(passwordS, staff[0].password)){
+                        if(bcrypt.compareSync(passwordS, staffL[0].password)){
                             //CREATE JSON WEB-TOKEN
                             const user = {
-                                id : staff[0].id,
-                                identifiant : staff[0].identifiant,
-                                estManager : staff[0].estManager
+                                id : staffL[0].id,
+                                identifiant : staffL[0].identifiant,
+                                estManager : staffL[0].estManager
                             };
                             ft.setToken(res,index.create_token(user));
                             res.redirect('/connexion');
@@ -138,8 +138,8 @@ exports.index_register_post = async (req, res)=>{
         const prenomS = req.sanitize(req.body.prenom);
         const telephoneS = req.sanitize(req.body.telephone);
         try{
-            const camper = await camper.find_by_email(mailS);
-            if(camper[0]){
+            const camperL = await camper.find_by_email(mailS);
+            if(camperL[0]){
                 ft.setFlash(res,'danger',"Désolé, cet email est déjà pris");
                 res.redirect('/inscription');
             }
