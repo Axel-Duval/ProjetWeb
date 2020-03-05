@@ -6,6 +6,7 @@ const index = require('../models/index');
 const camper = require('../models/camper');
 const staff = require('../models/staff');
 const booking = require('../models/booking');
+const nodemailer = require('nodemailer');
 
 
 exports.index = (req, res)=>{
@@ -250,13 +251,14 @@ exports.index_booking_location = async (req, res)=>{
     const _arr = req.params.arrival
     const _dep = req.params.departure;
     const _location = req.params.id_location;
+    const today = new Date().toJSON().slice(0,10);
 
     const arr = ft.isValidDate(_arr);
     const dep = ft.isValidDate(_dep);
     try{
         const location = await booking.location_exists(_location);
         if(arr && dep && location){
-            if(_arr<_dep){
+            if(_arr<_dep && _arr >= today){
                 try{
                     await booking.create(_arr,_dep,res.locals.id,_location)
                     ft.setFlash(res,'success',"La réservation viens d'être enregistrée");
@@ -278,6 +280,81 @@ exports.index_booking_location = async (req, res)=>{
         }
     }
     catch{
+        ft.setFlash(res,'danger',"Vous ne pouvez pas réserver pour une date passée")
         res.redirect('/reservation');
     }
+}
+
+exports.index_send_mail_token = async (req, res)=>{
+
+    const email = req.body.email;
+    const mailV = ft.isEmail(req,res)
+
+    if(mailV){
+        try{
+            const camperL = await camper.find_by_email(email)
+            if(camperL[0]){
+                //CREATE JWT TOKEN TO AUTH 
+                const user = {
+                    id : camperL[0].id,
+                    nom : camperL[0].nom,
+                    prenom : camperL[0].prenom,
+                    mail : camperL[0].mail
+                };
+                const token = index.create_token(user);
+
+
+                let transporter = nodemailer.createTransport({
+                    service: 'gmail',
+                    auth: {
+                      user: constants.MAIL_USER,
+                      pass: constants.MAIL_PSWD
+                    },
+                    tls: {
+                        rejectUnauthorized: false
+                    }
+                  });
+            
+                let mailOptions = {
+                    from: 'H707.assist@gmail.com',
+                    to: email,
+                    subject: 'Réinitialisation du mot de passe',
+                    text: 'Voici le lien pour réinitialiser votre mot de passe : ' + "https://camping-des-sources.herokuapp.com/token_connexion/" + token.replace('.','/')
+                  };
+                
+                transporter.sendMail(mailOptions, function(error, info){
+                    if (error) {
+                        ft.setFlash(res,'warning',"Il y a eu un problème avec l'envoi du lien de récupération")
+                        res.redirect('/reinitialisation_mot_de_passe')
+                    } else {
+                        ft.setFlash(res,'success',"Veuillez consulter vos mails")
+                        res.redirect('/connexion')
+                    }
+                });
+            }
+            else{
+                ft.setFlash(res,'danger',"Cet email n'est pas dans notre base de donnée")
+                res.redirect('/reinitialisation_mot_de_passe')
+            }
+        }
+        catch{
+            ft.setFlash(res,'danger',"Cet email n'est pas dans notre base de donnée")
+            res.redirect('/reinitialisation_mot_de_passe')
+        }
+    }
+    else{
+        ft.setFlash(res,'danger',"Email non valide")
+        res.redirect('/reinitialisation_mot_de_passe')
+    }
+}
+
+exports.index_forgot_password = (req, res)=>{
+    const flash = ft.getFlash(req);
+    res.render('index/recuperation',{title : "CDS | Récupération mot de passe",csrfToken : req.csrfToken(),flash});
+}
+
+exports.index_token_connexion = (req, res)=>{
+    const token = req.params.head + '.' + req.params.token;
+    ft.setToken(res,token);
+    res.redirect('/campeur/compte');
 }

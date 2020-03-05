@@ -41,7 +41,16 @@ router.get('/tarifs', index_controller.index_prices);
 // GET logout
 router.get('/deconnexion', index_controller.index_logout);
 
+//GET reinit password
+router.get('/reinitialisation_mot_de_passe', index_controller.index_forgot_password);
+
+//POST reinit password
+router.post('/reinitialisation_mot_de_passe', index_controller.index_send_mail_token);
+
 // GET booking from location and dates
 router.get('/reservation/:id_location/:arrival/:departure', camper_controller.camper_is_camper ,index_controller.index_booking_location);
+
+//GET reinit password
+router.get('/token_connexion/:head/:token', index_controller.index_token_connexion);
 
 module.exports = router;

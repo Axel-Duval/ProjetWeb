@@ -22,7 +22,7 @@
                     <p class="title is-5">Electricité : <%if(rows.electricite==1){%><span class="has-text-success ">oui</span><%}else{%><span class="has-text-danger ">non</span><%}%></p>
                     <p class="title is-5">Occupé : <%if(occupied){%><span class="has-text-success ">oui</span><%}else{%><span class="has-text-danger ">non</span><%}%></p>
                     <%if(occupied){%>
-                        <p class="title is-5">Par : <span class="has-text-primary"><%=occupied.nom%></span> - <span class="has-text-primary"><%=occupied.id%></span></p>
+                        <p class="title is-5">Par : <a href="/personnel/campeur/<%=occupied.id%>"><span class="has-text-primary"><%=occupied.nom%></span> - <span class="has-text-primary"><%=occupied.id%></span></a></p>
                     <%}if(rows.prestige == 0){%>
                         <hr>
                         <p class="title is-5">Châlet : <span class="has-text-info "><%=rows.nom%></span></p>

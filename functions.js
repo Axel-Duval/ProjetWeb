@@ -191,9 +191,9 @@ exports.formatDate = (date)=>{
 }
 
 exports.formatSales = (sales)=>{
-    if(sales>1000){
-        sales = Math.round(sales/100)/10
-        return sales + 'K'
+    if(sales.tot>1000){
+        sales.tot = Math.round(sales.tot/100)/10 + "K"
+        return sales
     }
     else{
         return sales
