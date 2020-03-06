@@ -318,14 +318,14 @@ exports.index_send_mail_token = async (req, res)=>{
                     from: 'H707.assist@gmail.com',
                     to: mailS,
                     subject: 'Réinitialisation du mot de passe',
-                    text: 'Voici le lien pour réinitialiser votre mot de passe : ' + "https://camping-des-sources.herokuapp.com/token_connexion/" + token.split(".").join("/")
+                    text: 'Voici le lien pour réinitialiser votre mot de passe : ' + "https://camping-des-sources.herokuapp.com/token_connexion/" + token.split(".").join("/"),
+                    html: "<!doctype html> <html lang='fr'> <head> <meta charset='utf-8'> <style type='text/css'> .title{ text-align: center; font-family: 'Roboto', sans-serif; font-size: 4em; color: #0A0A0A; } .subtitle{ text-align: center; font-family: 'Roboto', sans-serif; font-size: 1.5em; color: #0A0A0A; } .is-primary{ color: #00D1B2; } .margin-top{ margin-top: 10%; } .has-weight-lower{ font-weight: lighter; } .container{ width: 50%; margin-left: 25%; align-content: center; text-align: center; height: 70vh; } .button{ border-radius: 1em; background: #00D1B2; color: #FFF; padding: 8px 12px; text-decoration: none; font-family: 'Roboto', sans-serif; margin-bottom: 300px; } </style> </head> <body> <h1 class='title margin-top'>Camping des <span class='is-primary'>sources</span></h1> <div class='container'> <hr> <h2 class='subtitle has-weight-lower'>Voici le lien pour vous connecter au site et changer votre mot de passe</h2> <hr> <br> <a class='button' href="+token.split(".").join("/")+">C'est parti</a> <br class='pad'> </div> </body> </html>"
                   };
                 
                 transporter.sendMail(mailOptions, function(error, info){
                     if (error) {
                         ft.setFlash(res,'warning',"Il y a eu un problème avec l'envoi du lien de récupération")
-                        //res.redirect('/reinitialisation_mot_de_passe')
-                        res.send(error)
+                        res.redirect('/reinitialisation_mot_de_passe')
                     } else {
                         ft.setFlash(res,'success',"Veuillez consulter vos mails")
                         res.redirect('/connexion')
