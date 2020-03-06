@@ -51,6 +51,6 @@ router.post('/reinitialisation_mot_de_passe', index_controller.index_send_mail_t
 router.get('/reservation/:id_location/:arrival/:departure', camper_controller.camper_is_camper ,index_controller.index_booking_location);
 
 //GET reinit password
-router.get('/token_connexion/:head/:token', index_controller.index_token_connexion);
+router.get('/token_connexion/:head/:token/:foot', index_controller.index_token_connexion);
 
 module.exports = router;

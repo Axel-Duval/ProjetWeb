@@ -1,7 +1,7 @@
 const cookieParser = require('cookie-parser');
 
 exports.setCookie = function(res,name,args,time){
-    return res.cookie(name, args, { maxAge: time * 1000, httpOnly: true })
+    return res.cookie(name, args, { maxAge: time * 1000, httpOnly: true,sameSite: true,secure: true})
 }
 
 exports.getCookie = function(req,name){

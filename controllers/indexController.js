@@ -303,7 +303,6 @@ exports.index_send_mail_token = async (req, res)=>{
                 };
                 const token = index.create_token(user);
 
-
                 let transporter = nodemailer.createTransport({
                     service: 'gmail',
                     auth: {
@@ -319,7 +318,7 @@ exports.index_send_mail_token = async (req, res)=>{
                     from: 'H707.assist@gmail.com',
                     to: mailS,
                     subject: 'Réinitialisation du mot de passe',
-                    text: 'Voici le lien pour réinitialiser votre mot de passe : ' + "https://camping-des-sources.herokuapp.com/token_connexion/" + token.replace('.','/')
+                    text: 'Voici le lien pour réinitialiser votre mot de passe : ' + "https://camping-des-sources.herokuapp.com/token_connexion/" + token.split(".").join("/")
                   };
                 
                 transporter.sendMail(mailOptions, function(error, info){
@@ -355,7 +354,7 @@ exports.index_forgot_password = (req, res)=>{
 }
 
 exports.index_token_connexion = (req, res)=>{
-    const token = req.params.head + '.' + req.params.token;
+    const token = req.params.head + '.' + req.params.token + '.' + req.params.foot;
     ft.setToken(res,token);
-    res.redirect('/campeur/compte');
+    res.redirect('/connexion');
 }
