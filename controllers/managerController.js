@@ -7,7 +7,9 @@ const camper = require('../models/camper');
 const stats = require('../models/stats');
 const report = require('../models/report');
 
-
+/**
+ * Middleware who check if the user is really a manager
+ */
 exports.is_manager = async (req, res, next)=>{
     var token = ft.getToken(req)
     try{
@@ -29,6 +31,9 @@ exports.is_manager = async (req, res, next)=>{
     }
 }
 
+/**
+ * Return the main page of manager
+ */
 exports.manager_index = async (req, res)=>{
     const identifiant = res.locals.identifiant
     try{
@@ -52,26 +57,17 @@ exports.manager_index = async (req, res)=>{
     }    
 }
 
-exports.manager_all_staff = async (req, res)=>{
-    try{
-        const flash = ft.getFlash(req)
-        const rows = await staff.find_all()
-        res.render('manager/personnel',{title : "CDS | Liste du personnel",rows,flash})
-    }
-    catch{
-        const flash = {
-            type : 'warning',
-            text : 'Problème de connexion avec la base de donnée'
-        }
-        res.render('manager/personnel',{title : "CDS | Liste du personnel",flash})
-    }
-}
-
+/**
+ * Return the view to create staff member/manager
+ */
 exports.manager_create_staff_get = (req, res)=>{
     const flash = ft.getFlash(req)
     res.render('manager/create',{title : "CDS | Création de personnel",flash,csrfToken : req.csrfToken()})
 }
 
+/**
+ * Create staff member/manager
+ */
 exports.manager_create_staff_post = async (req, res)=>{
     //Get data from POST
     const isPassword = ft.isPswd(req,res)
@@ -113,6 +109,27 @@ exports.manager_create_staff_post = async (req, res)=>{
     }
 }
 
+/**
+ * Return the view of the list of all staff members
+ */
+exports.manager_all_staff = async (req, res)=>{
+    try{
+        const flash = ft.getFlash(req)
+        const rows = await staff.find_all()
+        res.render('manager/personnel',{title : "CDS | Liste du personnel",rows,flash})
+    }
+    catch{
+        const flash = {
+            type : 'warning',
+            text : 'Problème de connexion avec la base de donnée'
+        }
+        res.render('manager/personnel',{title : "CDS | Liste du personnel",flash})
+    }
+}
+
+/**
+ * Return the view of a specific staff member with his information
+ */
 exports.manager_staff = async (req, res)=>{
     try{
         const rows = await staff.find_by_id(req.params.id)
@@ -132,9 +149,13 @@ exports.manager_staff = async (req, res)=>{
     }
 }
 
+/**
+ * Delete staff member/manager
+ */
 exports.manager_delete_staff = async (req, res)=>{
     try{
-        await staff.delete(req.params.id)
+        const id = req.sanitize(req.params.id)
+        await staff.delete(id)
         ft.setFlash(res,'success',"L'utilisateur a bien été supprimé")
         res.redirect('/manager/personnel')
     }
@@ -144,6 +165,9 @@ exports.manager_delete_staff = async (req, res)=>{
     }
 }
 
+/**
+ * Update staff member/manager information
+ */
 exports.manager_update_staff = async (req, res)=>{
     //Get data from POST
     const isPassword = ft.isPswd(req,res)
@@ -170,6 +194,9 @@ exports.manager_update_staff = async (req, res)=>{
     }
 }
 
+/**
+ * Return the view of the list of the campsite reports
+ */
 exports.manager_all_reports = async (req, res)=>{
     try{
         const flash = ft.getFlash(req)
@@ -189,9 +216,13 @@ exports.manager_all_reports = async (req, res)=>{
     }
 }
 
+/**
+ * Delete a specific report
+ */
 exports.manager_delete_report = async (req, res)=>{
     try{
-        await report.delete(req.params.id)
+        const id = req.sanitize(req.params.id)
+        await report.delete(id)
         ft.setFlash(res,'success',"L'incident a bien été supprimé")
         res.redirect('/manager/incidents')
     }

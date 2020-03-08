@@ -7,7 +7,9 @@ const camper = require('../models/camper');
 const booking = require('../models/booking');
 const report = require('../models/report');
 
-
+/**
+ * Middleware who check if the user is really a staff member
+ */
 exports.is_staff = async (req, res, next) => {
     var token = ft.getToken(req)
     try {
@@ -30,6 +32,9 @@ exports.is_staff = async (req, res, next) => {
     }
 }
 
+/**
+ * Return the main page of staff member
+ */
 exports.staff_index = async (req, res) => {
     const identifiant = res.locals.identifiant
     try {
@@ -59,6 +64,9 @@ exports.staff_index = async (req, res) => {
     }
 }
 
+/**
+ * Return the view of the list of the campsite reports
+ */
 exports.staff_reports = async (req, res) => {
     try {
         const flash = ft.getFlash(req)
@@ -78,9 +86,13 @@ exports.staff_reports = async (req, res) => {
     }
 }
 
+/**
+ * Delete a specific report
+ */
 exports.staff_report_delete = async (req, res) => {
     try {
-        await report.delete(req.params.id)
+        const id = req.sanitize(req.params.id)
+        await report.delete(id)
         ft.setFlash(res, 'success', "L'incident a bien été supprimé")
         res.redirect('/personnel/incidents')
     }
@@ -90,6 +102,9 @@ exports.staff_report_delete = async (req, res) => {
     }
 }
 
+/**
+ * Return the view of the list of current campers
+ */
 exports.staff_campers = async (req, res) => {
     try {
         const flash = ft.getFlash(req)
@@ -105,13 +120,17 @@ exports.staff_campers = async (req, res) => {
     }
 }
 
+/**
+ * Return the view of a specific camper
+ */
 exports.staff_camper = async (req, res) => {
     try {
-        const _rows = await camper.find_by_id(req.params.id)
-        const reservations = await camper.count_bookings(req.params.id)
+        const id = req.sanitize(req.params.id)
+        const _rows = await camper.find_by_id(id)
+        const reservations = await camper.count_bookings(id)
         const reserv = reservations[0]
         const rows = _rows[0]
-        res.render('personnel/campeur_id', { title: "CDS | Campeur " + req.params.id, rows, reserv })
+        res.render('personnel/campeur_id', { title: "CDS | Campeur " + id, rows, reserv })
     }
     catch{
         ft.setFlash(res, 'warning', "Problème de connexion avec la base de donnée")
@@ -119,6 +138,9 @@ exports.staff_camper = async (req, res) => {
     }
 }
 
+/**
+ * Return the view of the list of all campers
+ */
 exports.staff_all_campers = async (req, res) => {
     try {
         const flash = ft.getFlash(req)
@@ -131,6 +153,9 @@ exports.staff_all_campers = async (req, res) => {
     }
 }
 
+/**
+ * Return the view of the list of today's arrivals
+ */
 exports.staff_arrivals = async (req, res) => {
     try {
         const flash = ft.getFlash(req)
@@ -146,6 +171,9 @@ exports.staff_arrivals = async (req, res) => {
     }
 }
 
+/**
+ * Return the view of the list of today's departures
+ */
 exports.staff_departures = async (req, res) => {
     try {
         const flash = ft.getFlash(req)
@@ -161,9 +189,13 @@ exports.staff_departures = async (req, res) => {
     }
 }
 
+/**
+ * Do the checkout
+ */
 exports.staff_checkout = async (req, res) => {
     try {
-        await booking.checkout(req.params.id)
+        const id = req.sanitize(req.params.id)
+        await booking.checkout(id)
         ft.setFlash(res, 'success', "Le checkout viens d'être enregistré")
         res.redirect('/personnel/departs')
     }
@@ -173,9 +205,13 @@ exports.staff_checkout = async (req, res) => {
     }
 }
 
+/**
+ * Do the checkin
+ */
 exports.staff_checkin = async (req, res) => {
     try {
-        await booking.checkin(req.params.id)
+        const id = req.sanitize(req.params.id)
+        await booking.checkin(id)
         ft.setFlash(res, 'success', "Le checkin viens d'être enregistré")
         res.redirect('/personnel/arrivees')
     }
@@ -185,26 +221,36 @@ exports.staff_checkin = async (req, res) => {
     }
 }
 
+/**
+ * Return the view of the interactive map
+ */
 exports.staff_plan = async (req, res) => {
     res.render('personnel/plan_interactif', { title: "CDS | Plan interractif" })
 }
 
+/**
+ * Return the view of a specific location
+ */
 exports.staff_location = async (req, res) => {
     try {
-        const _rows = await booking.find_location_by_id(req.params.id)
+        const id = req.sanitize(req.params.id)
+        const _rows = await booking.find_location_by_id(id)
         const rows = _rows[0]
         if (rows.dateCreation) {
             rows.dateCreation = ft.formatDate(rows.dateCreation)
         }
-        const _occupied = await booking.find_camper_by_location(req.params.id)
+        const _occupied = await booking.find_camper_by_location(id)
         const occupied = _occupied[0]
-        res.render('personnel/emplacement_id', { title: "CDS | Emplacement " + req.params.id, rows, occupied })
+        res.render('personnel/emplacement_id', { title: "CDS | Emplacement " + id, rows, occupied })
     }
     catch{
         res.redirect('/personnel/plan')
     }
 }
 
+/**
+ * Return the view of the list of infrastuctures
+ */
 exports.staff_check_get = async (req, res) => {
     try {
         const rows = await staff.find_all_infrastructures()
@@ -216,9 +262,13 @@ exports.staff_check_get = async (req, res) => {
     }
 }
 
+/**
+ * Update the infrastructure's need
+ */
 exports.staff_check_post = async (req, res) => {
     try {
-        await staff.clean(req.params.id, res.locals.id)
+        const idI = req.sanitize(req.params.id)
+        await staff.clean(idI, res.locals.id)
         ft.setFlash(res, 'success', 'Pointage enregistré')
         res.redirect('/personnel/pointage')
     }

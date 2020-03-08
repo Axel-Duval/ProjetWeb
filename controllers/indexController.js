@@ -9,10 +9,16 @@ const booking = require('../models/booking');
 const nodemailer = require('nodemailer');
 
 
+/**
+ * Return the main campsite page
+ */
 exports.index = (req, res)=>{
     res.render('index/index',{title : "CDS | Accueil"});
 }
 
+/**
+ * Return the login page
+ */
 exports.index_login_get = async (req, res)=>{
     const flash = ft.getFlash(req);
     const token = ft.getToken(req);
@@ -35,6 +41,9 @@ exports.index_login_get = async (req, res)=>{
     }    
 }
 
+/**
+ * Log and redirect the user if JWT or auth is good
+ */
 exports.index_login_post = async (req, res)=>{
     //Get email and password from POST
     const isEmail = ft.isEmail(req,res);
@@ -117,11 +126,17 @@ exports.index_login_post = async (req, res)=>{
     }    
 }
 
+/**
+ * Return the register page
+ */
 exports.index_register_get = (req, res)=>{
     const flash = ft.getFlash(req);
     res.render('index/inscription',{title : "CDS | Inscription",flash,csrfToken : req.csrfToken()});
 }
 
+/**
+ * Create a camper
+ */
 exports.index_register_post = async (req, res)=>{
     //Get data from POST
     const isEmail = ft.isEmail(req,res);
@@ -167,32 +182,53 @@ exports.index_register_post = async (req, res)=>{
     }
 }
 
+/**
+ * Return the view of campsite prices
+ */
 exports.index_prices = (req, res)=>{
     res.render('index/tarifs',{title : "CDS | tarifs"});
 }
 
+/**
+ * Logout the user, unset the JWT
+ */
 exports.index_logout = (req, res)=>{
     ft.clearToken(res);
     ft.clearFlash(res);
     res.redirect('/');
 }
 
+/**
+ * Return the view of about
+ */
 exports.index_about = (req, res)=>{
     res.render('index/a_propos',{title : "CDS | A propos"});
 }
 
+/**
+ * Return the view of team
+ */
 exports.index_team = (req, res)=>{
     res.render('index/notre_equipe',{title : "CDS | Notre équipe"});
 }
 
+/**
+ * Return the view of contact
+ */
 exports.index_contact = (req, res)=>{
     res.render('index/contact',{title : "CDS | Contact"});
 }
 
+/**
+ * Return the view of legal notice
+ */
 exports.index_legal_notice = (req, res)=>{
     res.render('index/mentions_legales',{title : "CDS | Mentions légales"});
 }
 
+/**
+ * Return the view of booking section
+ */
 exports.index_booking = async (req, res)=>{
     const arr = req.query.arrivee;
     const dep = req.query.depart;
@@ -247,6 +283,9 @@ exports.index_booking = async (req, res)=>{
     }
 }
 
+/**
+ * Return a list of available locations for a specific period 
+ */
 exports.index_booking_location = async (req, res)=>{
     const _arr = req.params.arrival
     const _dep = req.params.departure;
@@ -285,6 +324,9 @@ exports.index_booking_location = async (req, res)=>{
     }
 }
 
+/**
+ * Send the user's token by email
+ */
 exports.index_send_mail_token = async (req, res)=>{
 
     const mailS = req.sanitize(req.body.email);
@@ -347,13 +389,19 @@ exports.index_send_mail_token = async (req, res)=>{
     }
 }
 
+/**
+ * Return the view of forgot password
+ */
 exports.index_forgot_password = (req, res)=>{
     const flash = ft.getFlash(req);
     res.render('index/recuperation',{title : "CDS | Récupération mot de passe",csrfToken : req.csrfToken(),flash});
 }
 
+/**
+ * Get the reset link to redirect on camper's page if it's good
+ */
 exports.index_token_connexion = (req, res)=>{
-    const token = req.params.head + '.' + req.params.token + '.' + req.params.foot;
+    const token = req.sanitize(req.params.head) + '.' + req.sanitize(req.params.token) + '.' + req.sanitize(req.params.foot);
     ft.setToken(res,token);
     res.redirect('/connexion');
 }

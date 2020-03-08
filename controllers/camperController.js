@@ -6,7 +6,9 @@ const camper = require('../models/camper');
 const report = require('../models/report');
 const booking = require('../models/booking');
 
-
+/**
+ * Middleware who check if the user is really a camper
+ */
 exports.camper_is_camper = async (req, res, next)=>{
     var token = ft.getToken(req)
     try{
@@ -29,6 +31,9 @@ exports.camper_is_camper = async (req, res, next)=>{
     }
 }
 
+/**
+ * Middleware who check if a camper can see a specific booking (not allowed to see other's bookings)
+ */
 exports.camper_see_booking = async (req, res, next)=>{
     try{
         const rows = await camper.find_all_bookings_id(res.locals.id)
@@ -52,6 +57,9 @@ exports.camper_see_booking = async (req, res, next)=>{
     }
 }
 
+/**
+ * Return the view of camper's bookings
+ */
 exports.camper_bookings = async (req, res)=>{ 
     const prenom = res.locals.prenom
     try{
@@ -73,12 +81,16 @@ exports.camper_bookings = async (req, res)=>{
     }
 }
 
+/**
+ * Return the view of a specific booking
+ */
 exports.camper_booking = async (req, res)=>{ 
     try{
-        const rows = await camper.find_booking(req.params.id)
+        const id = req.sanitize(req.params.id)
+        const rows = await camper.find_booking(id)
         rows[0].dateDebut = ft.formatDate(rows[0].dateDebut)
         rows[0].dateFin = ft.formatDate(rows[0].dateFin)
-        res.render('campeur/reservation_id',{title : "CDS | Réservation "+ req.params.id,rows})
+        res.render('campeur/reservation_id',{title : "CDS | Réservation "+ id,rows})
     }
     catch{
         ft.setFlash(res,'warning',"Impossible d'accéder à la ressource")
@@ -86,6 +98,47 @@ exports.camper_booking = async (req, res)=>{
     }
 }
 
+/**
+ * Delete a specific booking
+ */
+exports.camper_delete_booking = async (req, res)=>{ 
+    try{
+        const id = req.sanitize(req.params.id)   
+        await booking.delete(id)
+        ft.setFlash(res,'success',"La réservation viens d'être supprimée")
+        res.redirect('/campeur')
+        
+    }
+    catch{
+        ft.setFlash(res,'warning',"Problème de connexion avec la base de donnée")
+        res.redirect('/campeur')
+    }
+}
+
+/**
+ * Middleware who check if a camper can delete a specific booking (not allowed to delete other's bookings or his bookings who already started)
+ */
+exports.camper_can_delete = async (req, res, next)=>{
+    try{
+        const id = req.sanitize(req.params.id)
+        const bookingL = await camper.find_booking(id)
+        if(bookingL[0].checkin==0){
+            next()
+        }
+        else{
+            ft.setFlash(res,'danger',"Vous ne pouvez pas supprimer cette réservation")
+            res.redirect('/campeur')
+        }        
+    }
+    catch{
+        ft.setFlash(res,'danger',"Vous ne pouvez pas supprimer cette réservation")
+        res.redirect('/campeur')
+    }
+}
+
+/**
+ * Return the view of report
+ */
 exports.camper_report_get = async (req, res)=>{
     try{
         const infrastructures = await report.find_all_infrastructures()
@@ -99,6 +152,9 @@ exports.camper_report_get = async (req, res)=>{
     }
 }
 
+/**
+ * Send the report to the campsite staff
+ */
 exports.camper_report_post = async (req, res)=>{
     try{
         const rows = await booking.current_campers()
@@ -106,8 +162,10 @@ exports.camper_report_post = async (req, res)=>{
         while(i < rows.length && rows[i].id != req.locals.id) {
             i++;
         }
-        if(rows[i].id == req.locals.id){        
-            await report.create(res.locals.id,req.body.type,req.body.infrastructure)
+        if(rows[i].id == req.locals.id){
+            const type = req.sanitize(req.body.type)
+            const infrastructure = req.sanitize(req.body.infrastructure)
+            await report.create(res.locals.id,type,infrastructure)
             ft.setFlash(res,'success',"Le signalement viens d'être envoyé")
             res.redirect('/campeur')
         }
@@ -118,6 +176,9 @@ exports.camper_report_post = async (req, res)=>{
     }
 }
 
+/**
+ * Return the view of camper's account
+ */
 exports.camper_account_get = async (req, res)=>{
     try{
         const rows = await camper.find_by_id(res.locals.id)
@@ -131,6 +192,9 @@ exports.camper_account_get = async (req, res)=>{
     }
 }
 
+/**
+ * Update camper's information
+ */
 exports.camper_account_post = async (req, res)=>{
     //Get data from POST
     const isEmail = ft.isEmail(req,res)
@@ -175,36 +239,6 @@ exports.camper_account_post = async (req, res)=>{
     }
     else{
         res.redirect('/campeur/compte')
-    }
-}
-
-exports.camper_delete_booking = async (req, res)=>{ 
-    try{        
-        await booking.delete(req.params.id)
-        ft.setFlash(res,'success',"La réservation viens d'être supprimée")
-        res.redirect('/campeur')
-        
-    }
-    catch{
-        ft.setFlash(res,'warning',"Problème de connexion avec la base de donnée")
-        res.redirect('/campeur')
-    }
-}
-
-exports.camper_can_delete = async (req, res, next)=>{
-    try{        
-        const bookingL = await camper.find_booking(req.params.id)
-        if(bookingL[0].checkin==0){
-            next()
-        }
-        else{
-            ft.setFlash(res,'danger',"Vous ne pouvez pas supprimer cette réservation")
-            res.redirect('/campeur')
-        }        
-    }
-    catch{
-        ft.setFlash(res,'danger',"Vous ne pouvez pas supprimer cette réservation")
-        res.redirect('/campeur')
     }
 }
 
